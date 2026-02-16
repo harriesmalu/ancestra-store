@@ -197,7 +197,7 @@ function init() {
       const whatsappNumber = '5491165678354';  // Formato: 549 + código de área + número
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
       
-      showMessage('Hubo un problema. Te redirigimos a WhatsApp...', true);
+      showMessage('Para confirmar tu pedido y completar tu pago te redirigimos a WhatsApp', true);
       
       setTimeout(() => {
         window.open(whatsappUrl, '_blank');
