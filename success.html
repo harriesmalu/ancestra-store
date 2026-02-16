@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ANCESTRA PARFUM · Compra realizada</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbarInner">
+      <a class="brandLogo" href="index.html">
+        <span class="brandWord">ANCESTRA</span>
+        <span class="brandSub">PARFUM</span>
+      </a>
+      <div class="searchWrap"></div>
+      <nav class="topNav">
+        <a class="navLink" href="index.html">Catálogo</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="success">
+      <div class="successBadge">✓</div>
+      <h1>¡Compra realizada!</h1>
+      <p class="muted">Gracias por elegir ANCESTRA. Te vamos a contactar para coordinar el envío.</p>
+      <div class="successActions">
+        <a class="btn" href="index.html">Volver al catálogo</a>
+        <a class="linkBtn" href="#" onclick="window.open('https://www.instagram.com/ancestra.parfum','_blank')">Ir a Instagram</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footerInner">
+      <div>© <span id="year"></span> ANCESTRA PARFUM</div>
+      <div class="muted small">Pedido confirmado · Envío a todo el país</div>
+    </div>
+  </footer>
+
+  <script type="module">
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

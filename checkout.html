@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ANCESTRA PARFUM · Checkout</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbarInner">
+      <a class="brandLogo" href="index.html">
+        <span class="brandWord">ANCESTRA</span>
+        <span class="brandSub">PARFUM</span>
+      </a>
+      <div class="searchWrap">
+        <a class="muted small" href="cart.html">Volver al carrito</a>
+      </div>
+      <nav class="topNav">
+        <a class="navLink" href="cart.html">
+          Carrito
+          <span id="cartBadge" class="badge" style="display:none">0</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="pageTitle">Finalizar compra</h1>
+
+    <section class="checkoutLayout">
+      <div id="checkoutRoot" class="checkoutCard">
+        <form id="payForm" class="form">
+          <div class="formTitle">Datos de envío</div>
+          <div class="row2">
+            <label class="field"><span>Nombre y apellido</span><input required placeholder="Malu Z."/></label>
+            <label class="field"><span>Teléfono</span><input required placeholder="11 1234-5678"/></label>
+          </div>
+          <label class="field"><span>Dirección</span><input required placeholder="Calle 123, piso, dpto"/></label>
+          <div class="row2">
+            <label class="field"><span>Ciudad</span><input required placeholder="CABA"/></label>
+            <label class="field"><span>Código postal</span><input required placeholder="1428"/></label>
+          </div>
+
+          <div class="formTitle" style="margin-top:16px">Pago (demo)</div>
+          <div class="row2">
+            <label class="field"><span>Tarjeta</span><input id="cardNumber" required placeholder="0000 0000 0000 0000"/></label>
+            <label class="field"><span>Vencimiento</span><input required placeholder="MM/AA"/></label>
+          </div>
+          <div class="row2">
+            <label class="field"><span>CVV</span><input required placeholder="123"/></label>
+            <label class="field"><span>DNI</span><input required placeholder="12.345.678"/></label>
+          </div>
+
+          <button class="btn btnWide" type="submit">Pagar</button>
+          <div class="muted small" style="margin-top:10px">Este checkout es simulado. Para producción se integra Mercado Pago.</div>
+        </form>
+      </div>
+
+      <aside id="summaryMini" class="summaryCard">
+        <div class="summaryTitle">Resumen</div>
+        <div class="sumLine total"><span>Total (productos)</span><span id="totalMini">$0</span></div>
+        <div class="muted small" style="margin-top:10px">El total final puede incluir envío según zona.</div>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footerInner">
+      <div>© <span id="year"></span> ANCESTRA PARFUM</div>
+      <div class="muted small">Compra segura · Soporte por DM</div>
+    </div>
+  </footer>
+
+  <script type="module">
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+  <script type="module" src="js/checkoutPage.js"></script>
+</body>
+</html>

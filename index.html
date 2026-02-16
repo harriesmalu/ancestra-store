@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ANCESTRA PARFUM · Catálogo</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbarInner">
+      <a class="brandLogo" href="index.html">
+        <span class="brandWord">ANCESTRA</span>
+        <span class="brandSub">PARFUM</span>
+      </a>
+      <div class="searchWrap">
+        <input id="searchInput" class="search" placeholder="Buscar fragancias, familia olfativa, intensidad..."/>
+      </div>
+      <nav class="topNav">
+        <a class="navLink" href="index.html">Catálogo</a>
+        <a class="navLink" href="cart.html">
+          Carrito
+          <span id="cartBadge" class="badge" style="display:none">0</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Fragancias intensas. Identidad que se siente.</h1>
+      <p>Catálogo demo con carrito tipo marketplace (similar a Mercado Libre) para que la experiencia de compra sea rápida y familiar.</p>
+    </section>
+
+    <section class="layout">
+      <aside class="filters">
+        <div class="filtersTitle">Filtros</div>
+
+        <label class="field">
+          <span>Categoría</span>
+          <select id="filterCategory"></select>
+        </label>
+
+        <label class="field">
+          <span>Familia</span>
+          <select id="filterFamily"></select>
+        </label>
+
+        <label class="field">
+          <span>Género</span>
+          <select id="filterGender"></select>
+        </label>
+
+        <label class="field">
+          <span>Intensidad mínima</span>
+          <input id="filterIntensity" type="range" min="0" max="5" value="0"/>
+        </label>
+
+        <label class="field">
+          <span>Precio máx.</span>
+          <input id="filterMaxPrice" type="number" min="0" step="500" placeholder="Sin tope"/>
+          <div id="maxPriceLabel" class="muted small">Sin tope</div>
+        </label>
+
+        <button id="resetFilters" class="linkBtn">Resetear filtros</button>
+      </aside>
+
+      <section class="content">
+        <div class="contentTop">
+          <div id="countLabel" class="muted">...</div>
+          <div class="sortWrap">
+            <label for="sort" class="muted small">Ordenar</label>
+            <select id="sort" class="sort">
+              <option value="name">Nombre</option>
+              <option value="price_asc">Precio: menor a mayor</option>
+              <option value="price_desc">Precio: mayor a menor</option>
+              <option value="intensity_desc">Intensidad: mayor a menor</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="results" class="grid"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footerInner">
+      <div>© <span id="year"></span> ANCESTRA PARFUM</div>
+      <div class="muted small">Sitio demo. Integración de pago (Mercado Pago) disponible para la siguiente etapa.</div>
+    </div>
+  </footer>
+
+  <script type="module">
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+  <script type="module" src="js/indexPage.js"></script>
+</body>
+</html>

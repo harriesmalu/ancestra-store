@@ -1,0 +1,155 @@
+[
+  {
+    "id": "ancestra-noir-50",
+    "brand": "ANCESTRA",
+    "name": "NOIR",
+    "subtitle": "Eau de Parfum",
+    "volume_ml": 50,
+    "price_ars": 30000,
+    "category": "Intensos",
+    "family": "Ambarado",
+    "intensity": 5,
+    "gender": "Unisex",
+    "notes_top": [
+      "Bergamota",
+      "Pimienta rosa"
+    ],
+    "notes_heart": [
+      "Jazmín",
+      "Ámbar"
+    ],
+    "notes_base": [
+      "Vainilla",
+      "Maderas",
+      "Almizcle"
+    ],
+    "description": "Oscuro, elegante y persistente. Para quien quiere dejar huella.",
+    "image": "assets/noir.svg"
+  },
+  {
+    "id": "ancestra-lumen-50",
+    "brand": "ANCESTRA",
+    "name": "LUMEN",
+    "subtitle": "Eau de Parfum",
+    "volume_ml": 50,
+    "price_ars": 30000,
+    "category": "Frescos",
+    "family": "Cítrico",
+    "intensity": 3,
+    "gender": "Unisex",
+    "notes_top": [
+      "Limón",
+      "Neroli"
+    ],
+    "notes_heart": [
+      "Lavanda",
+      "Flor blanca"
+    ],
+    "notes_base": [
+      "Maderas claras",
+      "Almizcle"
+    ],
+    "description": "Limpio y moderno. Frescura con presencia.",
+    "image": "assets/lumen.svg"
+  },
+  {
+    "id": "ancestra-velvet-50",
+    "brand": "ANCESTRA",
+    "name": "VELVET",
+    "subtitle": "Eau de Parfum",
+    "volume_ml": 50,
+    "price_ars": 30000,
+    "category": "Dulces",
+    "family": "Gourmand",
+    "intensity": 4,
+    "gender": "Femenino",
+    "notes_top": [
+      "Frutos rojos"
+    ],
+    "notes_heart": [
+      "Praliné",
+      "Rosa"
+    ],
+    "notes_base": [
+      "Vainilla",
+      "Ámbar"
+    ],
+    "description": "Dulce sofisticado, sin ser empalagoso.",
+    "image": "assets/velvet.svg"
+  },
+  {
+    "id": "ancestra-umber-50",
+    "brand": "ANCESTRA",
+    "name": "UMBER",
+    "subtitle": "Eau de Parfum",
+    "volume_ml": 50,
+    "price_ars": 30000,
+    "category": "Intensos",
+    "family": "Amaderado",
+    "intensity": 5,
+    "gender": "Masculino",
+    "notes_top": [
+      "Pimienta negra"
+    ],
+    "notes_heart": [
+      "Cuero",
+      "Cedro"
+    ],
+    "notes_base": [
+      "Vetiver",
+      "Ámbar"
+    ],
+    "description": "Amaderado y seco. Presencia fuerte.",
+    "image": "assets/umber.svg"
+  },
+  {
+    "id": "ancestra-silence-50",
+    "brand": "ANCESTRA",
+    "name": "SILENCE",
+    "subtitle": "Eau de Parfum",
+    "volume_ml": 50,
+    "price_ars": 30000,
+    "category": "Frescos",
+    "family": "Acuático",
+    "intensity": 3,
+    "gender": "Unisex",
+    "notes_top": [
+      "Ozónico"
+    ],
+    "notes_heart": [
+      "Acorde marino"
+    ],
+    "notes_base": [
+      "Maderas"
+    ],
+    "description": "Aire limpio, elegante, sin ruido.",
+    "image": "assets/silence.svg"
+  },
+  {
+    "id": "ancestra-noir-30",
+    "brand": "ANCESTRA",
+    "name": "NOIR",
+    "subtitle": "Eau de Parfum",
+    "volume_ml": 30,
+    "price_ars": 22000,
+    "category": "Intensos",
+    "family": "Ambarado",
+    "intensity": 5,
+    "gender": "Unisex",
+    "notes_top": [
+      "Bergamota",
+      "Pimienta rosa"
+    ],
+    "notes_heart": [
+      "Jazmín",
+      "Ámbar"
+    ],
+    "notes_base": [
+      "Vainilla",
+      "Maderas",
+      "Almizcle"
+    ],
+    "description": "La versión compacta del clásico NOIR.",
+    "image": "assets/noir.svg"
+  }
+]
