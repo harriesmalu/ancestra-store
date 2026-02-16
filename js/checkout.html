@@ -55,6 +55,9 @@
           </label>
 
           <button class="btn btnWide" type="submit" id="submitBtn">Continuar al pago</button>
+          
+          <!-- Mensaje de error -->
+          <div id="errorMessage" style="display:none; color:#ff4444; margin-top:12px; padding:12px; background:#2a1a1a; border-radius:4px; font-size:14px;"></div>
         </form>
       </div>
 
@@ -80,10 +83,7 @@
     </div>
   </footer>
 
-  <script src="https://sdk.mercadopago.com/js/v2"></script>
-  <script type="module">
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
   <script type="module" src="js/checkoutPage.js"></script>
 </body>
 </html>
