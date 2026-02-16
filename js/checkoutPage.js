@@ -1,18 +1,28 @@
 import { qs, setCartBadge } from './ui.js';
 import { listItems, totals, clearCart } from './cartBrowser.js';
 
-console.log('✅ checkoutPage.js cargado');
+console.log('✅ checkoutPage.js cargado - Versión EmailJS');
 
-function showError(message) {
+// CONFIGURACIÓN EMAILJS (Gratis, sin backend)
+// 1. Crear cuenta en: https://www.emailjs.com/
+// 2. Crear un servicio (Gmail)
+// 3. Crear un template
+// 4. Copiar estas 3 claves aquí:
+const EMAILJS_SERVICE_ID = service_mna6zji;
+const EMAILJS_TEMPLATE_ID = template_6ihlsb9;
+const EMAILJS_PUBLIC_KEY = RdNudoAPrZtX3Ri9P;
+
+
+function showMessage(message, isError = false) {
   const errorDiv = document.getElementById('errorMessage');
   if (errorDiv) {
     errorDiv.textContent = message;
     errorDiv.style.display = 'block';
+    errorDiv.style.color = isError ? '#ff4444' : '#44ff44';
     setTimeout(() => {
       errorDiv.style.display = 'none';
     }, 5000);
   }
-  console.error('❌ Error:', message);
 }
 
 function init() {
@@ -20,7 +30,6 @@ function init() {
   
   setCartBadge(totals().items_count);
   
-  // Verificar que hay productos
   if (totals().items_count === 0) {
     const root = document.getElementById('checkoutRoot');
     if (root) {
@@ -37,8 +46,6 @@ function init() {
     return;
   }
 
-  console.log('📦 Productos en carrito:', totals().items_count);
-
   // Mostrar total
   const formatter = new Intl.NumberFormat('es-AR', {
     style: 'currency',
@@ -51,7 +58,7 @@ function init() {
     totalMiniEl.textContent = formatter.format(totals().subtotal_ars);
   }
 
-  // Mostrar resumen de productos
+  // Mostrar resumen
   const cart = listItems();
   const summaryContent = document.getElementById('summaryContent');
   if (summaryContent) {
@@ -63,122 +70,141 @@ function init() {
     `).join('');
   }
 
-  console.log('💰 Total:', formatter.format(totals().subtotal_ars));
-
-  // Manejar submit del formulario
+  // Manejar formulario
   const form = document.getElementById('payForm');
   if (!form) {
-    console.error('❌ Formulario #payForm no encontrado');
+    console.error('❌ Formulario no encontrado');
     return;
   }
 
-  console.log('✅ Formulario encontrado, agregando listener');
-
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    console.log('🚀 Submit del formulario capturado');
+    console.log('📨 Procesando pedido...');
     
     const submitBtn = document.getElementById('submitBtn');
-    const originalText = submitBtn ? submitBtn.textContent : 'Continuar al pago';
-    
-    // Deshabilitar botón
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Procesando...';
-      console.log('⏳ Botón deshabilitado');
-    }
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando...';
     
     try {
-      // Obtener datos del formulario
       const formData = new FormData(form);
       const cart = listItems();
       
-      // Preparar datos para MercadoPago
-      const paymentData = {
-        items: cart.map(item => ({
-          title: `${item.name} ${item.volume_ml}ml`,
-          quantity: item.qty,
-          unit_price: item.price_ars
-        })),
-        payer: {
-          name: formData.get('name'),
-          email: formData.get('email'),
-          phone: formData.get('phone'),
-          dni: formData.get('dni'),
-          address: formData.get('address'),
-          apt: formData.get('apt') || '',
-          zip: formData.get('zip'),
-          city: formData.get('city'),
-          province: formData.get('province'),
-          notes: formData.get('notes') || ''
-        }
+      // Preparar datos del pedido
+      const cartHTML = cart.map(item => 
+        `<tr>
+          <td>${item.qty}</td>
+          <td>${item.name} ${item.volume_ml}ml</td>
+          <td>$${item.price_ars.toLocaleString('es-AR')}</td>
+          <td>$${(item.price_ars * item.qty).toLocaleString('es-AR')}</td>
+        </tr>`
+      ).join('');
+
+      const emailParams = {
+        to_email: 'harriesmalu@gmail.com',
+        from_name: formData.get('name'),
+        from_email: formData.get('email'),
+        phone: formData.get('phone'),
+        dni: formData.get('dni'),
+        address: formData.get('address'),
+        apt: formData.get('apt') || '-',
+        zip: formData.get('zip'),
+        city: formData.get('city'),
+        province: formData.get('province'),
+        notes: formData.get('notes') || '-',
+        cart_items: cartHTML,
+        total: formatter.format(totals().subtotal_ars),
+        order_number: `ANCESTRA-${Date.now()}`,
+        date: new Date().toLocaleString('es-AR')
       };
 
-      console.log('📤 Enviando datos a MercadoPago:', paymentData);
+      console.log('📧 Enviando email con EmailJS...');
 
-      // Llamar a nuestra API
-      const response = await fetch('/api/create-preference', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(paymentData)
-      });
-
-      console.log('📥 Respuesta recibida. Status:', response.status);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('❌ Error del servidor:', errorText);
-        throw new Error(`Error del servidor: ${response.status} - ${errorText}`);
+      // Verificar si EmailJS está configurado
+      if (typeof emailjs === 'undefined') {
+        throw new Error('EmailJS no está cargado. Verificá la configuración.');
       }
 
-      const data = await response.json();
-      
-      console.log('✅ Respuesta de MercadoPago:', data);
-
-      if (!data.init_point) {
-        console.error('❌ No se recibió init_point:', data);
-        throw new Error('No se recibió URL de pago de MercadoPago');
+      if (EMAILJS_SERVICE_ID === 'service_xxxxxxx') {
+        // EmailJS no configurado - usar WhatsApp como fallback
+        console.warn('⚠️ EmailJS no configurado, usando WhatsApp...');
+        throw new Error('EmailJS no configurado');
       }
 
-      console.log('🔗 URL de pago:', data.init_point);
-      console.log('🎉 Redirigiendo a MercadoPago...');
+      // Enviar email
+      const response = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        emailParams,
+        EMAILJS_PUBLIC_KEY
+      );
 
-      // Redirigir a MercadoPago
-      window.location.href = data.init_point;
+      if (response.status === 200) {
+        console.log('✅ Email enviado exitosamente');
+        showMessage('¡Pedido enviado! Te contactaremos pronto.', false);
+        
+        // Guardar orden para success page
+        localStorage.setItem('ancestra_last_order', JSON.stringify({
+          customer: {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            phone: formData.get('phone')
+          },
+          items: cart,
+          totals: totals(),
+          orderNumber: emailParams.order_number,
+          date: new Date().toISOString()
+        }));
+        
+        // Limpiar carrito
+        clearCart();
+        
+        // Redirigir
+        setTimeout(() => {
+          window.location.href = 'success.html';
+        }, 1000);
+      }
       
     } catch (error) {
-      console.error('💥 Error capturado:', error);
+      console.error('❌ Error:', error);
       
-      // Mostrar error detallado
-      const errorMsg = error.message || 'Error desconocido al procesar el pago';
-      showError(errorMsg);
+      // FALLBACK: WhatsApp
+      const cart = listItems();
+      const formData = new FormData(form);
       
-      alert(`Error al procesar el pago:\n\n${errorMsg}\n\nPor favor, verifica:\n1. Que tengas internet\n2. Que MercadoPago esté configurado en Vercel\n3. O contactanos por WhatsApp`);
+      const cartText = cart.map(item => 
+        `- ${item.qty}x ${item.name} ${item.volume_ml}ml ($${(item.price_ars * item.qty).toLocaleString('es-AR')})`
+      ).join('%0A');
       
-      // Rehabilitar botón
-      if (submitBtn) {
+      const message = encodeURIComponent(
+        `🛍️ NUEVO PEDIDO\n\n` +
+        `Productos:\n${cart.map(i => `- ${i.qty}x ${i.name} ${i.volume_ml}ml`).join('\n')}\n\n` +
+        `Total: $${totals().subtotal_ars.toLocaleString('es-AR')}\n\n` +
+        `Mis datos:\n` +
+        `👤 ${formData.get('name')}\n` +
+        `📧 ${formData.get('email')}\n` +
+        `📱 ${formData.get('phone')}\n` +
+        `🏠 ${formData.get('address')}, ${formData.get('city')}\n` +
+        `📮 CP: ${formData.get('zip')}`
+      );
+      
+      // IMPORTANTE: Reemplazar con tu número de WhatsApp
+      const whatsappNumber = '5491165678354';  // Formato: 549 + código de área + número
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+      
+      showMessage('Hubo un problema. Te redirigimos a WhatsApp...', true);
+      
+      setTimeout(() => {
+        window.open(whatsappUrl, '_blank');
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
-        console.log('🔄 Botón rehabilitado');
-      }
+      }, 2000);
     }
   });
-
-  console.log('✅ Listener agregado exitosamente');
 }
 
-// Inicializar cuando cargue la página
 if (document.readyState === 'loading') {
-  console.log('⏳ DOM cargando... esperando DOMContentLoaded');
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log('✅ DOM cargado completamente');
-    init();
-  });
+  document.addEventListener('DOMContentLoaded', init);
 } else {
-  console.log('✅ DOM ya cargado, ejecutando init()');
   init();
 }
-
-console.log('📄 Fin del archivo checkoutPage.js');
