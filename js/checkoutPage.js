@@ -8,9 +8,9 @@ console.log('✅ checkoutPage.js cargado - Versión EmailJS');
 // 2. Crear un servicio (Gmail)
 // 3. Crear un template
 // 4. Copiar estas 3 claves aquí:
-const EMAILJS_SERVICE_ID = service_mna6zji;
-const EMAILJS_TEMPLATE_ID = template_6ihlsb9;
-const EMAILJS_PUBLIC_KEY = RdNudoAPrZtX3Ri9P;
+const EMAILJS_SERVICE_ID = 'service_mna6zji';
+const EMAILJS_TEMPLATE_ID = 'template_6ihlsb9';
+const EMAILJS_PUBLIC_KEY = 'RdNudoAPrZtX3Ri9P';
 
 
 function showMessage(message, isError = false) {
@@ -27,6 +27,12 @@ function showMessage(message, isError = false) {
 
 function init() {
   console.log('🔧 Iniciando checkout...');
+  
+  // Inicializar EmailJS con la clave pública
+  if (typeof emailjs !== 'undefined') {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+    console.log('✅ EmailJS inicializado');
+  }
   
   setCartBadge(totals().items_count);
   
@@ -131,12 +137,11 @@ function init() {
         throw new Error('EmailJS no configurado');
       }
 
-      // Enviar email
+      // Enviar email usando el método send (con init ya llamado)
       const response = await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
-        emailParams,
-        EMAILJS_PUBLIC_KEY
+        emailParams
       );
 
       if (response.status === 200) {
