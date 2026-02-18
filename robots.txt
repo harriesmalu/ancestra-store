@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /js/
+Disallow: /css/
+
+Sitemap: https://ancestra-store.vercel.app/sitemap.xml
+
+# Optimización para Google
+User-agent: Googlebot
+Allow: /
+
+# Optimización para Bing
+User-agent: Bingbot
+Allow: /
