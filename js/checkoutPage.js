@@ -6,10 +6,11 @@ console.log('✅ checkoutPage.js cargado - Versión EmailJS');
 // CONFIGURACIÓN EMAILJS (Gratis, sin backend)
 // 1. Crear cuenta en: https://www.emailjs.com/
 // 2. Crear un servicio (Gmail)
-// 3. Crear un template
-// 4. Copiar estas 3 claves aquí:
+// 3. Crear templates (uno para vendedor, otro para cliente)
+// 4. Copiar estas claves aquí:
 const EMAILJS_SERVICE_ID = 'service_mna6zji';
-const EMAILJS_TEMPLATE_ID = 'template_6ihlsb9';
+const EMAILJS_TEMPLATE_ID = 'template_6ihlsb9';  // Template para vendedor
+const EMAILJS_TEMPLATE_ID_CLIENTE = 'template_cliente';  // Template para cliente
 const EMAILJS_PUBLIC_KEY = 'RdNudoAPrZtX3Ri9P';
 
 
@@ -106,8 +107,11 @@ function init() {
         </tr>`
       ).join('');
 
-      const emailParams = {
-        to_email: 'harriesmalu@gmail.com',
+      const orderNumber = `ANCESTRA-${Date.now()}`;
+      
+      // EMAIL 1: Al vendedor (ancestraparfum@gmail.com)
+      const emailParamsVendedor = {
+        to_email: 'ancestraparfum@gmail.com',
         from_name: formData.get('name'),
         from_email: formData.get('email'),
         phone: formData.get('phone'),
@@ -120,8 +124,22 @@ function init() {
         notes: formData.get('notes') || '-',
         cart_items: cartHTML,
         total: formatter.format(totals().subtotal_ars),
-        order_number: `ANCESTRA-${Date.now()}`,
+        order_number: orderNumber,
         date: new Date().toLocaleString('es-AR')
+      };
+
+      // EMAIL 2: Al cliente (confirmación)
+      const emailParamsCliente = {
+        to_email: formData.get('email'),
+        to_name: formData.get('name'),
+        order_number: orderNumber,
+        cart_items: cartHTML,
+        total: formatter.format(totals().subtotal_ars),
+        date: new Date().toLocaleString('es-AR'),
+        address: formData.get('address'),
+        city: formData.get('city'),
+        province: formData.get('province'),
+        zip: formData.get('zip')
       };
 
       console.log('📧 Enviando email con EmailJS...');
@@ -137,16 +155,47 @@ function init() {
         throw new Error('EmailJS no configurado');
       }
 
-      // Enviar email usando el método send (con init ya llamado)
-      const response = await emailjs.send(
+      // Enviar email al vendedor
+      const responseVendedor = await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
-        emailParams
+        emailParamsVendedor
       );
 
-      if (response.status === 200) {
-        console.log('✅ Email enviado exitosamente');
-        showMessage('¡Pedido enviado! Te contactaremos pronto.', false);
+      // Enviar email de confirmación al cliente
+      const responseCliente = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID_CLIENTE,
+        emailParamsCliente
+      );
+
+      if (responseVendedor.status === 200) {
+        console.log('✅ Email enviado al vendedor');
+      }
+      
+      if (responseCliente.status === 200) {
+        console.log('✅ Email de confirmación enviado al cliente');
+      }
+        // Preparar mensaje de WhatsApp
+        const cart = listItems();
+        const formData = new FormData(form);
+        
+        const message = encodeURIComponent(
+          `🛍️ NUEVO PEDIDO\n\n` +
+          `Productos:\n${cart.map(i => `- ${i.qty}x ${i.name} ${i.volume_ml}ml`).join('\n')}\n\n` +
+          `Total: $${totals().subtotal_ars.toLocaleString('es-AR')}\n\n` +
+          `Mis datos:\n` +
+          `👤 ${formData.get('name')}\n` +
+          `📧 ${formData.get('email')}\n` +
+          `📱 ${formData.get('phone')}\n` +
+          `🏠 ${formData.get('address')}, ${formData.get('city')}\n` +
+          `📮 CP: ${formData.get('zip')}`
+        );
+        
+        const whatsappNumber = '5491165678354';
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+        
+        showMessage('Para confirmar tu pedido y completar tu pago te redirigimos a WhatsApp', false);
         
         // Guardar orden para success page
         localStorage.setItem('ancestra_last_order', JSON.stringify({
@@ -157,17 +206,22 @@ function init() {
           },
           items: cart,
           totals: totals(),
-          orderNumber: emailParams.order_number,
+          orderNumber: orderNumber,
           date: new Date().toISOString()
         }));
         
         // Limpiar carrito
         clearCart();
         
-        // Redirigir
+        // Abrir WhatsApp
+        setTimeout(() => {
+          window.open(whatsappUrl, '_blank');
+        }, 1500);
+        
+        // Redirigir a success
         setTimeout(() => {
           window.location.href = 'success.html';
-        }, 1000);
+        }, 2000);
       }
       
     } catch (error) {
@@ -197,7 +251,7 @@ function init() {
       const whatsappNumber = '5491165678354';  // Formato: 549 + código de área + número
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
       
-      showMessage('Para confirmar tu pedido y completar tu pago te redirigimos a WhatsApp', true);
+      showMessage('Para confirmar tu pedido y completar tu pago te redirigimos a WhatsApp', false);
       
       setTimeout(() => {
         window.open(whatsappUrl, '_blank');
