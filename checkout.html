@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>ANCESTRA PARFUM · Checkout</title>
   <link rel="stylesheet" href="css/styles.css"/>
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </head>
 <body>
   <header class="topbar">
@@ -54,10 +56,9 @@
             <textarea name="notes" placeholder="Instrucciones especiales (opcional)" rows="2"></textarea>
           </label>
 
-          <button class="btn btnWide" type="submit" id="submitBtn">Continuar al pago</button>
+          <button class="btn btnWide" type="submit" id="submitBtn">Enviar pedido</button>
           
-          <!-- Mensaje de error -->
-          <div id="errorMessage" style="display:none; color:#ff4444; margin-top:12px; padding:12px; background:#2a1a1a; border-radius:4px; font-size:14px;"></div>
+          <div id="errorMessage" style="display:none; margin-top:12px; padding:12px; background:#2a1a1a; border-radius:4px; font-size:14px;"></div>
         </form>
       </div>
 
@@ -67,7 +68,7 @@
         <div class="sumLine total"><span>Total</span><span id="totalMini">$0</span></div>
         <div class="muted small" style="margin-top:10px">
           Envíos a CABA y GBA<br>
-          Pago seguro con MercadoPago
+          Te contactaremos para coordinar el pago
         </div>
       </aside>
     </section>
