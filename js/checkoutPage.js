@@ -3,16 +3,11 @@ import { listItems, totals, clearCart } from './cartBrowser.js';
 
 console.log('✅ checkoutPage.js cargado - Versión EmailJS');
 
-// CONFIGURACIÓN EMAILJS (Gratis, sin backend)
-// 1. Crear cuenta en: https://www.emailjs.com/
-// 2. Crear un servicio (Gmail)
-// 3. Crear templates (uno para vendedor, otro para cliente)
-// 4. Copiar estas claves aquí:
+// CONFIGURACIÓN EMAILJS
 const EMAILJS_SERVICE_ID = 'service_mna6zji';
-const EMAILJS_TEMPLATE_ID = 'template_6ihlsb9';  // Template para vendedor
-const EMAILJS_TEMPLATE_ID_CLIENTE = 'template_cliente';  // Template para cliente
+const EMAILJS_TEMPLATE_ID = 'template_6ihlsb9';
+const EMAILJS_TEMPLATE_ID_CLIENTE = 'template_cliente';
 const EMAILJS_PUBLIC_KEY = 'RdNudoAPrZtX3Ri9P';
-
 
 function showMessage(message, isError = false) {
   const errorDiv = document.getElementById('errorMessage');
@@ -29,7 +24,7 @@ function showMessage(message, isError = false) {
 function init() {
   console.log('🔧 Iniciando checkout...');
   
-  // Inicializar EmailJS con la clave pública
+  // Inicializar EmailJS
   if (typeof emailjs !== 'undefined') {
     emailjs.init(EMAILJS_PUBLIC_KEY);
     console.log('✅ EmailJS inicializado');
@@ -95,10 +90,10 @@ function init() {
     
     try {
       const formData = new FormData(form);
-      const cart = listItems();
+      const cartItems = listItems();
       
       // Preparar datos del pedido
-      const cartHTML = cart.map(item => 
+      const cartHTML = cartItems.map(item => 
         `<tr>
           <td>${item.qty}</td>
           <td>${item.name} ${item.volume_ml}ml</td>
@@ -109,7 +104,7 @@ function init() {
 
       const orderNumber = `ANCESTRA-${Date.now()}`;
       
-      // EMAIL 1: Al vendedor (ancestraparfum@gmail.com)
+      // EMAIL 1: Al vendedor
       const emailParamsVendedor = {
         to_email: 'ancestraparfum@gmail.com',
         from_name: formData.get('name'),
@@ -128,7 +123,7 @@ function init() {
         date: new Date().toLocaleString('es-AR')
       };
 
-      // EMAIL 2: Al cliente (confirmación)
+      // EMAIL 2: Al cliente
       const emailParamsCliente = {
         to_email: formData.get('email'),
         to_name: formData.get('name'),
@@ -142,27 +137,20 @@ function init() {
         zip: formData.get('zip')
       };
 
-      console.log('📧 Enviando email con EmailJS...');
+      console.log('📧 Enviando emails...');
 
-      // Verificar si EmailJS está configurado
+      // Verificar EmailJS
       if (typeof emailjs === 'undefined') {
-        throw new Error('EmailJS no está cargado. Verificá la configuración.');
+        throw new Error('EmailJS no está cargado');
       }
 
-      if (EMAILJS_SERVICE_ID === 'service_xxxxxxx') {
-        // EmailJS no configurado - usar WhatsApp como fallback
-        console.warn('⚠️ EmailJS no configurado, usando WhatsApp...');
-        throw new Error('EmailJS no configurado');
-      }
-
-      // Enviar email al vendedor
+      // Enviar emails
       const responseVendedor = await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID,
         emailParamsVendedor
       );
 
-      // Enviar email de confirmación al cliente
       const responseCliente = await emailjs.send(
         EMAILJS_SERVICE_ID,
         EMAILJS_TEMPLATE_ID_CLIENTE,
@@ -170,74 +158,17 @@ function init() {
       );
 
       if (responseVendedor.status === 200) {
-        console.log('✅ Email enviado al vendedor');
+        console.log('✅ Email vendedor enviado');
       }
       
       if (responseCliente.status === 200) {
-        console.log('✅ Email de confirmación enviado al cliente');
-      }
-        // Preparar mensaje de WhatsApp
-        const cart = listItems();
-        const formData = new FormData(form);
-        
-        const message = encodeURIComponent(
-          `🛍️ NUEVO PEDIDO\n\n` +
-          `Productos:\n${cart.map(i => `- ${i.qty}x ${i.name} ${i.volume_ml}ml`).join('\n')}\n\n` +
-          `Total: $${totals().subtotal_ars.toLocaleString('es-AR')}\n\n` +
-          `Mis datos:\n` +
-          `👤 ${formData.get('name')}\n` +
-          `📧 ${formData.get('email')}\n` +
-          `📱 ${formData.get('phone')}\n` +
-          `🏠 ${formData.get('address')}, ${formData.get('city')}\n` +
-          `📮 CP: ${formData.get('zip')}`
-        );
-        
-        const whatsappNumber = '5491165678354';
-        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
-        
-        showMessage('Para confirmar tu pedido y completar tu pago te redirigimos a WhatsApp', false);
-        
-        // Guardar orden para success page
-        localStorage.setItem('ancestra_last_order', JSON.stringify({
-          customer: {
-            name: formData.get('name'),
-            email: formData.get('email'),
-            phone: formData.get('phone')
-          },
-          items: cart,
-          totals: totals(),
-          orderNumber: orderNumber,
-          date: new Date().toISOString()
-        }));
-        
-        // Limpiar carrito
-        clearCart();
-        
-        // Abrir WhatsApp
-        setTimeout(() => {
-          window.open(whatsappUrl, '_blank');
-        }, 1500);
-        
-        // Redirigir a success
-        setTimeout(() => {
-          window.location.href = 'success.html';
-        }, 2000);
+        console.log('✅ Email cliente enviado');
       }
       
-    } catch (error) {
-      console.error('❌ Error:', error);
-      
-      // FALLBACK: WhatsApp
-      const cart = listItems();
-      const formData = new FormData(form);
-      
-      const cartText = cart.map(item => 
-        `- ${item.qty}x ${item.name} ${item.volume_ml}ml ($${(item.price_ars * item.qty).toLocaleString('es-AR')})`
-      ).join('%0A');
-      
+      // Preparar WhatsApp
       const message = encodeURIComponent(
         `🛍️ NUEVO PEDIDO\n\n` +
-        `Productos:\n${cart.map(i => `- ${i.qty}x ${i.name} ${i.volume_ml}ml`).join('\n')}\n\n` +
+        `Productos:\n${cartItems.map(i => `- ${i.qty}x ${i.name} ${i.volume_ml}ml`).join('\n')}\n\n` +
         `Total: $${totals().subtotal_ars.toLocaleString('es-AR')}\n\n` +
         `Mis datos:\n` +
         `👤 ${formData.get('name')}\n` +
@@ -247,14 +178,62 @@ function init() {
         `📮 CP: ${formData.get('zip')}`
       );
       
-      // IMPORTANTE: Reemplazar con tu número de WhatsApp
-      const whatsappNumber = '5491165678354';  // Formato: 549 + código de área + número
+      const whatsappNumber = '5491165678354';
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
       
       showMessage('Para confirmar tu pedido y completar tu pago te redirigimos a WhatsApp', false);
       
+      // Guardar orden
+      localStorage.setItem('ancestra_last_order', JSON.stringify({
+        customer: {
+          name: formData.get('name'),
+          email: formData.get('email'),
+          phone: formData.get('phone')
+        },
+        items: cartItems,
+        totals: totals(),
+        orderNumber: orderNumber,
+        date: new Date().toISOString()
+      }));
+      
+      // Limpiar carrito
+      clearCart();
+      
+      // Abrir WhatsApp
       setTimeout(() => {
         window.open(whatsappUrl, '_blank');
+      }, 1500);
+      
+      // Redirigir
+      setTimeout(() => {
+        window.location.href = 'success.html';
+      }, 2000);
+      
+    } catch (error) {
+      console.error('❌ Error:', error);
+      
+      // FALLBACK: WhatsApp
+      const formDataFallback = new FormData(form);
+      const cartFallback = listItems();
+      
+      const messageFallback = encodeURIComponent(
+        `🛍️ NUEVO PEDIDO\n\n` +
+        `Productos:\n${cartFallback.map(i => `- ${i.qty}x ${i.name} ${i.volume_ml}ml`).join('\n')}\n\n` +
+        `Total: $${totals().subtotal_ars.toLocaleString('es-AR')}\n\n` +
+        `Mis datos:\n` +
+        `👤 ${formDataFallback.get('name')}\n` +
+        `📧 ${formDataFallback.get('email')}\n` +
+        `📱 ${formDataFallback.get('phone')}\n` +
+        `🏠 ${formDataFallback.get('address')}, ${formDataFallback.get('city')}\n` +
+        `📮 CP: ${formDataFallback.get('zip')}`
+      );
+      
+      const whatsappUrlFallback = `https://wa.me/5491165678354?text=${messageFallback}`;
+      
+      showMessage('Para confirmar tu pedido y completar tu pago te redirigimos a WhatsApp', false);
+      
+      setTimeout(() => {
+        window.open(whatsappUrlFallback, '_blank');
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
       }, 2000);
