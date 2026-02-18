@@ -6,7 +6,7 @@ console.log('✅ checkoutPage.js cargado - Versión EmailJS');
 // CONFIGURACIÓN EMAILJS
 const EMAILJS_SERVICE_ID = 'service_mna6zji';
 const EMAILJS_TEMPLATE_ID = 'template_6ihlsb9';
-const EMAILJS_TEMPLATE_ID_CLIENTE = 'template_cliente';
+const EMAILJS_TEMPLATE_ID_CLIENTE = 'template_7vmc1nv';
 const EMAILJS_PUBLIC_KEY = 'RdNudoAPrZtX3Ri9P';
 
 function showMessage(message, isError = false) {

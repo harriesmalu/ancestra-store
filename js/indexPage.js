@@ -27,6 +27,10 @@ function sortProducts(list, sort){
 }
 
 function productCard(p){
+  const isTravel = p.category === 'Travel Size';
+  const buttonText = isTravel ? 'Ver opciones' : 'Agregar al carrito';
+  const buttonClass = isTravel ? 'btn btnOutline' : 'btn';
+  
   return `
     <article class="card">
       <a class="cardLink" href="product.html?id=${encodeURIComponent(p.id)}">
@@ -48,7 +52,10 @@ function productCard(p){
         </div>
       </a>
       <div class="cardActions">
-        <button class="btn" data-add="${p.id}">Agregar al carrito</button>
+        ${isTravel 
+          ? `<a href="product.html?id=${encodeURIComponent(p.id)}" class="${buttonClass}">${buttonText}</a>`
+          : `<button class="btn" data-add="${p.id}">${buttonText}</button>`
+        }
       </div>
     </article>
   `;

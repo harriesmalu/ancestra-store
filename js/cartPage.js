@@ -88,10 +88,6 @@ async function init(){
 
         <button id="checkoutBtn" class="btn btnWide">Iniciar compra</button>
         <button id="clearBtn" class="linkBtn">Vaciar carrito</button>
-
-        <div class="small muted" style="margin-top:10px">
-          Checkout demo: el pago es simulado. Más adelante se integra Mercado Pago o Stripe.
-        </div>
       </div>
     `;
 
