@@ -1,9 +1,7 @@
 // api/send-order.js
-// Reemplaza EmailJS — recibe el pedido desde el frontend
-// y lo reenvía al webhook de N8N para procesar emails y notificaciones
+// Recibe el pedido desde el frontend y envía emails + notifica a N8N
 
 export default async function handler(req, res) {
-  // CORS para Vercel
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -13,170 +11,163 @@ export default async function handler(req, res) {
 
   try {
     const orderData = req.body;
+    console.log('📦 Pedido recibido:', orderData?.orderNumber, '| Email:', orderData?.email);
 
-    // Validación básica
-    if (!orderData.email || !orderData.name || !orderData.items) {
+    if (!orderData?.email || !orderData?.name || !orderData?.items) {
+      console.error('❌ Faltan datos');
       return res.status(400).json({ error: 'Faltan datos del pedido' });
     }
 
-    // ─── ENVIAR A N8N ───────────────────────────────────────────────
+    // N8N (opcional)
     const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL;
-
     if (N8N_WEBHOOK_URL) {
       try {
-        await fetch(N8N_WEBHOOK_URL, {
+        const n8nRes = await fetch(N8N_WEBHOOK_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            // Datos del cliente
-            nombre: orderData.name,
-            email: orderData.email,
-            telefono: orderData.phone,
-            dni: orderData.dni,
-
-            // Dirección
-            direccion: orderData.address,
-            piso: orderData.apt || '-',
-            ciudad: orderData.city,
-            provincia: orderData.province,
-            codigoPostal: orderData.zip,
-            zona: orderData.zona || detectarZona(orderData.zip),
-            notas: orderData.notes || '-',
-
-            // Pedido
-            numeroPedido: orderData.orderNumber,
-            productos: orderData.items,
-            total: orderData.total,
+            nombre: orderData.name, email: orderData.email,
+            telefono: orderData.phone, dni: orderData.dni,
+            direccion: orderData.address, piso: orderData.apt || '-',
+            ciudad: orderData.city, provincia: orderData.province,
+            codigoPostal: orderData.zip, zona: detectarZona(orderData.zip),
+            notas: orderData.notes || '-', numeroPedido: orderData.orderNumber,
+            productos: orderData.items, total: orderData.total,
             fecha: new Date().toLocaleString('es-AR'),
-
-            // Meta
-            source: 'ancestra-store',
-            timestamp: Date.now()
           })
         });
-        console.log('✅ N8N webhook enviado');
-      } catch (n8nError) {
-        // N8N falla silenciosamente — no bloqueamos el pedido
-        console.error('⚠️ N8N error (no crítico):', n8nError.message);
+        console.log('✅ N8N webhook:', n8nRes.status);
+      } catch (n8nErr) {
+        console.error('⚠️ N8N error:', n8nErr.message);
       }
-    } else {
-      console.warn('⚠️ N8N_WEBHOOK_URL no configurada en variables de entorno');
     }
 
-    // ─── ENVIAR EMAIL VÍA RESEND (ya lo tenés configurado) ──────────
+    // Resend
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
+    if (!RESEND_API_KEY) {
+      console.error('❌ Sin RESEND_API_KEY');
+      return res.status(200).json({ ok: true, warning: 'Sin RESEND_API_KEY' });
+    }
 
-    if (RESEND_API_KEY) {
-      const { Resend } = await import('resend');
-      const resend = new Resend(RESEND_API_KEY);
+    const { Resend } = await import('resend');
+    const resend = new Resend(RESEND_API_KEY);
+    const zonaInfo = detectarZona(orderData.zip);
+    const tiempoEstimado = zonaInfo === 'CABA' ? '24-48hs' : '48-72hs';
+    const cartHTML = buildCartHTML(orderData.items);
 
-      const cartHTML = orderData.items.map(item =>
-        `<tr>
-          <td style="padding:6px 12px">${item.qty}</td>
-          <td style="padding:6px 12px">${item.name} ${item.volume_ml}ml</td>
-          <td style="padding:6px 12px">$${(item.price_ars * item.qty).toLocaleString('es-AR')}</td>
-        </tr>`
-      ).join('');
-
-      const zonaInfo = detectarZona(orderData.zip);
-      const tiempoEstimado = zonaInfo === 'CABA' ? '24-48hs' : '48-72hs';
-
-      // Email al vendedor
-      await resend.emails.send({
-        from: 'ANCESTRA Store <onboarding@resend.dev>',
-        to: 'ancestraparfum@gmail.com',
+    // Email al vendedor
+    try {
+      const r1 = await resend.emails.send({
+        from: 'onboarding@resend.dev',
+        to: ['ancestraparfum@gmail.com'],
         subject: `🛍️ Nuevo pedido ${orderData.orderNumber} — ${orderData.name}`,
         html: emailVendedor({ ...orderData, cartHTML })
       });
+      console.log('✅ Email vendedor:', JSON.stringify(r1));
+    } catch (e1) {
+      console.error('❌ Error email vendedor:', e1?.message, JSON.stringify(e1));
+    }
 
-      // Email al cliente
-      await resend.emails.send({
-        from: 'ANCESTRA PARFUM <onboarding@resend.dev>',
-        to: orderData.email,
-        subject: `✅ Pedido recibido — ANCESTRA PARFUM`,
-        html: emailCliente({ ...orderData, cartHTML, tiempoEstimado })
+    // Email al cliente (via vendedor por limitación plan gratuito Resend)
+    try {
+      const r2 = await resend.emails.send({
+        from: 'onboarding@resend.dev',
+        to: ['ancestraparfum@gmail.com'],
+        reply_to: orderData.email,
+        subject: `📨 REENVIAR A CLIENTE: ${orderData.name} <${orderData.email}>`,
+        html: `
+          <div style="font-family:Arial;padding:16px;background:#fffbe6;border:2px solid #f0a500;border-radius:8px;margin-bottom:24px">
+            <strong>⚠️ Reenviá este email a ${orderData.email} para confirmarle el pedido al cliente.</strong><br>
+            <small>Limitación del plan gratuito de Resend. Verificá un dominio en resend.com/domains para envío automático.</small>
+          </div>
+          ${emailCliente({ ...orderData, cartHTML, tiempoEstimado })}
+        `
       });
-
-      console.log('✅ Emails Resend enviados');
+      console.log('✅ Email cliente (via vendedor):', JSON.stringify(r2));
+    } catch (e2) {
+      console.error('❌ Error email cliente:', e2?.message, JSON.stringify(e2));
     }
 
     return res.status(200).json({ ok: true, orderNumber: orderData.orderNumber });
 
   } catch (error) {
-    console.error('❌ Error en send-order:', error);
-    return res.status(500).json({ error: 'Error procesando el pedido' });
+    console.error('❌ Error general:', error?.message);
+    return res.status(500).json({ error: 'Error procesando el pedido', detail: error?.message });
   }
 }
-
-// ─── HELPERS ────────────────────────────────────────────────────────────────
 
 function detectarZona(zip) {
   if (!zip) return 'GBA';
   const cp = parseInt(zip);
-  // CABA: 1000-1499
   return (cp >= 1000 && cp <= 1499) ? 'CABA' : 'GBA';
 }
 
+function buildCartHTML(items) {
+  if (!items?.length) return '<tr><td colspan="3">Sin productos</td></tr>';
+  return items.map(item => `
+    <tr>
+      <td style="padding:6px 12px;border-bottom:1px solid #333">${item.qty}</td>
+      <td style="padding:6px 12px;border-bottom:1px solid #333">${item.name} ${item.volume_ml || ''}ml</td>
+      <td style="padding:6px 12px;border-bottom:1px solid #333;text-align:right">$${((item.price_ars||0)*(item.qty||1)).toLocaleString('es-AR')}</td>
+    </tr>`).join('');
+}
+
 function emailVendedor(data) {
-  return `
-    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#f0e6d3;padding:24px;border-radius:8px">
-      <h2 style="color:#c9a96e;margin-top:0">🛍️ Nuevo pedido — ${data.orderNumber}</h2>
-      <table style="width:100%;border-collapse:collapse;margin-bottom:20px">
-        <tr><td style="padding:6px 0;color:#999">Cliente</td><td style="padding:6px 0"><strong>${data.name}</strong></td></tr>
-        <tr><td style="padding:6px 0;color:#999">Email</td><td style="padding:6px 0">${data.email}</td></tr>
-        <tr><td style="padding:6px 0;color:#999">Teléfono</td><td style="padding:6px 0">${data.phone}</td></tr>
-        <tr><td style="padding:6px 0;color:#999">DNI</td><td style="padding:6px 0">${data.dni}</td></tr>
-        <tr><td style="padding:6px 0;color:#999">Dirección</td><td style="padding:6px 0">${data.address}${data.apt !== '-' ? `, ${data.apt}` : ''}</td></tr>
-        <tr><td style="padding:6px 0;color:#999">Ciudad</td><td style="padding:6px 0">${data.city}, ${data.province} (CP ${data.zip})</td></tr>
-        ${data.notes !== '-' ? `<tr><td style="padding:6px 0;color:#999">Notas</td><td style="padding:6px 0">${data.notes}</td></tr>` : ''}
-      </table>
-      <table style="width:100%;border-collapse:collapse;background:#1a1a1a;border-radius:6px">
-        <thead><tr style="border-bottom:1px solid #333">
-          <th style="padding:8px 12px;text-align:left;color:#c9a96e">Cant</th>
-          <th style="padding:8px 12px;text-align:left;color:#c9a96e">Producto</th>
-          <th style="padding:8px 12px;text-align:right;color:#c9a96e">Subtotal</th>
-        </tr></thead>
-        <tbody>${data.cartHTML}</tbody>
-        <tfoot><tr style="border-top:1px solid #333">
-          <td colspan="2" style="padding:10px 12px;font-weight:bold;color:#c9a96e">TOTAL</td>
-          <td style="padding:10px 12px;text-align:right;font-weight:bold;color:#c9a96e">${data.total}</td>
-        </tr></tfoot>
-      </table>
-      <p style="margin-top:20px;color:#666;font-size:12px">
-        Fecha: ${new Date().toLocaleString('es-AR')} · ANCESTRA PARFUM
-      </p>
-    </div>`;
+  return `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#f0e6d3;padding:24px;border-radius:8px">
+    <h2 style="color:#c9a96e;margin-top:0">🛍️ Nuevo pedido — ${data.orderNumber}</h2>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:20px">
+      <tr><td style="padding:6px 0;color:#999;width:120px">Cliente</td><td><strong>${data.name}</strong></td></tr>
+      <tr><td style="padding:6px 0;color:#999">Email</td><td>${data.email}</td></tr>
+      <tr><td style="padding:6px 0;color:#999">Teléfono</td><td>${data.phone}</td></tr>
+      <tr><td style="padding:6px 0;color:#999">DNI</td><td>${data.dni}</td></tr>
+      <tr><td style="padding:6px 0;color:#999">Dirección</td><td>${data.address}${data.apt && data.apt!=='-'?', '+data.apt:''}</td></tr>
+      <tr><td style="padding:6px 0;color:#999">Ciudad</td><td>${data.city}, ${data.province} (CP ${data.zip})</td></tr>
+      ${data.notes&&data.notes!=='-'?`<tr><td style="padding:6px 0;color:#999">Notas</td><td>${data.notes}</td></tr>`:''}
+    </table>
+    <table style="width:100%;border-collapse:collapse;background:#1a1a1a;border-radius:6px">
+      <thead><tr style="border-bottom:1px solid #444">
+        <th style="padding:8px 12px;text-align:left;color:#c9a96e">Cant</th>
+        <th style="padding:8px 12px;text-align:left;color:#c9a96e">Producto</th>
+        <th style="padding:8px 12px;text-align:right;color:#c9a96e">Subtotal</th>
+      </tr></thead>
+      <tbody>${data.cartHTML}</tbody>
+      <tfoot><tr style="border-top:1px solid #444">
+        <td colspan="2" style="padding:10px 12px;font-weight:bold;color:#c9a96e">TOTAL</td>
+        <td style="padding:10px 12px;text-align:right;font-weight:bold;color:#c9a96e">${data.total}</td>
+      </tr></tfoot>
+    </table>
+    <p style="margin-top:20px;color:#555;font-size:12px">Pedido: ${new Date().toLocaleString('es-AR')}</p>
+  </div>`;
 }
 
 function emailCliente(data) {
-  return `
-    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#f0e6d3;padding:24px;border-radius:8px">
-      <h2 style="color:#c9a96e;margin-top:0">✨ ¡Gracias por tu pedido!</h2>
-      <p>Hola <strong>${data.name}</strong>, recibimos tu pedido correctamente.</p>
-      <p style="background:#1a1a1a;padding:12px;border-radius:6px;border-left:3px solid #c9a96e">
-        📱 En breve te contactamos por WhatsApp para coordinar el pago y la entrega.<br>
-        ⏱️ Tiempo estimado: <strong>${data.tiempoEstimado}</strong>
-      </p>
-      <table style="width:100%;border-collapse:collapse;background:#1a1a1a;border-radius:6px;margin:20px 0">
-        <thead><tr style="border-bottom:1px solid #333">
-          <th style="padding:8px 12px;text-align:left;color:#c9a96e">Cant</th>
-          <th style="padding:8px 12px;text-align:left;color:#c9a96e">Producto</th>
-          <th style="padding:8px 12px;text-align:right;color:#c9a96e">Subtotal</th>
-        </tr></thead>
-        <tbody>${data.cartHTML}</tbody>
-        <tfoot><tr style="border-top:1px solid #333">
-          <td colspan="2" style="padding:10px 12px;font-weight:bold;color:#c9a96e">TOTAL</td>
-          <td style="padding:10px 12px;text-align:right;font-weight:bold;color:#c9a96e">${data.total}</td>
-        </tr></tfoot>
-      </table>
-      <table style="width:100%;border-collapse:collapse">
-        <tr><td style="padding:4px 0;color:#999">Pedido N°</td><td>${data.orderNumber}</td></tr>
-        <tr><td style="padding:4px 0;color:#999">Envío a</td><td>${data.address}, ${data.city}</td></tr>
-      </table>
-      <hr style="border:none;border-top:1px solid #222;margin:24px 0">
-      <p style="color:#666;font-size:12px;text-align:center">
-        ANCESTRA PARFUM · <a href="mailto:ancestraparfum@gmail.com" style="color:#c9a96e">ancestraparfum@gmail.com</a> · 
-        <a href="https://instagram.com/ancestra.parfum" style="color:#c9a96e">@ancestra.parfum</a>
-      </p>
-    </div>`;
+  return `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#0a0a0a;color:#f0e6d3;padding:24px;border-radius:8px">
+    <h2 style="color:#c9a96e;margin-top:0">✨ ¡Gracias por tu pedido!</h2>
+    <p>Hola <strong>${data.name}</strong>, recibimos tu pedido correctamente.</p>
+    <div style="background:#1a1500;padding:14px;border-radius:6px;border-left:3px solid #c9a96e;margin:16px 0">
+      📱 En breve te contactamos por WhatsApp para coordinar el pago y la entrega.<br>
+      ⏱️ Tiempo estimado: <strong>${data.tiempoEstimado}</strong>
+    </div>
+    <table style="width:100%;border-collapse:collapse;background:#1a1a1a;border-radius:6px;margin:20px 0">
+      <thead><tr style="border-bottom:1px solid #444">
+        <th style="padding:8px 12px;text-align:left;color:#c9a96e">Cant</th>
+        <th style="padding:8px 12px;text-align:left;color:#c9a96e">Producto</th>
+        <th style="padding:8px 12px;text-align:right;color:#c9a96e">Subtotal</th>
+      </tr></thead>
+      <tbody>${data.cartHTML}</tbody>
+      <tfoot><tr style="border-top:1px solid #444">
+        <td colspan="2" style="padding:10px 12px;font-weight:bold;color:#c9a96e">TOTAL</td>
+        <td style="padding:10px 12px;text-align:right;font-weight:bold;color:#c9a96e">${data.total}</td>
+      </tr></tfoot>
+    </table>
+    <table style="width:100%;border-collapse:collapse;font-size:14px">
+      <tr><td style="padding:4px 0;color:#999;width:100px">Pedido N°</td><td>${data.orderNumber}</td></tr>
+      <tr><td style="padding:4px 0;color:#999">Envío a</td><td>${data.address}, ${data.city}</td></tr>
+    </table>
+    <hr style="border:none;border-top:1px solid #222;margin:24px 0">
+    <p style="color:#555;font-size:12px;text-align:center">
+      ANCESTRA PARFUM · <a href="mailto:ancestraparfum@gmail.com" style="color:#c9a96e">ancestraparfum@gmail.com</a> · 
+      <a href="https://instagram.com/ancestra.parfum" style="color:#c9a96e">@ancestra.parfum</a>
+    </p>
+  </div>`;
 }
