@@ -1,13 +1,10 @@
 import { qs, setCartBadge } from './ui.js';
 import { listItems, totals, clearCart } from './cartBrowser.js';
 
-console.log('✅ checkoutPage.js cargado - Versión N8N + Resend');
+console.log('✅ checkoutPage.js cargado - Versión N8N Final');
 
-// ─── CONFIGURACIÓN ──────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = '5491165678354';
 const API_SEND_ORDER  = '/api/send-order';
-
-// ─── HELPERS ────────────────────────────────────────────────────────────────
 
 function showMessage(message, isError = false) {
   const el = document.getElementById('errorMessage');
@@ -20,7 +17,7 @@ function showMessage(message, isError = false) {
   el.style.borderRadius = '6px';
   el.style.padding = '12px';
   el.style.marginTop = '12px';
-  if (!isError) return; // errores quedan hasta que el usuario actúe
+  if (!isError) return;
   setTimeout(() => { el.style.display = 'none'; }, 6000);
 }
 
@@ -53,12 +50,9 @@ function buildWhatsAppURL(formData, cartItems) {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
 }
 
-// ─── INIT ────────────────────────────────────────────────────────────────────
-
 function init() {
   setCartBadge(totals().items_count);
 
-  // Carrito vacío
   if (totals().items_count === 0) {
     const root = document.getElementById('checkoutRoot');
     if (root) {
@@ -75,7 +69,6 @@ function init() {
     return;
   }
 
-  // Resumen
   const cart = listItems();
   const totalMiniEl = document.getElementById('totalMini');
   if (totalMiniEl) totalMiniEl.textContent = formatter.format(totals().subtotal_ars);
@@ -89,7 +82,6 @@ function init() {
       </div>`).join('');
   }
 
-  // Submit
   const form = document.getElementById('payForm');
   if (!form) return;
 
@@ -103,12 +95,8 @@ function init() {
     const formData = new FormData(form);
     const cartItems = listItems();
     const orderNumber = `ANC-${Date.now()}`;
-
-    // Construir WhatsApp URL ANTES de cualquier await
-    // Safari bloquea window.open() si se llama después de async/await
     const whatsappUrl = buildWhatsAppURL(formData, cartItems);
 
-    // Payload para la API
     const orderPayload = {
       orderNumber,
       name:     formData.get('name'),
@@ -126,41 +114,38 @@ function init() {
       subtotal_ars: totals().subtotal_ars
     };
 
-    // ── PASO 1: Guardar y limpiar carrito ANTES del async ──
+    // ── PASO 1: Guardar orden y limpiar carrito ──
     localStorage.setItem('ancestra_last_order', JSON.stringify({
       ...orderPayload,
       date: new Date().toISOString()
     }));
     clearCart();
 
-    // ── PASO 2: Abrir WhatsApp INMEDIATAMENTE (mismo tick del evento click)
-    // Usamos location.href para que Safari no lo bloquee como popup
-    // Lo guardamos en una variable de pestaña abierta sincrónicamente
-    const waWindow = window.open(whatsappUrl, '_blank');
+    // ── PASO 2: Enviar a API con keepalive para que sobreviva la navegación ──
+    try {
+      fetch(API_SEND_ORDER, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderPayload),
+        keepalive: true  // sobrevive al redirect/navegación
+      }).catch(err => console.error('⚠️ API error:', err));
+    } catch(err) {
+      console.error('⚠️ Fetch error:', err);
+    }
 
-    // Si Safari bloqueó el popup igual, fallback a location
+    // ── PASO 3: Abrir WhatsApp ──
+    const waWindow = window.open(whatsappUrl, '_blank');
     if (!waWindow) {
-      // Guardar destino y abrir WA en esta misma pestaña temporalmente
-      sessionStorage.setItem('ancestra_redirect', 'success.html');
-      window.location.href = whatsappUrl;
-      return;
+      // Popup bloqueado - abrir en misma pestaña después del redirect
+      setTimeout(() => { window.open(whatsappUrl, '_blank'); }, 100);
     }
 
     showMessage('✅ ¡Pedido recibido! Redirigiendo...', false);
 
-    // ── PASO 3: Enviar datos a la API en segundo plano (no bloqueante) ──
-    fetch(API_SEND_ORDER, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(orderPayload)
-    })
-    .then(r => r.ok ? console.log('✅ Emails enviados') : console.warn('⚠️ API respondió', r.status))
-    .catch(err => console.error('⚠️ API error (no crítico):', err));
-
-    // ── PASO 4: Redirigir a success.html ──
+    // ── PASO 4: Redirigir a success.html después de 2s para dar tiempo al fetch ──
     setTimeout(() => {
       window.location.href = 'success.html';
-    }, 1200);
+    }, 2000);
   });
 }
 
