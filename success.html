@@ -34,15 +34,17 @@
     </div>
   </main>
 
+FOOTER_PLACEHOLDER
   <footer class="footer">
-    <div class="container footerInner">
-      <div>© <span id="year"></span> ANCESTRA PARFUM</div>
-      <div class="muted small">Pedido confirmado · Envío a todo el país</div>
+    <div class="footerInner">
+      <div>&copy; <span class="footerYear"></span> ANCESTRA PARFUM</div>
+      <div class="footerCenter">Fragancias premium &middot; CABA &amp; GBA</div>
+      <div class="footerLinks">
+        <a href="mailto:ancestraparfum@gmail.com">ancestraparfum@gmail.com</a>
+        <a href="https://instagram.com/ancestra.parfum" target="_blank">@ancestra.parfum</a>
+      </div>
     </div>
   </footer>
-
-  <script type="module">
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+  <script>document.querySelectorAll(".footerYear").forEach(function(e){e.textContent=new Date().getFullYear();});</script>
 </body>
 </html>
