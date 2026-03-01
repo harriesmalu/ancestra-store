@@ -1,5 +1,5 @@
 // api/send-order.js
-// Recibe el pedido y lo envía a N8N para procesamiento de emails via Gmail SMTP
+// Recibe el pedido (directo o confirmado por MP) y lo envía a N8N para emails
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -11,7 +11,7 @@ export default async function handler(req, res) {
 
   try {
     const orderData = req.body;
-    console.log('📦 Pedido recibido:', orderData?.orderNumber, '| Email:', orderData?.email);
+    console.log('📦 Pedido recibido:', orderData?.orderNumber, '| Email:', orderData?.email, '| Método:', orderData?.paymentMethod);
 
     if (!orderData?.email || !orderData?.name || !orderData?.items) {
       console.error('❌ Faltan datos obligatorios');
@@ -25,33 +25,52 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true, warning: 'Sin N8N_WEBHOOK_URL' });
     }
 
+    const formatter = new Intl.NumberFormat('es-AR', {
+      style: 'currency', currency: 'ARS', maximumFractionDigits: 0
+    });
+
+    // Método de pago legible
+    const metodoPagoMap = {
+      mp:           'MercadoPago (tarjeta/débito)',
+      transferencia: 'Transferencia bancaria',
+      whatsapp:     'Coordinar por WhatsApp',
+    };
+    const metodoPago = metodoPagoMap[orderData.paymentMethod] || orderData.paymentMethod || 'No especificado';
+
+    const subtotal = orderData.subtotal_ars || 0;
+    const shipping = orderData.shipping_cost || 0;
+    const total    = subtotal + shipping;
+
     const payload = {
-      nombre:       orderData.name,
-      email:        orderData.email,
-      telefono:     orderData.phone,
-      dni:          orderData.dni,
-      direccion:    orderData.address,
-      piso:         orderData.apt || '-',
-      ciudad:       orderData.city,
-      provincia:    orderData.province,
-      codigoPostal: orderData.zip,
-      zona:         detectarZona(orderData.zip),
-      notas:        orderData.notes || '-',
-      numeroPedido: orderData.orderNumber,
-      productos:    orderData.items,
+      nombre:         orderData.name,
+      email:          orderData.email,
+      telefono:       orderData.phone,
+      dni:            orderData.dni,
+      direccion:      orderData.address,
+      piso:           orderData.apt || '-',
+      ciudad:         orderData.city,
+      provincia:      orderData.province,
+      codigoPostal:   orderData.zip,
+      zona:           detectarZona(orderData.zip),
+      notas:          orderData.notes || '-',
+      numeroPedido:   orderData.orderNumber,
+      metodoPago,
+      productos:      orderData.items,
       productosTexto: orderData.items.map(i =>
-        `${i.qty}x ${i.name} ${i.volume_ml || ''}ml = $${((i.price_ars||0)*(i.qty||1)).toLocaleString('es-AR')}`
+        `${i.qty}x ${i.name} ${i.volume_ml || ''}ml = ${formatter.format((i.price_ars || 0) * (i.qty || 1))}`
       ).join('\n'),
-      total:        orderData.total,
-      fecha:        new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' }),
+      subtotal:       formatter.format(subtotal),
+      envio:          shipping > 0 ? formatter.format(shipping) : 'Gratis',
+      total:          formatter.format(total),
+      fecha:          new Date().toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' }),
     };
 
     console.log('📤 Enviando a N8N:', N8N_WEBHOOK_URL);
 
     const n8nRes = await fetch(N8N_WEBHOOK_URL, {
-      method: 'POST',
+      method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body:    JSON.stringify(payload),
     });
 
     const n8nBody = await n8nRes.text();

@@ -1,15 +1,12 @@
 import { loadProducts, formatARS, qs, qsa, setCartBadge } from './ui.js';
 import { listItems, setQty, removeItem, totals, clearCart } from './cartBrowser.js';
 
-function estimateShipping(subtotal){
-  // Simple heuristic similar to marketplaces: free shipping over threshold
-  const freeThreshold = 90000;
-  if(subtotal >= freeThreshold) return { label: 'Envío gratis', cost: 0 };
-  // flat rate
+function calcShipping(subtotal) {
+  if (subtotal >= 90000) return { label: 'Envío gratis', cost: 0 };
   return { label: 'Envío estándar', cost: 6500 };
 }
 
-function lineItemRow(item){
+function lineItemRow(item) {
   return `
     <div class="cartRow" data-row="${item.id}">
       <div class="cartThumb">
@@ -30,13 +27,7 @@ function lineItemRow(item){
   `;
 }
 
-function checkoutSummary(subtotal){
-  const ship = estimateShipping(subtotal);
-  const total = subtotal + ship.cost;
-  return { ship, total };
-}
-
-function renderEmpty(){
+function renderEmpty() {
   qs('#cartRoot').innerHTML = `
     <div class="empty">
       Tu carrito está vacío.
@@ -46,69 +37,42 @@ function renderEmpty(){
   qs('#summary').innerHTML = '';
 }
 
-async function init(){
+async function init() {
   const products = await loadProducts();
-  const items = listItems();
-  const t = totals();
+  const items    = listItems();
+  const t        = totals();
   setCartBadge(t.items_count);
 
-  if(items.length === 0){
+  if (items.length === 0) {
     renderEmpty();
     return;
   }
 
-  // Enrich cart items with latest product data (in case prices/images update)
   const enriched = items.map(it => {
-    const p = products.find(x=>x.id===it.id);
+    const p = products.find(x => x.id === it.id);
     return p ? { ...it, price_ars: p.price_ars, image: p.image, volume_ml: p.volume_ml, brand: p.brand, name: p.name } : it;
   });
 
   qs('#cartRoot').innerHTML = enriched.map(lineItemRow).join('');
 
-  function rerenderSummary(){
-    const tt = totals();
-    const { ship, total } = checkoutSummary(tt.subtotal_ars);
+  function rerenderSummary() {
+    const tt   = totals();
+    const ship = calcShipping(tt.subtotal_ars);
+    const total = tt.subtotal_ars + ship.cost;
     setCartBadge(tt.items_count);
 
     qs('#summary').innerHTML = `
       <div class="summaryCard">
         <div class="summaryTitle">Resumen</div>
         <div class="sumLine"><span>Subtotal</span><span>${formatARS(tt.subtotal_ars)}</span></div>
-        <div class="sumLine"><span>${ship.label}</span><span>${formatARS(ship.cost)}</span></div>
+        <div class="sumLine"><span>${ship.label}</span><span>${ship.cost === 0 ? 'Gratis' : formatARS(ship.cost)}</span></div>
         <div class="sumLine total"><span>Total</span><span>${formatARS(total)}</span></div>
-
-        <div class="couponBox">
-          <label for="coupon">Cupón</label>
-          <div class="couponRow">
-            <input id="coupon" placeholder="ANCESTRA10"/>
-            <button id="applyCoupon" class="btn">Aplicar</button>
-          </div>
-          <div id="couponMsg" class="muted small"></div>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">
+          <a class="btn btn-primary btnWide" href="checkout.html">Iniciar compra</a>
+          <button id="clearBtn" class="linkBtn" style="text-align:center">Vaciar carrito</button>
         </div>
-
-        <button id="checkoutBtn" class="btn btnWide">Iniciar compra</button>
-        <button id="clearBtn" class="linkBtn">Vaciar carrito</button>
       </div>
     `;
-
-    qs('#applyCoupon').addEventListener('click', () => {
-      const code = (qs('#coupon').value || '').trim().toUpperCase();
-      const base = totals().subtotal_ars;
-      let discount = 0;
-      if(code === 'ANCESTRA10') discount = Math.round(base * 0.10);
-      if(code === 'ENVIOGRATIS') discount = estimateShipping(base).cost;
-
-      if(discount > 0){
-        qs('#couponMsg').textContent = `Cupón aplicado: -${formatARS(discount)}`;
-      } else {
-        qs('#couponMsg').textContent = `Cupón no válido.`;
-      }
-    });
-
-    qs('#checkoutBtn').addEventListener('click', () => {
-      // Simple checkout flow
-      window.location.href = 'checkout.html';
-    });
 
     qs('#clearBtn').addEventListener('click', () => {
       clearCart();
@@ -119,44 +83,43 @@ async function init(){
 
   rerenderSummary();
 
-  // Handlers
-  qsa('[data-inc]').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const id = btn.getAttribute('data-inc');
+  // Qty handlers
+  qsa('[data-inc]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id    = btn.getAttribute('data-inc');
       const input = qs(`[data-qty="${id}"]`);
-      const next = Math.max(1, Number(input.value||1) + 1);
+      const next  = Math.max(1, Number(input.value || 1) + 1);
       input.value = String(next);
       setQty(id, next);
-      // update row total
-      const row = qs(`[data-row="${id}"]`);
-      const item = listItems().find(x=>x.id===id);
+      const row  = qs(`[data-row="${id}"]`);
+      const item = listItems().find(x => x.id === id);
       row.querySelector('.cartTotal').textContent = formatARS(item.price_ars * item.qty);
       rerenderSummary();
     });
   });
 
-  qsa('[data-dec]').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const id = btn.getAttribute('data-dec');
+  qsa('[data-dec]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id    = btn.getAttribute('data-dec');
       const input = qs(`[data-qty="${id}"]`);
-      const next = Math.max(1, Number(input.value||1) - 1);
+      const next  = Math.max(1, Number(input.value || 1) - 1);
       input.value = String(next);
       setQty(id, next);
-      const row = qs(`[data-row="${id}"]`);
-      const item = listItems().find(x=>x.id===id);
+      const row  = qs(`[data-row="${id}"]`);
+      const item = listItems().find(x => x.id === id);
       row.querySelector('.cartTotal').textContent = formatARS(item.price_ars * item.qty);
       rerenderSummary();
     });
   });
 
-  qsa('[data-remove]').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
+  qsa('[data-remove]').forEach(btn => {
+    btn.addEventListener('click', () => {
       const id = btn.getAttribute('data-remove');
       removeItem(id);
       const row = qs(`[data-row="${id}"]`);
-      if(row) row.remove();
+      if (row) row.remove();
       const tt = totals();
-      if(tt.items_count === 0){
+      if (tt.items_count === 0) {
         setCartBadge(0);
         renderEmpty();
         return;
@@ -165,21 +128,21 @@ async function init(){
     });
   });
 
-  qsa('[data-qty]').forEach(input=>{
-    input.addEventListener('change', ()=>{
-      const id = input.getAttribute('data-qty');
-      const next = Math.max(1, Number(input.value||1));
+  qsa('[data-qty]').forEach(input => {
+    input.addEventListener('change', () => {
+      const id   = input.getAttribute('data-qty');
+      const next = Math.max(1, Number(input.value || 1));
       input.value = String(next);
       setQty(id, next);
-      const row = qs(`[data-row="${id}"]`);
-      const item = listItems().find(x=>x.id===id);
+      const row  = qs(`[data-row="${id}"]`);
+      const item = listItems().find(x => x.id === id);
       row.querySelector('.cartTotal').textContent = formatARS(item.price_ars * item.qty);
       rerenderSummary();
     });
   });
 }
 
-init().catch(err=>{
+init().catch(err => {
   console.error(err);
   qs('#cartRoot').innerHTML = `<div class="empty">Error cargando el carrito.</div>`;
 });
