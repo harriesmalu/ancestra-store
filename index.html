@@ -81,9 +81,14 @@
 
   <main class="container">
     <section class="layout">
-      <aside class="filters">
-        <div class="filtersTitle">Filtros</div>
-
+<aside class="filters" id="filtersPanel">
+        <button class="filterToggle" id="filterToggle" aria-expanded="false">
+          <span>Filtros</span>
+          <svg id="filterArrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="filtersBody" id="filtersBody">
         <label class="field">
           <span>Categoría</span>
           <select id="filterCategory"></select>
@@ -111,6 +116,7 @@
         </label>
 
         <button id="resetFilters" class="linkBtn">Resetear filtros</button>
+        </div>
       </aside>
 
       <section class="content">
@@ -145,6 +151,35 @@
   <script type="module">
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
+  <script type="module">
+    // Filter toggle for mobile (Safari iOS fix)
+    const btn = document.getElementById('filterToggle');
+    const body = document.getElementById('filtersBody');
+    const arrow = document.getElementById('filterArrow');
+    if (btn && body) {
+      // On desktop always show
+      const isMobile = () => window.innerWidth <= 900;
+      function updateState() {
+        if (!isMobile()) {
+          body.style.display = '';
+          btn.style.display = 'none';
+        } else {
+          btn.style.display = 'flex';
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          body.style.display = expanded ? 'block' : 'none';
+        }
+      }
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', !expanded);
+        body.style.display = !expanded ? 'block' : 'none';
+        arrow.style.transform = !expanded ? 'rotate(180deg)' : '';
+      });
+      window.addEventListener('resize', updateState);
+      updateState();
+    }
+  </script>
+
   <script type="module" src="js/indexPage.js"></script>
 </body>
 </html>
