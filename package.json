@@ -1,17 +1,16 @@
 {
   "name": "ancestra-static",
   "version": "2.0.0",
-  "description": "Tienda online ANCESTRA Parfum con MercadoPago",
+  "description": "Tienda online ANCESTRA Parfum",
   "type": "module",
   "scripts": {
     "test": "node tests/cartStore.test.js",
     "serve": "python3 -m http.server 8080 --directory ."
   },
   "dependencies": {
-    "mercadopago": "^2.0.11",
-    "resend": "^3.2.0"
+    "mercadopago": "^2.0.11"
   },
-  "keywords": ["perfume", "ecommerce", "mercadopago"],
+  "keywords": ["perfume", "ecommerce"],
   "author": "ANCESTRA",
   "license": "MIT"
 }
