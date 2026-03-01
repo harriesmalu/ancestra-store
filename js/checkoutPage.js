@@ -104,6 +104,10 @@ function init() {
     const cartItems = listItems();
     const orderNumber = `ANC-${Date.now()}`;
 
+    // Construir WhatsApp URL ANTES de cualquier await
+    // Safari bloquea window.open() si se llama después de async/await
+    const whatsappUrl = buildWhatsAppURL(formData, cartItems);
+
     // Payload para la API
     const orderPayload = {
       orderNumber,
@@ -122,47 +126,41 @@ function init() {
       subtotal_ars: totals().subtotal_ars
     };
 
-    // WhatsApp URL construida por si falla el API
-    const whatsappUrl = buildWhatsAppURL(formData, cartItems);
+    // ── PASO 1: Guardar y limpiar carrito ANTES del async ──
+    localStorage.setItem('ancestra_last_order', JSON.stringify({
+      ...orderPayload,
+      date: new Date().toISOString()
+    }));
+    clearCart();
 
-    try {
-      // ── Llamar a la Vercel Function (/api/send-order) ──
-      const response = await fetch(API_SEND_ORDER, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(orderPayload)
-      });
+    // ── PASO 2: Abrir WhatsApp INMEDIATAMENTE (mismo tick del evento click)
+    // Usamos location.href para que Safari no lo bloquee como popup
+    // Lo guardamos en una variable de pestaña abierta sincrónicamente
+    const waWindow = window.open(whatsappUrl, '_blank');
 
-      if (!response.ok) throw new Error(`API error: ${response.status}`);
-
-      console.log('✅ Pedido enviado correctamente');
-
-      // Guardar orden localmente
-      localStorage.setItem('ancestra_last_order', JSON.stringify({
-        ...orderPayload,
-        date: new Date().toISOString()
-      }));
-
-      // Limpiar carrito
-      clearCart();
-
-      showMessage('✅ ¡Pedido recibido! Abriendo WhatsApp para coordinar el pago...', false);
-
-      // Abrir WhatsApp y redirigir
-      setTimeout(() => { window.open(whatsappUrl, '_blank'); }, 1000);
-      setTimeout(() => { window.location.href = 'success.html'; }, 1800);
-
-    } catch (error) {
-      console.error('❌ Error en API, usando fallback WhatsApp:', error);
-
-      // FALLBACK: igual abrimos WhatsApp para no perder el pedido
-      showMessage('Redirigiendo a WhatsApp para completar tu pedido...', false);
-      setTimeout(() => {
-        window.open(whatsappUrl, '_blank');
-        setLoading(submitBtn, false);
-        window.location.href = 'success.html';
-      }, 1500);
+    // Si Safari bloqueó el popup igual, fallback a location
+    if (!waWindow) {
+      // Guardar destino y abrir WA en esta misma pestaña temporalmente
+      sessionStorage.setItem('ancestra_redirect', 'success.html');
+      window.location.href = whatsappUrl;
+      return;
     }
+
+    showMessage('✅ ¡Pedido recibido! Redirigiendo...', false);
+
+    // ── PASO 3: Enviar datos a la API en segundo plano (no bloqueante) ──
+    fetch(API_SEND_ORDER, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderPayload)
+    })
+    .then(r => r.ok ? console.log('✅ Emails enviados') : console.warn('⚠️ API respondió', r.status))
+    .catch(err => console.error('⚠️ API error (no crítico):', err));
+
+    // ── PASO 4: Redirigir a success.html ──
+    setTimeout(() => {
+      window.location.href = 'success.html';
+    }, 1200);
   });
 }
 
