@@ -1,0 +1,142 @@
+/* ============================================================
+   safari-fixes.css  — agregar al final de styles.css
+   o linkear en el <head> DESPUÉS de styles.css
+   ============================================================ */
+
+/* ── 1. FLEXBOX GAP (Safari < 14.1 no soporta gap en flex) ── */
+/* Reemplazamos gap con margin en contenedores críticos */
+@supports not (gap: 1px) {
+  .row2 > * + * { margin-left: 16px; }
+  .topbarInner > * + * { margin-left: 12px; }
+  .topNav > * + * { margin-left: 16px; }
+  .footerInner > * + * { margin-left: 16px; }
+  .checkoutLayout > * + * { margin-left: 24px; }
+}
+
+/* ── 2. GRID GAP FALLBACK ────────────────────────────────── */
+@supports not (gap: 1px) {
+  .productGrid > * { margin: 8px; }
+  .filterBar > * + * { margin-left: 8px; }
+}
+
+/* ── 3. BACKDROP-FILTER (Safari necesita -webkit- prefix) ── */
+.topbar,
+.summaryCard,
+.checkoutCard,
+.modal,
+.overlay {
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(180%);
+}
+
+/* ── 4. STICKY POSITION (Safari + overflow hidden rompe sticky) ── */
+/* Si tenés overflow:hidden en algún padre, sticky no funciona en Safari */
+/* Agregamos esto a los contenedores que usen sticky */
+.topbar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* ── 5. INPUT APPEARANCE (Safari pone estilos propios en inputs) ── */
+input,
+textarea,
+select,
+button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border-radius: 0; /* Safari redondea inputs por defecto */
+}
+
+/* Restaurar border-radius donde lo uses */
+.btn,
+.field input,
+.field textarea,
+.field select {
+  border-radius: 4px;
+}
+
+/* ── 6. SMOOTH SCROLL ────────────────────────────────────── */
+html {
+  -webkit-overflow-scrolling: touch; /* momentum scroll en iOS */
+  scroll-behavior: smooth;
+}
+
+/* ── 7. TEXT SIZE ADJUST (Safari móvil cambia tamaño de fuente al rotar) */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* ── 8. IMAGE RENDERING ─────────────────────────────────── */
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+  /* Evita que Safari agregue sombra/padding a imágenes */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* ── 9. BUTTON FOCUS (Safari no muestra outline en botones por defecto) */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #c9a96e;
+  outline-offset: 2px;
+}
+
+/* ── 10. SAFE AREA INSETS (iPhone con notch/Dynamic Island) ─ */
+.topbar {
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+}
+
+.footer {
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+}
+
+/* ── 11. FONT RENDERING ──────────────────────────────────── */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smoothing: antialiased;
+}
+
+/* ── 12. ANIMACIONES — reducir para usuarios con preferencia ─ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── 13. CHECKOUT LAYOUT — fix en Safari móvil ──────────── */
+@media (max-width: 768px) {
+  .checkoutLayout {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
+
+  .row2 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+
+  .row2 > .field {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 200px;
+    flex: 1 1 200px;
+  }
+}
