@@ -56,6 +56,8 @@
             <textarea name="notes" placeholder="Instrucciones especiales (opcional)" rows="2"></textarea>
           </label>
 
+          <div id="shipping-container"></div>
+
           <div id="paymentSelector"></div>
           <button class="btn btnWide btn-primary" type="submit" id="submitBtn">Pagar con MercadoPago</button>
           
@@ -75,17 +77,15 @@
     </section>
   </main>
 
+  <script src="js/shippingCalculator.js"></script>
   <script type="module" src="js/checkoutPage.js"></script>
   <footer class="footer">
     <div class="footerInner">
       <div>&copy; <span class="footerYear"></span> ANCESTRA PARFUM</div>
       <div class="footerCenter">Fragancias premium &middot; CABA &amp; GBA</div>
       <div class="footerLinks">
-        <a href="mailto:ancestraparfum@gmail.com">ancestraparfum@gmail.com</a>
+        <a href="/cdn-cgi/l/email-protection#40212e23253334322130213226352d00272d21292c6e232f2d"><span class="__cf_email__" data-cfemail="ccada2afa9bfb8beadbcadbeaab9a18caba1ada5a0e2afa3a1">[email&#160;protected]</span></a>
         <a href="https://instagram.com/ancestra.parfum" target="_blank">@ancestra.parfum</a>
       </div>
     </div>
-  </footer>
-  <script>document.querySelectorAll(".footerYear").forEach(function(e){e.textContent=new Date().getFullYear();});</script>
-</body>
-</html>
+  </footer

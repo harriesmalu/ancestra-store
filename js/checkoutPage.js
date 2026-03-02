@@ -12,8 +12,18 @@ const formatter = new Intl.NumberFormat('es-AR', {
 });
 
 // ── Shipping ─────────────────────────────────────────
+// El costo real viene del ShippingCalculator (Correo Argentino)
+// Fallback a tarifa fija si no hay selección todavía
+let selectedShippingCost = null;
+let selectedShippingLabel = null;
+
 function calcShipping(subtotal) {
   if (subtotal >= 90000) return { label: 'Envío gratis', cost: 0 };
+  // Si el usuario ya seleccionó una opción de Correo, usarla
+  if (selectedShippingCost !== null) {
+    return { label: selectedShippingLabel, cost: selectedShippingCost };
+  }
+  // Fallback mientras el usuario no eligió envío
   return { label: 'Envío estándar', cost: 6500 };
 }
 
@@ -268,6 +278,23 @@ function init() {
   renderSummary();
   renderPaymentSelector();
 
+  // ── Shipping Calculator ───────────────────────────
+  const t = totals();
+  if (window.ShippingCalculator) {
+    ShippingCalculator.init(t.subtotal_ars, '#shipping-container');
+    document.addEventListener('shippingSelected', (e) => {
+      const ship = e.detail;
+      if (ship) {
+        selectedShippingCost  = ship.price;
+        selectedShippingLabel = ship.label;
+      } else {
+        selectedShippingCost  = null;
+        selectedShippingLabel = null;
+      }
+      renderSummary(); // actualizar total en el sidebar
+    });
+  }
+
   const form = qs('#payForm');
   if (!form) return;
 
@@ -278,6 +305,16 @@ function init() {
     const selectedMethod = (form.querySelector('input[name="paymentMethod"]:checked') || {}).value || 'mp';
     const order = collectOrder(form, selectedMethod);
     const submitBtn = qs('#submitBtn');
+
+    // Validar que eligió método de envío (si el widget está activo y no es envío gratis)
+    if (window.ShippingCalculator && totals().subtotal_ars < 90000) {
+      const ship = ShippingCalculator.getSelected();
+      if (!ship) {
+        showMsg('Por favor calculá y seleccioná un método de envío.', true);
+        document.getElementById('shipping-container')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+    }
 
     // ── MercadoPago ─────────────────────────────────
     if (selectedMethod === 'mp') {
