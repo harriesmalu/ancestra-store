@@ -2,8 +2,9 @@ User-agent: *
 Allow: /
 Disallow: /js/
 Disallow: /css/
+Disallow: /api/
 
-Sitemap: https://ancestra-store.vercel.app/sitemap.xml
+Sitemap: https://ancestraparfum.com.ar/sitemap.xml
 
 # Optimización para Google
 User-agent: Googlebot
