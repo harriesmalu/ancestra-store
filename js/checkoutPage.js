@@ -1,7 +1,7 @@
 import { qs, setCartBadge } from './ui.js';
 import { listItems, totals, clearCart } from './cartBrowser.js';
 
-console.log('✅ checkoutPage.js — Versión MP v1');
+// Versión MP v2 — incluye datos completos de dirección en la preferencia
 
 const WHATSAPP_NUMBER  = '5491165678354';
 const API_SEND_ORDER   = '/api/send-order';
@@ -12,10 +12,12 @@ const formatter = new Intl.NumberFormat('es-AR', {
 });
 
 // ── Shipping ─────────────────────────────────────────
-// El costo real viene del ShippingCalculator (Correo Argentino)
-// Fallback a tarifa fija si no hay selección todavía
-let selectedShippingCost = null;
-let selectedShippingLabel = null;
+// El costo y tipo de entrega vienen del ShippingCalculator (Correo Argentino).
+// Fallback a tarifa fija mientras el usuario no selecciona envío.
+let selectedShippingCost         = null;
+let selectedShippingLabel        = null;
+let selectedShippingDeliveryType = 'D';   // 'D' domicilio | 'S' sucursal
+let selectedShippingAgencyCode   = null;
 
 function calcShipping(subtotal) {
   if (subtotal >= 90000) return { label: 'Envío gratis', cost: 0 };
@@ -82,22 +84,24 @@ function collectOrder(form, paymentMethod) {
   const t       = totals();
   const ship    = calcShipping(t.subtotal_ars);
   return {
-    orderNumber:   `ANC-${Date.now()}`,
+    orderNumber:          `ANC-${Date.now()}`,
     paymentMethod,
-    name:          fd.get('name'),
-    email:         fd.get('email'),
-    phone:         fd.get('phone'),
-    dni:           fd.get('dni'),
-    address:       fd.get('address'),
-    apt:           fd.get('apt') || '-',
-    zip:           fd.get('zip'),
-    city:          fd.get('city'),
-    province:      fd.get('province'),
-    notes:         fd.get('notes') || '-',
-    items:         cart,
-    subtotal_ars:  t.subtotal_ars,
-    shipping_cost: ship.cost,
-    shipping_label: ship.label,
+    name:                 fd.get('name'),
+    email:                fd.get('email'),
+    phone:                fd.get('phone'),
+    dni:                  fd.get('dni'),
+    address:              fd.get('address'),
+    apt:                  fd.get('apt') || '-',
+    zip:                  fd.get('zip'),
+    city:                 fd.get('city'),
+    province:             fd.get('province'),
+    notes:                fd.get('notes') || '-',
+    items:                cart,
+    subtotal_ars:         t.subtotal_ars,
+    shipping_cost:        ship.cost,
+    shipping_label:       ship.label,
+    shipping_delivery_type: selectedShippingDeliveryType,
+    shipping_agency_code:   selectedShippingAgencyCode,
   };
 }
 
@@ -285,11 +289,15 @@ function init() {
     document.addEventListener('shippingSelected', (e) => {
       const ship = e.detail;
       if (ship) {
-        selectedShippingCost  = ship.price;
-        selectedShippingLabel = ship.label;
+        selectedShippingCost         = ship.price;
+        selectedShippingLabel        = ship.label;
+        selectedShippingDeliveryType = ship.type === 'sucursal' ? 'S' : 'D';
+        selectedShippingAgencyCode   = ship.agencyCode || null;
       } else {
-        selectedShippingCost  = null;
-        selectedShippingLabel = null;
+        selectedShippingCost         = null;
+        selectedShippingLabel        = null;
+        selectedShippingDeliveryType = 'D';
+        selectedShippingAgencyCode   = null;
       }
       renderSummary(); // actualizar total en el sidebar
     });
@@ -329,12 +337,20 @@ function init() {
             items:       order.items,
             shipping:    { label: order.shipping_label, cost: order.shipping_cost },
             totalArs:    order.subtotal_ars + order.shipping_cost,
+            // Datos completos para Correo Argentino via webhook
             buyer: {
-              name:    order.name,
-              email:   order.email,
-              phone:   order.phone,
-              address: order.address,
-              zip:     order.zip,
+              name:         order.name,
+              email:        order.email,
+              phone:        order.phone,
+              dni:          order.dni,
+              address:      order.address,
+              zip:          order.zip,
+              city:         order.city,
+              province:     order.province,
+              apt:          order.apt,
+              notes:        order.notes,
+              deliveryType: order.shipping_delivery_type,
+              agencyCode:   order.shipping_agency_code,
             },
           }),
         });

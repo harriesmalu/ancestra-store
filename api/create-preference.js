@@ -1,5 +1,7 @@
 // api/create-preference.js
-// Crea una preferencia de pago en MercadoPago y devuelve la URL de pago
+// Crea una preferencia de pago en MercadoPago y devuelve la URL de pago.
+// Los datos completos del comprador se guardan en `metadata` para que el webhook
+// pueda crear el envío en Correo Argentino tras la confirmación del pago.
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -7,7 +9,7 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== 'POST')   return res.status(405).json({ error: 'Método no permitido' });
 
   try {
     const { orderNumber, items, shipping, totalArs, buyer } = req.body;
@@ -23,18 +25,17 @@ export default async function handler(req, res) {
 
     const SITE_URL = process.env.SITE_URL || 'https://ancestra-store.vercel.app';
 
-    // Construir items para MP
+    // ── Items de la preferencia ───────────────────────────────────────────────
     const mpItems = items.map(item => ({
-      id:          item.id,
-      title:       `${item.name} ${item.volume_ml ? item.volume_ml + 'ml' : ''}`.trim(),
+      id:          String(item.id),
+      title:       `${item.name}${item.volume_ml ? ` ${item.volume_ml}ml` : ''}`.trim(),
       category_id: 'health_beauty',
-      quantity:    Number(item.qty) || 1,
+      quantity:    Number(item.qty)     || 1,
       unit_price:  Number(item.price_ars),
       currency_id: 'ARS',
     }));
 
-    // Agregar envío como ítem separado si tiene costo
-    if (shipping && shipping.cost > 0) {
+    if (shipping?.cost > 0) {
       mpItems.push({
         id:          'envio',
         title:       shipping.label || 'Envío',
@@ -45,12 +46,37 @@ export default async function handler(req, res) {
       });
     }
 
+    // ── Metadata del pedido ───────────────────────────────────────────────────
+    // Se incluye toda la info de dirección para que el webhook pueda crear
+    // el envío en Correo Argentino sin necesidad de una base de datos externa.
+    const orderMetadata = {
+      order_number:   orderNumber || '',
+      customer_name:  buyer?.name     || '',
+      customer_email: buyer?.email    || '',
+      customer_phone: buyer?.phone    || '',
+      customer_dni:   buyer?.dni      || '',
+      // Dirección de envío
+      street_name:   buyer?.streetName   || buyer?.address || '',
+      street_number: buyer?.streetNumber || '',
+      floor:         buyer?.floor        || '',
+      apartment:     buyer?.apartment    || buyer?.apt || '',
+      city:          buyer?.city         || '',
+      province:      buyer?.province     || '',
+      postal_code:   buyer?.zip          || '',
+      // Tipo de entrega de Correo ('D' domicilio | 'S' sucursal)
+      delivery_type: buyer?.deliveryType || 'D',
+      agency_code:   buyer?.agencyCode   || '',
+      notes:         buyer?.notes        || '',
+    };
+
+    // ── Preferencia de MP ─────────────────────────────────────────────────────
     const preference = {
       items: mpItems,
       payer: {
         name:  buyer?.name  || '',
         email: buyer?.email || '',
-        phone: { number: buyer?.phone || '' },
+        phone: { area_code: '', number: buyer?.phone || '' },
+        identification: { type: 'DNI', number: buyer?.dni || '' },
         address: {
           street_name:   buyer?.address || '',
           street_number: '',
@@ -62,10 +88,11 @@ export default async function handler(req, res) {
         failure: `${SITE_URL}/checkout.html?mp_error=1`,
         pending: `${SITE_URL}/success.html?order=${orderNumber}&method=mp&status=pending`,
       },
-      auto_return:           'approved',
-      external_reference:    orderNumber,
-      statement_descriptor:  'ANCESTRA PARFUM',
-      expires:               false,
+      auto_return:          'approved',
+      external_reference:   orderNumber,
+      statement_descriptor: 'ANCESTRA PARFUM',
+      expires:              false,
+      metadata:             orderMetadata,
     };
 
     console.log('🛒 Creando preferencia MP para orden:', orderNumber);
@@ -91,7 +118,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok:           true,
       preferenceId: mpData.id,
-      initPoint:    mpData.init_point,      // URL de producción
+      initPoint:    mpData.init_point,
       sandboxUrl:   mpData.sandbox_init_point,
     });
 

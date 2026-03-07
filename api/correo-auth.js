@@ -44,4 +44,4 @@ async function getToken() {
   return cachedToken;
 }
 
-module.exports = { getToken, BASE_URL };
+export { getToken, BASE_URL };
