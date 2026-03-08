@@ -54,32 +54,59 @@ export function getProvinceCodeFromCP(cp) {
 // ─────────────────────────────────────────────────────────────────────────────
 // Definición de zonas: precio domicilio / sucursal / días estimados
 // Precios en ARS para paquete de 500g, 15x15x15cm.
+// Fuente: tarifario Envíopack (tabla_costos.xls), transportista más barato por zona.
+// ⚠️  Última revisión: marzo 2026. Para precios en tiempo real usar Correo o Envíopack.
 // ─────────────────────────────────────────────────────────────────────────────
 const ZONE_RATES = {
-  C: { label: 'CABA',                home: 4800,  branch: 3600,  minDays: 1, maxDays: 2  },
-  B: { label: 'Buenos Aires',        home: 7200,  branch: 5800,  minDays: 2, maxDays: 4  },
-  S: { label: 'Santa Fe',            home: 10500, branch: 8500,  minDays: 4, maxDays: 6  },
-  X: { label: 'Córdoba',             home: 10500, branch: 8500,  minDays: 4, maxDays: 6  },
-  E: { label: 'Entre Ríos',         home: 10500, branch: 8500,  minDays: 4, maxDays: 6  },
-  L: { label: 'La Pampa',            home: 11000, branch: 9000,  minDays: 4, maxDays: 7  },
-  T: { label: 'Tucumán',             home: 12500, branch: 10000, minDays: 5, maxDays: 7  },
-  G: { label: 'Santiago del Estero', home: 12500, branch: 10000, minDays: 5, maxDays: 8  },
-  A: { label: 'Salta',               home: 13000, branch: 10500, minDays: 5, maxDays: 8  },
-  Y: { label: 'Jujuy',               home: 13500, branch: 11000, minDays: 5, maxDays: 8  },
-  K: { label: 'Catamarca',           home: 12500, branch: 10000, minDays: 5, maxDays: 8  },
-  F: { label: 'La Rioja',            home: 12500, branch: 10000, minDays: 5, maxDays: 8  },
-  W: { label: 'Corrientes',          home: 13000, branch: 10500, minDays: 5, maxDays: 8  },
-  H: { label: 'Chaco',               home: 13500, branch: 11000, minDays: 5, maxDays: 8  },
-  N: { label: 'Misiones',            home: 13500, branch: 11000, minDays: 5, maxDays: 9  },
-  P: { label: 'Formosa',             home: 14000, branch: 11500, minDays: 6, maxDays: 9  },
-  M: { label: 'Mendoza',             home: 12500, branch: 10000, minDays: 5, maxDays: 7  },
-  J: { label: 'San Juan',            home: 12500, branch: 10000, minDays: 5, maxDays: 7  },
-  D: { label: 'San Luis',            home: 12000, branch: 9500,  minDays: 4, maxDays: 7  },
-  Q: { label: 'Neuquén',             home: 14500, branch: 11500, minDays: 5, maxDays: 8  },
-  R: { label: 'Río Negro',          home: 14500, branch: 11500, minDays: 5, maxDays: 8  },
-  U: { label: 'Chubut',              home: 17000, branch: 14000, minDays: 6, maxDays: 10 },
-  Z: { label: 'Santa Cruz',          home: 18500, branch: 15000, minDays: 7, maxDays: 12 },
-  V: { label: 'Tierra del Fuego',    home: 21000, branch: 17500, minDays: 8, maxDays: 14 },
+  // Zona Envíopack: CABA → transportista más barato: Correo Envíopack
+  C: { label: 'CABA',                home: 8962,  branch: 7824,  minDays: 1, maxDays: 2  },
+  // Zona Envíopack: GBA 1 (anillo interno) → Correo Envíopack
+  // GBA 2/3 son ~$1.500 más caros; se usa GBA 1 como base (zona más poblada)
+  B: { label: 'Buenos Aires',        home: 10595, branch: 9457,  minDays: 2, maxDays: 4  },
+  // Zona Envíopack: PAMPEANA → Andesmar
+  S: { label: 'Santa Fe',            home: 11471, branch: 10333, minDays: 4, maxDays: 6  },
+  // Zona Envíopack: CORDOBA CAPITAL → Andesmar
+  X: { label: 'Córdoba',             home: 7176,  branch: 6038,  minDays: 3, maxDays: 5  },
+  // Zona Envíopack: PAMPEANA → Andesmar
+  E: { label: 'Entre Ríos',          home: 11471, branch: 10333, minDays: 4, maxDays: 6  },
+  // Zona Envíopack: PAMPEANA → Andesmar
+  L: { label: 'La Pampa',            home: 11471, branch: 10333, minDays: 4, maxDays: 7  },
+  // Zona Envíopack: NOROESTE → Andesmar
+  T: { label: 'Tucumán',             home: 9289,  branch: 8151,  minDays: 4, maxDays: 7  },
+  // Zona Envíopack: NOROESTE → Andesmar
+  G: { label: 'Santiago del Estero', home: 9289,  branch: 8151,  minDays: 5, maxDays: 8  },
+  // Zona Envíopack: NOROESTE → Andesmar
+  A: { label: 'Salta',               home: 9289,  branch: 8151,  minDays: 5, maxDays: 8  },
+  // Zona Envíopack: NOROESTE → Andesmar
+  Y: { label: 'Jujuy',               home: 9289,  branch: 8151,  minDays: 5, maxDays: 8  },
+  // Zona Envíopack: NOROESTE → Andesmar
+  K: { label: 'Catamarca',           home: 9289,  branch: 8151,  minDays: 5, maxDays: 8  },
+  // Zona Envíopack: NOROESTE → Andesmar
+  F: { label: 'La Rioja',            home: 9289,  branch: 8151,  minDays: 5, maxDays: 8  },
+  // Zona Envíopack: NORDESTE → Andesmar
+  W: { label: 'Corrientes',          home: 10617, branch: 9479,  minDays: 5, maxDays: 8  },
+  // Zona Envíopack: NORDESTE → Andesmar
+  H: { label: 'Chaco',               home: 10617, branch: 9479,  minDays: 5, maxDays: 8  },
+  // Zona Envíopack: NORDESTE → Andesmar
+  N: { label: 'Misiones',            home: 10617, branch: 9479,  minDays: 5, maxDays: 9  },
+  // Zona Envíopack: NORDESTE → Andesmar
+  P: { label: 'Formosa',             home: 10617, branch: 9479,  minDays: 6, maxDays: 9  },
+  // Zona Envíopack: MENDOZA CAPITAL → Andesmar
+  M: { label: 'Mendoza',             home: 7176,  branch: 6038,  minDays: 4, maxDays: 6  },
+  // Zona Envíopack: CUYO → Andesmar
+  J: { label: 'San Juan',            home: 7184,  branch: 6046,  minDays: 4, maxDays: 7  },
+  // Zona Envíopack: CUYO → Andesmar
+  D: { label: 'San Luis',            home: 7184,  branch: 6046,  minDays: 4, maxDays: 7  },
+  // Zona Envíopack: PATAGONIA → Andesmar
+  Q: { label: 'Neuquén',             home: 12721, branch: 11583, minDays: 5, maxDays: 8  },
+  // Zona Envíopack: PATAGONIA → Andesmar
+  R: { label: 'Río Negro',           home: 12721, branch: 11583, minDays: 5, maxDays: 8  },
+  // Zona Envíopack: PATAGONIA → Andesmar
+  U: { label: 'Chubut',              home: 12721, branch: 11583, minDays: 6, maxDays: 10 },
+  // Zona Envíopack: PATAGONIA → Andesmar
+  Z: { label: 'Santa Cruz',          home: 12721, branch: 11583, minDays: 7, maxDays: 12 },
+  // Zona Envíopack: TIERRA DEL FUEGO → OCA
+  V: { label: 'Tierra del Fuego',    home: 16754, branch: 15616, minDays: 8, maxDays: 14 },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
