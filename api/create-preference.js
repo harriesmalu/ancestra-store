@@ -63,10 +63,12 @@ export default async function handler(req, res) {
       city:          buyer?.city         || '',
       province:      buyer?.province     || '',
       postal_code:   buyer?.zip          || '',
-      // Tipo de entrega de Correo ('D' domicilio | 'S' sucursal)
-      delivery_type: buyer?.deliveryType || 'D',
-      agency_code:   buyer?.agencyCode   || '',
-      notes:         buyer?.notes        || '',
+      // Tipo de entrega ('D' domicilio | 'S' sucursal | 'P' pickup/retiro)
+      delivery_type:    buyer?.deliveryType    || 'D',
+      agency_code:      buyer?.agencyCode      || '',
+      shipping_carrier: buyer?.shippingCarrier || '',
+      shipping_source:  buyer?.shippingSource  || '',
+      notes:            buyer?.notes           || '',
     };
 
     // ── Preferencia de MP ─────────────────────────────────────────────────────

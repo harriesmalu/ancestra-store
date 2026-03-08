@@ -9,6 +9,16 @@ const ShippingCalculator = (() => {
   let selectedShipping = null;
   let debounceTimer = null;
 
+  const RETIRO_OPTION = {
+    type:          'retiro',
+    label:         'Retiro sin cargo · Belgrano, CABA',
+    price:         0,
+    priceFormatted:'Gratis',
+    deliveryLabel: 'Coordinamos el horario por WhatsApp',
+    carrier:       null,
+    source:        'local',
+  };
+
   // ─────────────────────────────────────────────
   // HTML que se inyecta en el checkout
   // ─────────────────────────────────────────────
@@ -16,6 +26,17 @@ const ShippingCalculator = (() => {
     return `
       <div id="shipping-section" class="shipping-section">
         <h3 class="shipping-title">Envío</h3>
+
+        <div id="shipping-retiro-option" class="shipping-option" data-type="retiro" style="margin-bottom:10px">
+          <input type="radio" name="shipping-choice" id="shipping-retiro" value="retiro" />
+          <div class="shipping-option-info">
+            <div class="shipping-option-label">Retiro sin cargo · Belgrano, CABA</div>
+            <div class="shipping-option-delivery">Coordinamos el horario por WhatsApp</div>
+          </div>
+          <div class="shipping-option-price">Gratis</div>
+        </div>
+
+        <div class="shipping-divider" style="font-size:0.75rem;color:#555;text-align:center;margin:10px 0;letter-spacing:0.08em;text-transform:uppercase">— o calculá el envío —</div>
 
         <div class="shipping-cp-row">
           <input
@@ -206,6 +227,11 @@ const ShippingCalculator = (() => {
     optionsEl.innerHTML = '';
     selectedShipping = null;
     dispatchChange(null);
+    // Desmarcar retiro si estaba seleccionado
+    const retiroOpt = document.getElementById('shipping-retiro-option');
+    if (retiroOpt) retiroOpt.classList.remove('selected');
+    const retiroInput = document.getElementById('shipping-retiro');
+    if (retiroInput) retiroInput.checked = false;
 
     try {
       const url = `/api/correo-quote?cp=${encodeURIComponent(cp)}&total=${cartTotal}`;
@@ -265,6 +291,9 @@ const ShippingCalculator = (() => {
         document.querySelectorAll('.shipping-option').forEach(el => el.classList.remove('selected'));
         div.classList.add('selected');
         div.querySelector('input[type="radio"]').checked = true;
+        // Desmarcar retiro si estaba seleccionado
+        const retiroInput = document.getElementById('shipping-retiro');
+        if (retiroInput) retiroInput.checked = false;
         selectedShipping = opt;
         dispatchChange(opt);
       });
@@ -309,6 +338,22 @@ const ShippingCalculator = (() => {
     }
 
     container.innerHTML = buildHTML();
+
+    // ── Opción retiro ─────────────────────────────────────────────────────────
+    const retiroDiv = document.getElementById('shipping-retiro-option');
+    if (retiroDiv) {
+      retiroDiv.addEventListener('click', () => {
+        document.querySelectorAll('.shipping-option').forEach(el => el.classList.remove('selected'));
+        retiroDiv.classList.add('selected');
+        retiroDiv.querySelector('input[type="radio"]').checked = true;
+        selectedShipping = RETIRO_OPTION;
+        dispatchChange(RETIRO_OPTION);
+        // Limpiar las opciones de envío calculadas
+        const optionsEl = document.getElementById('shipping-options');
+        if (optionsEl) { optionsEl.innerHTML = ''; optionsEl.style.display = 'none'; }
+        hideMessage();
+      });
+    }
 
     const cpInput = document.getElementById('shipping-cp');
     const btn = document.getElementById('shipping-calc-btn');

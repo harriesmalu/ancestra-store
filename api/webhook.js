@@ -8,6 +8,7 @@
 
 import { MercadoPagoConfig, Payment } from 'mercadopago';
 import { createShipment } from './_correo-helpers.js';
+import { createEnviopackOrder } from './_enviopack-helpers.js';
 
 // ── Clientes ──────────────────────────────────────────────────────────────────
 function getMPClient() {
@@ -71,6 +72,42 @@ async function tryCreateShipment(paymentData, meta) {
   }
 }
 
+// ── Crear envío en Envíopack (si Correo no está configurado y no es retiro) ────
+async function tryCreateEnviopackOrder(paymentData, meta) {
+  // Solo si Correo Argentino NO está configurado (prioridad: Correo > Envíopack)
+  if (process.env.CORREO_CUSTOMER_ID && process.env.CORREO_API_USER) return null;
+  // No crear envío si el cliente eligió retiro local
+  if (meta.delivery_type === 'P') return null;
+  // Solo si tenemos credenciales de Envíopack
+  if (!process.env.ENVIOPACK_API_KEY) {
+    console.log('ℹ️  Envíopack no configurado — se omite creación de orden');
+    return null;
+  }
+
+  try {
+    const result = await createEnviopackOrder({
+      orderId:      meta.order_number || paymentData.external_reference,
+      deliveryType: meta.delivery_type   || 'D',
+      carrier:      meta.shipping_carrier  || null,
+      customer: {
+        name:         meta.customer_name   || paymentData.payer?.first_name || '',
+        address:      meta.street_name     || paymentData.payer?.address?.street_name || '',
+        streetName:   meta.street_name,
+        streetNumber: meta.street_number,
+        floor:        meta.floor,
+        apartment:    meta.apartment,
+        city:         meta.city            || 'Buenos Aires',
+        postalCode:   meta.postal_code     || paymentData.payer?.address?.zip_code || '',
+      },
+    });
+    console.log('✅ Orden Envíopack creada automáticamente:', result);
+    return result;
+  } catch (err) {
+    console.error('⚠️  Error creando orden en Envíopack:', err.message);
+    return null;
+  }
+}
+
 // ── Handler principal ─────────────────────────────────────────────────────────
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -109,8 +146,11 @@ export default async function handler(req, res) {
     const payer   = paymentData.payer      || {};
     const address = payer.address          || {};
 
-    // 1. Crear envío en Correo (fire & forget con manejo de error gracioso)
+    // 1a. Crear envío en Correo Argentino (si está configurado)
     const correoResult = await tryCreateShipment(paymentData, meta);
+
+    // 1b. Crear envío en Envíopack (si Correo no está configurado y el envío fue cotizado via Envíopack/zone)
+    const enviopackResult = await tryCreateEnviopackOrder(paymentData, meta);
 
     // 2. Notificar a N8N para emails
     await notifyN8N({
@@ -137,10 +177,11 @@ export default async function handler(req, res) {
                         timeZone: 'America/Argentina/Buenos_Aires',
                       }),
       // Correo
-      correoEnvioCreado: !!correoResult,
+      correoEnvioCreado:     !!correoResult,
+      enviopackEnvioCreado:  !!enviopackResult,
     });
 
-    return res.status(200).json({ received: true, status: 'approved', correo: correoResult });
+    return res.status(200).json({ received: true, status: 'approved', correo: correoResult, enviopack: enviopackResult });
 
   } catch (error) {
     console.error('❌ Webhook error:', error.message);

@@ -3,7 +3,7 @@ import { listItems, setQty, removeItem, totals, clearCart } from './cartBrowser.
 
 function calcShipping(subtotal) {
   if (subtotal >= 90000) return { label: 'Envío gratis', cost: 0 };
-  return { label: 'Envío estándar', cost: 6500 };
+  return { label: 'A calcular en el checkout', cost: 0 };
 }
 
 function lineItemRow(item) {

@@ -12,21 +12,20 @@ const formatter = new Intl.NumberFormat('es-AR', {
 });
 
 // ── Shipping ─────────────────────────────────────────
-// El costo y tipo de entrega vienen del ShippingCalculator (Correo Argentino).
-// Fallback a tarifa fija mientras el usuario no selecciona envío.
+// El costo y tipo de entrega vienen del ShippingCalculator.
 let selectedShippingCost         = null;
 let selectedShippingLabel        = null;
-let selectedShippingDeliveryType = 'D';   // 'D' domicilio | 'S' sucursal
+let selectedShippingDeliveryType = 'D';   // 'D' domicilio | 'S' sucursal | 'P' pickup/retiro
 let selectedShippingAgencyCode   = null;
+let selectedShippingCarrier      = null;  // transportista elegido (ej: 'andesmar', 'oca')
+let selectedShippingSource       = null;  // 'correo' | 'enviopack' | 'zone' | 'local'
 
 function calcShipping(subtotal) {
   if (subtotal >= 90000) return { label: 'Envío gratis', cost: 0 };
-  // Si el usuario ya seleccionó una opción de Correo, usarla
   if (selectedShippingCost !== null) {
     return { label: selectedShippingLabel, cost: selectedShippingCost };
   }
-  // Fallback mientras el usuario no eligió envío
-  return { label: 'Envío estándar', cost: 6500 };
+  return { label: 'A calcular', cost: 0 };
 }
 
 // ── UI helpers ────────────────────────────────────────
@@ -102,6 +101,8 @@ function collectOrder(form, paymentMethod) {
     shipping_label:       ship.label,
     shipping_delivery_type: selectedShippingDeliveryType,
     shipping_agency_code:   selectedShippingAgencyCode,
+    shipping_carrier:       selectedShippingCarrier,
+    shipping_source:        selectedShippingSource,
   };
 }
 
@@ -291,13 +292,19 @@ function init() {
       if (ship) {
         selectedShippingCost         = ship.price;
         selectedShippingLabel        = ship.label;
-        selectedShippingDeliveryType = ship.type === 'sucursal' ? 'S' : 'D';
+        selectedShippingDeliveryType = ship.type === 'sucursal' ? 'S'
+                                     : ship.type === 'retiro'   ? 'P'
+                                     : 'D';
         selectedShippingAgencyCode   = ship.agencyCode || null;
+        selectedShippingCarrier      = ship.carrier    || null;
+        selectedShippingSource       = ship.source     || null;
       } else {
         selectedShippingCost         = null;
         selectedShippingLabel        = null;
         selectedShippingDeliveryType = 'D';
         selectedShippingAgencyCode   = null;
+        selectedShippingCarrier      = null;
+        selectedShippingSource       = null;
       }
       renderSummary(); // actualizar total en el sidebar
     });
@@ -349,8 +356,10 @@ function init() {
               province:     order.province,
               apt:          order.apt,
               notes:        order.notes,
-              deliveryType: order.shipping_delivery_type,
-              agencyCode:   order.shipping_agency_code,
+              deliveryType:    order.shipping_delivery_type,
+              agencyCode:      order.shipping_agency_code,
+              shippingCarrier: order.shipping_carrier,
+              shippingSource:  order.shipping_source,
             },
           }),
         });

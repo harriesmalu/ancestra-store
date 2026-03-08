@@ -137,6 +137,73 @@ async function quoteBranch(cp, provinceCode, token) {
   return sorted.length ? normalizeOption(sorted[0], 'sucursal') : null;
 }
 
+// ── Normalizar nombre de transportista ────────────────────────────────────────
+function normalizeCarrierCode(carrier) {
+  if (!carrier) return undefined;
+  const map = {
+    'correo envíopack': 'correoenviopack',
+    'correo enviopack': 'correoenviopack',
+    'oca':               'oca',
+    'andreani':          'andreani',
+    'andesmar':          'andesmar',
+    'chazki':            'chazki',
+    'urbano':            'urbano',
+    'cccargas':          'cccargas',
+    'demonte':           'demonte',
+  };
+  return map[carrier.toLowerCase()] ?? carrier.toLowerCase().replace(/\s+/g, '');
+}
+
+// ── Crear orden en Envíopack ──────────────────────────────────────────────────
+/**
+ * Genera una orden de envío en Envíopack (queda como borrador pendiente de confirmación).
+ * @param {Object} opts
+ * @param {string} opts.orderId       - Número de pedido (ej: ANC-1234)
+ * @param {Object} opts.customer      - { name, streetName, streetNumber, floor, apartment, city, postalCode }
+ * @param {string} opts.deliveryType  - 'D' domicilio | 'S' sucursal
+ * @param {string} [opts.carrier]     - Nombre del transportista elegido en el presupuesto
+ */
+export async function createEnviopackOrder({ orderId, customer, deliveryType, carrier }) {
+  const token     = await getToken();
+  const modalidad = deliveryType === 'S' ? 'sucursal' : 'domicilio';
+  const correo    = normalizeCarrierCode(carrier);
+  const provincia = getProvinceCodeFromCP(customer.postalCode || '');
+
+  const body = {
+    pedido:        String(orderId),
+    destinatario:  customer.name || '',
+    observaciones: 'Ancestra Parfum',
+    modalidad,
+    ...(correo ? { correo } : {}),
+    confirmado:    false,
+    paquetes: [{ peso: PACKAGE.weight, alto: 15, ancho: 15, largo: 15 }],
+    direccion_envio: {
+      calle:         customer.streetName   || customer.address || '',
+      numero:        customer.streetNumber || '',
+      piso:          customer.floor        || '',
+      depto:         customer.apartment    || '',
+      codigo_postal: customer.postalCode   || '',
+      provincia,
+      localidad:     customer.city         || '',
+    },
+  };
+
+  const res = await fetch(
+    `${BASE_URL}/envios?access_token=${encodeURIComponent(token)}`,
+    {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(body),
+    }
+  );
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Envíopack createOrder ${res.status}: ${text}`);
+  }
+  return res.json();
+}
+
 // ── Función principal exportada ───────────────────────────────────────────────
 /**
  * Cotiza envío via Envíopack para un CP dado.
