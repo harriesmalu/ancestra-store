@@ -126,6 +126,49 @@ async function init(){
   fillSelect('#filterFamily', unique('family'));
   fillSelect('#filterGender', unique('gender'));
 
+  // ── Mobile search toggle ──────────────────────────────────
+  const searchToggle  = qs('#searchToggle');
+  const searchDrawer  = qs('#searchDrawer');
+  const searchDrawerClose = qs('#searchDrawerClose');
+  const searchInputMobile = qs('#searchInputMobile');
+
+  function openSearch() {
+    searchDrawer.classList.add('open');
+    searchDrawer.setAttribute('aria-hidden', 'false');
+    searchToggle.classList.add('active');
+    searchToggle.setAttribute('aria-expanded', 'true');
+    searchInputMobile.focus();
+  }
+  function closeSearch() {
+    searchDrawer.classList.remove('open');
+    searchDrawer.setAttribute('aria-hidden', 'true');
+    searchToggle.classList.remove('active');
+    searchToggle.setAttribute('aria-expanded', 'false');
+    // Sincronizar al cerrar
+    searchInput.value = searchInputMobile.value;
+  }
+
+  if (searchToggle) {
+    searchToggle.addEventListener('click', () => {
+      searchDrawer.classList.contains('open') ? closeSearch() : openSearch();
+    });
+  }
+  if (searchDrawerClose) {
+    searchDrawerClose.addEventListener('click', closeSearch);
+  }
+  // Sincronizar mobile → desktop input en tiempo real y renderizar
+  if (searchInputMobile) {
+    searchInputMobile.addEventListener('input', () => {
+      searchInput.value = searchInputMobile.value;
+      render();
+    });
+    // Cerrar con Escape
+    searchInputMobile.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeSearch();
+    });
+  }
+  // ─────────────────────────────────────────────────────────
+
   // Events
   searchInput.addEventListener('input', () => render());
   qsa('select,input[type=range],input[type=number]').forEach(el => {

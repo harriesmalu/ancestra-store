@@ -68,6 +68,50 @@ button, input, select, textarea { font-family: var(--font-b); }
 .search::placeholder { color: var(--muted); }
 .search:focus { border-color: var(--border2); }
 
+/* ── Icono lupa — oculto en desktop, visible en mobile ── */
+.searchToggle {
+  display: none;
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); padding: 6px;
+  flex-shrink: 0;
+  transition: color .2s;
+  line-height: 0;
+}
+.searchToggle:hover { color: var(--text); }
+.searchToggle.active { color: var(--gold); }
+
+/* ── Drawer de búsqueda mobile ── */
+.searchDrawer {
+  display: none; /* gestionado por JS / media query */
+  align-items: center; gap: 10px;
+  padding: 10px 16px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+}
+.searchDrawerInput {
+  flex: 1; padding: 9px 14px;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--bg); color: var(--text); outline: none;
+  font-size: 14px; font-weight: 300; letter-spacing: .03em;
+  font-family: var(--font-b);
+  transition: border-color .2s;
+}
+.searchDrawerInput::placeholder { color: var(--muted); }
+.searchDrawerInput:focus { border-color: var(--border2); }
+.searchDrawerClose {
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); padding: 6px; flex-shrink: 0;
+  transition: color .2s; line-height: 0;
+}
+.searchDrawerClose:hover { color: var(--text); }
+
+/* ── Mobile: ocultar searchWrap del topbar, mostrar lupa ── */
+@media (max-width: 600px) {
+  .searchWrap { display: none; }
+  .searchToggle { display: flex; align-items: center; justify-content: center; }
+  .searchDrawer.open { display: flex; }
+}
+
 .topNav { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
 .navLink { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 400; transition: color .2s; white-space: nowrap; }
 .navLink:hover { color: var(--text); }

@@ -141,7 +141,7 @@
         <span class="brandWord">ANCESTRA</span>
         <span class="brandSub">PARFUM</span>
       </a>
-      <div class="searchWrap">
+      <div class="searchWrap" id="searchWrap">
         <input id="searchInput" class="search" placeholder="Buscar fragancias, familia olfativa, intensidad..."/>
       </div>
       <nav class="topNav">
@@ -151,7 +151,23 @@
           Carrito
           <span id="cartBadge" class="badge" style="display:none">0</span>
         </a>
+        <!-- Icono lupa — solo visible en mobile -->
+        <button class="searchToggle" id="searchToggle" aria-label="Buscar" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="7.5" cy="7.5" r="5"/>
+            <line x1="11.5" y1="11.5" x2="16" y2="16"/>
+          </svg>
+        </button>
       </nav>
+    </div>
+    <!-- Barra de búsqueda expandida — solo mobile -->
+    <div class="searchDrawer" id="searchDrawer" aria-hidden="true">
+      <input id="searchInputMobile" class="searchDrawerInput" placeholder="Buscar perfume, familia, intensidad…" autocomplete="off"/>
+      <button class="searchDrawerClose" id="searchDrawerClose" aria-label="Cerrar búsqueda">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round">
+          <line x1="3" y1="3" x2="13" y2="13"/><line x1="13" y1="3" x2="3" y2="13"/>
+        </svg>
+      </button>
     </div>
   </header>
 

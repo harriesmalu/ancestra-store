@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  body, html { width:1080px; height:1080px; overflow:hidden; background:#080808; }
+
+  .canvas {
+    width:1080px; height:1080px;
+    background:#080808;
+    position:relative; overflow:hidden;
+    display:flex; flex-direction:column;
+    padding: 68px 72px 60px;
+  }
+
+  /* Fondo: gradiente sutil */
+  .canvas::before {
+    content:'';
+    position:absolute; inset:0;
+    background: radial-gradient(ellipse 90% 70% at 50% 50%, rgba(255,255,255,0.018) 0%, transparent 65%);
+    pointer-events:none;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align:center; z-index:2;
+    margin-bottom:36px;
+  }
+  .brand {
+    font-family:'Cormorant Garamond', serif;
+    font-weight:300;
+    font-size:18px;
+    letter-spacing:0.5em;
+    color:#ede8df;
+    text-indent:0.5em;
+    line-height:1;
+  }
+  .brand-sub {
+    font-family:'Jost', sans-serif;
+    font-weight:200;
+    font-size:8.5px;
+    letter-spacing:0.52em;
+    color:#c9a96e;
+    text-transform:uppercase;
+    margin-top:7px;
+    text-indent:0.52em;
+  }
+  .h-rule {
+    width:100%; height:1px;
+    background:linear-gradient(to right, transparent, rgba(201,169,110,0.15), transparent);
+    margin:20px 0 24px;
+  }
+  .title {
+    font-family:'Cormorant Garamond', serif;
+    font-weight:300;
+    font-size:42px;
+    color:#ede8df;
+    letter-spacing:0.04em;
+    line-height:1.15;
+  }
+  .title em { font-style:italic; color:#c9a96e; }
+  .title-sub {
+    font-family:'Jost', sans-serif;
+    font-weight:200;
+    font-size:10px;
+    letter-spacing:0.38em;
+    color:#6b6560;
+    text-transform:uppercase;
+    margin-top:10px;
+    text-indent:0.38em;
+  }
+
+  /* ── Grid de familias ── */
+  .grid {
+    flex:1;
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap:10px;
+    z-index:2;
+  }
+
+  .family {
+    background: rgba(255,255,255,0.022);
+    border: 1px solid rgba(201,169,110,0.1);
+    padding:22px 20px 18px;
+    display:flex; flex-direction:column;
+    position:relative; overflow:hidden;
+  }
+  /* Línea de color arriba de cada card */
+  .family::before {
+    content:'';
+    position:absolute; top:0; left:0; right:0; height:1px;
+    background: var(--accent);
+    opacity:0.5;
+  }
+
+  .fam-top {
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:10px;
+  }
+  .fam-icon { font-size:20px; flex-shrink:0; }
+  .fam-name {
+    font-family:'Jost', sans-serif;
+    font-weight:300;
+    font-size:10px;
+    letter-spacing:0.38em;
+    text-transform:uppercase;
+    color:#c9a96e;
+    text-indent:0.38em;
+  }
+  .fam-desc {
+    font-family:'Cormorant Garamond', serif;
+    font-weight:300;
+    font-size:17px;
+    font-style:italic;
+    color:rgba(237,232,223,0.65);
+    line-height:1.5;
+  }
+  .fam-notes {
+    margin-top:8px;
+    font-family:'Jost', sans-serif;
+    font-weight:200;
+    font-size:9px;
+    letter-spacing:0.2em;
+    color:#6b6560;
+    text-transform:uppercase;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    text-align:center; margin-top:18px; z-index:2;
+    display:flex; align-items:center; justify-content:center; gap:16px;
+  }
+  .footer-line {
+    flex:1; height:1px;
+    background:linear-gradient(to right, transparent, rgba(201,169,110,0.12));
+  }
+  .footer-line.rev {
+    background:linear-gradient(to left, transparent, rgba(201,169,110,0.12));
+  }
+  .footer-text {
+    font-family:'Jost', sans-serif;
+    font-weight:200;
+    font-size:9px;
+    letter-spacing:0.42em;
+    color:rgba(160,152,144,0.4);
+    text-transform:uppercase;
+    white-space:nowrap;
+    text-indent:0.42em;
+  }
+
+  /* Esquinas */
+  .corner { position:absolute; width:18px; height:18px; border-color:rgba(201,169,110,0.14); border-style:solid; z-index:10; }
+  .tl { top:46px; left:46px; border-width:1px 0 0 1px; }
+  .tr { top:46px; right:46px; border-width:1px 1px 0 0; }
+  .bl { bottom:46px; left:46px; border-width:0 0 1px 1px; }
+  .br { bottom:46px; right:46px; border-width:0 1px 1px 0; }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
+  <div class="header">
+    <div class="brand">ANCESTRA</div>
+    <div class="brand-sub">Extracto de Perfume</div>
+    <div class="h-rule"></div>
+    <div class="title">¿Cuál es tu <em>familia olfativa?</em></div>
+    <div class="title-sub">Guardá esta guía · Te ayuda a elegir</div>
+  </div>
+
+  <div class="grid">
+
+    <div class="family" style="--accent:#b08080;">
+      <div class="fam-top">
+        <div class="fam-icon">🌹</div>
+        <div class="fam-name">Floral</div>
+      </div>
+      <div class="fam-desc">Rosa, jazmín, gardenia. Romántico y delicado.</div>
+      <div class="fam-notes">Femenino · Elegante</div>
+    </div>
+
+    <div class="family" style="--accent:#8a7a60;">
+      <div class="fam-top">
+        <div class="fam-icon">🌲</div>
+        <div class="fam-name">Amaderado</div>
+      </div>
+      <div class="fam-desc">Sándalo, cedro, oud. Cálido y sofisticado.</div>
+      <div class="fam-notes">Unisex · Con fondo</div>
+    </div>
+
+    <div class="family" style="--accent:#c9a96e;">
+      <div class="fam-top">
+        <div class="fam-icon">✨</div>
+        <div class="fam-name">Oriental</div>
+      </div>
+      <div class="fam-desc">Vainilla, ámbar, especias. Sensual e intenso.</div>
+      <div class="fam-notes">Seductor · Nocturno</div>
+    </div>
+
+    <div class="family" style="--accent:#6a9a80;">
+      <div class="fam-top">
+        <div class="fam-icon">🍃</div>
+        <div class="fam-name">Fresco</div>
+      </div>
+      <div class="fam-desc">Cítricos, té verde, agua. Limpio y vibrante.</div>
+      <div class="fam-notes">Diario · Activo</div>
+    </div>
+
+    <div class="family" style="--accent:#7a8a70;">
+      <div class="fam-top">
+        <div class="fam-icon">🌿</div>
+        <div class="fam-name">Fougère</div>
+      </div>
+      <div class="fam-desc">Lavanda, vetiver, musgo. Clásico y masculino.</div>
+      <div class="fam-notes">Atemporal · Firme</div>
+    </div>
+
+    <div class="family" style="--accent:#a08070;">
+      <div class="fam-top">
+        <div class="fam-icon">🍑</div>
+        <div class="fam-name">Gourmand</div>
+      </div>
+      <div class="fam-desc">Caramelo, chocolate, miel. Dulce y adictivo.</div>
+      <div class="fam-notes">Único · Inolvidable</div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-line rev"></div>
+    <div class="footer-text">ancestraparfum.com.ar</div>
+    <div class="footer-line"></div>
+  </div>
+
+</div>
+</body>
+</html>

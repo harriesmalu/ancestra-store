@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1080px; height: 1920px; overflow: hidden;
+    font-family: 'Georgia', 'Times New Roman', serif;
+  }
+  .wrap {
+    width: 1080px; height: 1920px;
+    background: linear-gradient(170deg, #FAF4EC 0%, #EDE6D8 45%, #E6DDD0 100%);
+    display: flex; flex-direction: column;
+    padding: 100px 80px 100px;
+    position: relative; overflow: hidden;
+  }
+  .bg-wash {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 60% 20%, rgba(255,248,230,0.45) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  /* Top brand */
+  .brand { font-size: 11px; letter-spacing: 0.55em; color: #9A7A55; text-transform: uppercase; text-align: center; margin-bottom: 56px; z-index: 2; }
+
+  /* Title */
+  .title { text-align: center; margin-bottom: 70px; z-index: 2; }
+  .title h2 { font-size: 58px; color: #2C1F10; font-weight: normal; line-height: 1.18; }
+  .title h2 em { font-style: italic; color: #7A5C38; }
+  .title p { font-size: 13px; letter-spacing: 0.3em; color: #9A7A55; text-transform: uppercase; margin-top: 18px; }
+  .rule { width: 36px; height: 1px; background: rgba(154,122,85,0.45); margin: 16px auto 0; }
+
+  /* Steps */
+  .steps { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 0; z-index: 2; }
+  .step {
+    display: flex; align-items: flex-start; gap: 34px;
+    padding: 46px 0;
+    border-bottom: 1px solid rgba(154,122,85,0.1);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    width: 68px; height: 68px; border-radius: 50%;
+    border: 1px solid rgba(154,122,85,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; color: #7A5C38;
+    flex-shrink: 0;
+    font-style: italic;
+    background: rgba(250,244,236,0.7);
+  }
+  .step-body { flex: 1; padding-top: 8px; }
+  .step-title { font-size: 28px; color: #2C1F10; margin-bottom: 8px; font-weight: normal; }
+  .step-desc { font-size: 18px; color: #6B5540; line-height: 1.65; letter-spacing: 0.03em; }
+  .step-desc strong { color: #4A3220; }
+  .step-icon { font-size: 34px; flex-shrink: 0; padding-top: 8px; }
+
+  /* CTA box */
+  .cta-block {
+    margin-top: 60px;
+    border: 1px solid rgba(154,122,85,0.22);
+    padding: 36px 40px;
+    text-align: center;
+    background: rgba(250,244,236,0.6);
+    z-index: 2;
+  }
+  .cta-label { font-size: 10px; letter-spacing: 0.5em; color: #9A7A55; text-transform: uppercase; margin-bottom: 12px; }
+  .cta-url { font-size: 26px; color: #7A5C38; letter-spacing: 0.08em; }
+  .cta-sub { font-size: 11px; letter-spacing: 0.25em; color: #9A7A55; text-transform: uppercase; margin-top: 10px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bg-wash"></div>
+
+  <div class="brand">Ancestra Parfum</div>
+  <div class="title">
+    <h2>Así de <em>fácil</em><br>es comprar</h2>
+    <p>3 pasos · menos de 3 minutos</p>
+    <div class="rule"></div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">Entrá al link de la bio</div>
+        <div class="step-desc">Tocá el link en nuestro perfil y llegás directo al catálogo.<br><strong>ancestraparfum.com.ar</strong></div>
+      </div>
+      <div class="step-icon">🔗</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">Elegí tu extracto</div>
+        <div class="step-desc">Explorá la colección, leé las notas de cada fragancia y agregá al carrito.</div>
+      </div>
+      <div class="step-icon">🌹</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">Pagá y listo</div>
+        <div class="step-desc">MercadoPago, transferencia o WhatsApp.<br><strong>Envíos a CABA y GBA.</strong></div>
+      </div>
+      <div class="step-icon">📦</div>
+    </div>
+  </div>
+
+  <div class="cta-block">
+    <div class="cta-label">Comprá ahora</div>
+    <div class="cta-url">ancestraparfum.com.ar</div>
+    <div class="cta-sub">Link en la bio ↑</div>
+  </div>
+</div>
+</body>
+</html>
