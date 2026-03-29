@@ -153,6 +153,30 @@ async function init(){
   document.title = `${p.name} — ANCESTRA PARFUM`;
   qs('#breadcrumbs').innerHTML = `Inicio / ${p.category} / <span>${p.name}</span>`;
 
+  // ── JSON-LD Product Schema (SEO) ─────────────────────
+  const schema = {
+    '@context': 'https://schema.org/',
+    '@type': 'Product',
+    'name': `${p.name} — ANCESTRA PARFUM`,
+    'description': p.description || `${p.name} — ${p.subtitle}. Fragancia ${p.family}, ${p.gender}. Intensidad ${p.intensity}/5.`,
+    'brand': { '@type': 'Brand', 'name': p.brand },
+    'category': p.category,
+    'image': `https://ancestraparfum.com.ar/${p.image}`,
+    'sku': p.id,
+    'offers': {
+      '@type': 'Offer',
+      'priceCurrency': 'ARS',
+      'price': p.price_ars,
+      'availability': 'https://schema.org/InStock',
+      'url': `https://ancestraparfum.com.ar/product.html?id=${p.id}`,
+      'seller': { '@type': 'Organization', 'name': 'ANCESTRA PARFUM' }
+    }
+  };
+  const schemaEl = document.createElement('script');
+  schemaEl.type = 'application/ld+json';
+  schemaEl.textContent = JSON.stringify(schema);
+  document.head.appendChild(schemaEl);
+
   // Detectar si es Travel Size
   const isTravelSize = p.category === 'Travel Size' && p.travel_options && p.travel_options.length > 0;
 

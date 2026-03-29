@@ -167,7 +167,7 @@ button, input, select, textarea { font-family: var(--font-b); }
 /* CARD */
 .card { background: var(--bg); display: flex; flex-direction: column; position: relative; overflow: hidden; animation: fadeUp .45s cubic-bezier(.4,0,.2,1) both; }
 .card:hover { background: var(--bg2); }
-.card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform .3s cubic-bezier(.4,0,.2,1); }
+.card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--fc, var(--gold)); transform: scaleX(0); transform-origin: left; transition: transform .3s cubic-bezier(.4,0,.2,1); }
 .card:hover::after { transform: scaleX(1); }
 
 .cardLink { display: block; }
@@ -436,6 +436,168 @@ body { padding-bottom: 52px; }
   line-height: 1.75;
 }
 .faqAnswer.open { display: block; }
+
+/* ── Announcement Bar ────────────────────────────────── */
+.announcementBar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  padding: 9px 16px;
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--muted2);
+}
+.announcementBar strong { color: var(--gold); font-weight: 400; }
+.announcementBar a { color: var(--gold); text-decoration: none; transition: opacity .2s; }
+.announcementBar a:hover { opacity: .75; }
+@media (max-width: 600px) { .announcementBar { font-size: 10px; padding: 8px 12px; } }
+
+/* ── Section headers reutilizables ───────────────────── */
+.secLabel {
+  display: block;
+  font-size: 9.5px;
+  letter-spacing: .38em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+.secTitle {
+  font-family: var(--font-d);
+  font-size: clamp(22px, 3vw, 34px);
+  font-weight: 300;
+  letter-spacing: .05em;
+  color: var(--text);
+  line-height: 1.15;
+  margin: 0;
+}
+.secTitle em { font-style: italic; color: var(--gold); }
+
+/* ── Family Color Pill ───────────────────────────────── */
+.pillFc {
+  border-color: color-mix(in srgb, var(--fc, var(--border2)) 60%, transparent);
+  color: var(--fc, var(--muted));
+  opacity: 0.85;
+}
+
+/* ── Bestsellers Section ─────────────────────────────── */
+.bestsellersSec {
+  padding: 48px 0 36px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.bestsellersHeader {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 28px;
+}
+.bestsellersGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+@media (max-width: 1050px) { .bestsellersGrid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px)  { .bestsellersGrid { grid-template-columns: 1fr; } }
+
+.bsCard {
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: background .2s;
+}
+.bsCard:hover { background: var(--bg2); }
+.bsCard::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--fc, var(--gold));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+}
+.bsCard:hover::after { transform: scaleX(1); }
+
+.bsCardLink { display: block; text-decoration: none; }
+.bsThumb {
+  aspect-ratio: 3/4;
+  background: var(--bg2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 20px;
+}
+.bsThumb img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 32px rgba(0,0,0,.6));
+  transition: transform .5s cubic-bezier(.4,0,.2,1);
+}
+.bsCard:hover .bsThumb img { transform: scale(1.04); }
+.bsBody { padding: 14px 16px 8px; flex: 1; display: flex; flex-direction: column; gap: 3px; }
+.bsTitle { font-family: var(--font-d); font-size: 15px; font-weight: 400; letter-spacing: .03em; color: var(--text); line-height: 1.2; }
+.bsMeta { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.bsActions { padding: 8px 16px 16px; }
+
+.bestsellersFooter { margin-top: 24px; text-align: center; }
+.bestsellersFooter .btn { display: inline-block; width: auto; padding: 10px 32px; }
+
+/* ── Testimonials Section ────────────────────────────── */
+.testimonialsSec {
+  padding: 56px 0 48px;
+  border-top: 1px solid var(--border);
+  margin-top: 48px;
+}
+.testimonialsHeader { margin-bottom: 32px; }
+
+.testimonialsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+@media (max-width: 1050px) { .testimonialsGrid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 580px)  { .testimonialsGrid { grid-template-columns: 1fr; } }
+
+.testimonialCard {
+  background: var(--bg2);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.testimonialStars { color: var(--gold); font-size: 11px; letter-spacing: 3px; }
+.testimonialText {
+  font-size: 13px;
+  color: var(--muted2);
+  line-height: 1.8;
+  font-style: italic;
+  flex: 1;
+}
+.testimonialText::before { content: '\201C'; }
+.testimonialText::after  { content: '\201D'; }
+.testimonialMeta {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.testimonialAuthor {
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--text);
+  text-transform: uppercase;
+  font-weight: 400;
+}
+.testimonialProduct {
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: .08em;
+  margin-top: 3px;
+}
 
 /* ── WhatsApp Floating Button ───────────────────────── */
 .whatsappFloat {

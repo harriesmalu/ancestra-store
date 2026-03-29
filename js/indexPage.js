@@ -1,6 +1,49 @@
 import { loadProducts, formatARS, qs, qsa, setCartBadge, setQueryParam, getQueryParam } from './ui.js';
 import { addItem, totals } from './cartBrowser.js';
 
+// ── IDs de los más vendidos ────────────────────────────
+const BESTSELLER_IDS = [
+  'sauvage-elixir-50',   // Sauvage Elixir Dior — aromático, masc.
+  'bleu-chanel-50',      // Bleu Chanel — amaderado, masc.
+  'black-opium-50',      // Black Opium — ámbar vainilla, fem.
+  'good-girl-50',        // Good Girl — ámbar floral, fem.
+  'aventus-50',          // Aventus — chipre frutal, masc.
+  'coco-mad-50',         // Coco Mademoiselle — ámbar floral, fem.
+];
+
+// ── Colores por familia olfativa ───────────────────────
+const FAMILY_COLORS = {
+  'Aromática':                     '#5b93d1',
+  'Aromática Fougére':             '#4a9bb5',
+  'Aromática Acuática':            '#3ca8c8',
+  'Amaderada Aromática':           '#a08060',
+  'Amaderada Especiada':           '#b87040',
+  'Amaderada Acuática':            '#5a9090',
+  'Ámbar':                         '#c9a040',
+  'Ámbar Floral':                  '#c89050',
+  'Ámbar Fougére':                 '#b89050',
+  'Ámbar Vainilla':                '#d4a060',
+  'Ámbar Especiada':               '#c07840',
+  'Ámbar Amaderada':               '#b08050',
+  'Floral':                        '#d090a8',
+  'Floral Frutal':                 '#d878a0',
+  'Floral Acuática':               '#80b8d0',
+  'Floral Frutal Gourmand':        '#d070a0',
+  'Chipre Frutal':                 '#78a878',
+  'Chipre Floral':                 '#90a870',
+  'Almizcle Floral Amaderado':     '#b0a0c8',
+  'Almizcle Amaderado Floral':     '#b0a0c8',
+  'Oriental Floral':               '#d89060',
+  'Gourmand':                      '#c08060',
+  'Body Splash':                   '#60a8a0',
+  'Pack':                          '#c9a96e',
+};
+
+function getFamilyColor(family) {
+  return FAMILY_COLORS[family] || '#c9a96e';
+}
+
+// ── Filtros ────────────────────────────────────────────
 function matchesSearch(p, term){
   if(!term) return true;
   const t = term.toLowerCase();
@@ -26,13 +69,14 @@ function sortProducts(list, sort){
   return arr;
 }
 
+// ── Tarjeta del catálogo principal (con color de familia) ──
 function productCard(p){
   const isTravel = p.category === 'Travel Size';
+  const fc = getFamilyColor(p.family);
   const buttonText = isTravel ? 'Ver opciones' : 'Agregar al carrito';
-  const buttonClass = isTravel ? 'btn btnOutline' : 'btn';
-  
+
   return `
-    <article class="card">
+    <article class="card" data-family="${p.family}" style="--fc:${fc}">
       <a class="cardLink" href="product.html?id=${encodeURIComponent(p.id)}">
         <div class="thumb">
           <div class="thumbInner">
@@ -44,7 +88,7 @@ function productCard(p){
           <h3 class="title">${p.name}</h3>
           <div class="sub">${p.subtitle} · ${p.volume_ml} ml</div>
           <div class="metaRow">
-            <span class="pill">${p.family}</span>
+            <span class="pill pillFc">${p.family}</span>
             <span class="pill">${p.gender}</span>
             <span class="pill">Intensidad ${p.intensity}/5</span>
           </div>
@@ -52,8 +96,8 @@ function productCard(p){
         </div>
       </a>
       <div class="cardActions">
-        ${isTravel 
-          ? `<a href="product.html?id=${encodeURIComponent(p.id)}" class="${buttonClass}">${buttonText}</a>`
+        ${isTravel
+          ? `<a href="product.html?id=${encodeURIComponent(p.id)}" class="btn btnOutline">${buttonText}</a>`
           : `<button class="btn" data-add="${p.id}">${buttonText}</button>`
         }
       </div>
@@ -61,39 +105,93 @@ function productCard(p){
   `;
 }
 
+// ── Sección "Más vendidos" ─────────────────────────────
+function renderBestsellers(all) {
+  const container = qs('#bestsellersGrid');
+  if (!container) return;
+
+  const picks = BESTSELLER_IDS
+    .map(id => all.find(p => p.id === id))
+    .filter(Boolean);
+
+  container.innerHTML = picks.map(p => {
+    const fc = getFamilyColor(p.family);
+    return `
+      <article class="bsCard" data-family="${p.family}" style="--fc:${fc}">
+        <a href="product.html?id=${encodeURIComponent(p.id)}" class="bsCardLink">
+          <div class="bsThumb">
+            <img src="${p.image}" alt="${p.brand} ${p.name}" loading="lazy"/>
+          </div>
+          <div class="bsBody">
+            <div class="brand">${p.brand}</div>
+            <div class="bsTitle">${p.name}</div>
+            <div class="sub">${p.subtitle} · ${p.volume_ml}ml</div>
+            <div class="bsMeta">
+              <span class="pill pillFc">${p.family}</span>
+              <span class="pill">${p.gender}</span>
+            </div>
+            <div class="price">${formatARS(p.price_ars)}</div>
+          </div>
+        </a>
+        <div class="bsActions">
+          <button class="btn" data-add="${p.id}">Agregar al carrito</button>
+        </div>
+      </article>
+    `;
+  }).join('');
+
+  // Botones "Agregar" en la sección bestsellers
+  container.querySelectorAll('[data-add]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id  = btn.getAttribute('data-add');
+      const prod = all.find(x => x.id === id);
+      if (!prod) return;
+      addItem(prod, 1);
+      setCartBadge(totals().items_count);
+      btn.textContent = 'Agregado ✓';
+      btn.classList.add('btnOk');
+      setTimeout(() => { btn.textContent = 'Agregar al carrito'; btn.classList.remove('btnOk'); }, 900);
+    });
+  });
+}
+
+// ── Init ───────────────────────────────────────────────
 async function init(){
   const all = await loadProducts();
   const searchInput = qs('#searchInput');
-  const results = qs('#results');
-  const sortSel = qs('#sort');
+  const results     = qs('#results');
+  const sortSel     = qs('#sort');
 
   function getFilters(){
     return {
-      category: qs('#filterCategory').value || '',
-      family: qs('#filterFamily').value || '',
-      gender: qs('#filterGender').value || '',
+      category:     qs('#filterCategory').value  || '',
+      family:       qs('#filterFamily').value     || '',
+      gender:       qs('#filterGender').value     || '',
       minIntensity: Number(qs('#filterIntensity').value || 0) || 0,
-      maxPrice: Number(qs('#filterMaxPrice').value || 0) || 0,
+      maxPrice:     Number(qs('#filterMaxPrice').value  || 0) || 0,
     };
   }
 
   function render(){
-    const term = (searchInput.value || '').trim();
+    const term    = (searchInput.value || '').trim();
     setQueryParam('q', term);
 
-    const filters = getFilters();
+    const filters  = getFilters();
     const filtered = all
       .filter(p => matchesSearch(p, term))
       .filter(p => matchesFilters(p, filters));
 
     const sorted = sortProducts(filtered, sortSel.value);
-    results.innerHTML = sorted.map(productCard).join('') || `<div class="empty">No encontramos resultados. Probá con otra búsqueda.</div>`;
+    results.innerHTML = sorted.map(productCard).join('') ||
+      `<div class="empty">No encontramos resultados. Probá con otra búsqueda.</div>`;
 
+    // Botones "Agregar" del catálogo
     qsa('[data-add]').forEach(btn => {
+      if (btn.closest('#bestsellersGrid')) return; // ya wired
       btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-add');
-        const p = all.find(x => x.id === id);
-        addItem(p, 1);
+        const id   = btn.getAttribute('data-add');
+        const prod = all.find(x => x.id === id);
+        addItem(prod, 1);
         const t = totals();
         setCartBadge(t.items_count);
         btn.textContent = 'Agregado ✓';
@@ -105,15 +203,15 @@ async function init(){
     qs('#countLabel').textContent = `${sorted.length} producto${sorted.length === 1 ? '' : 's'}`;
   }
 
-  // hydrate search from URL
+  // Hidratar búsqueda desde URL
   const q = getQueryParam('q');
   if(q) searchInput.value = q;
 
   const t = totals();
   setCartBadge(t.items_count);
 
-  // Populate filter selects dynamically
-  const unique = (key) => Array.from(new Set(all.map(p=>p[key]))).sort();
+  // Poblar selects dinámicamente
+  const unique = (key) => Array.from(new Set(all.map(p => p[key]))).sort();
 
   function fillSelect(selId, values){
     const sel = qs(selId);
@@ -123,14 +221,14 @@ async function init(){
   }
 
   fillSelect('#filterCategory', unique('category'));
-  fillSelect('#filterFamily', unique('family'));
-  fillSelect('#filterGender', unique('gender'));
+  fillSelect('#filterFamily',   unique('family'));
+  fillSelect('#filterGender',   unique('gender'));
 
-  // ── Mobile search toggle ──────────────────────────────────
-  const searchToggle  = qs('#searchToggle');
-  const searchDrawer  = qs('#searchDrawer');
-  const searchDrawerClose = qs('#searchDrawerClose');
-  const searchInputMobile = qs('#searchInputMobile');
+  // ── Mobile search toggle ───────────────────────────────
+  const searchToggle       = qs('#searchToggle');
+  const searchDrawer       = qs('#searchDrawer');
+  const searchDrawerClose  = qs('#searchDrawerClose');
+  const searchInputMobile  = qs('#searchInputMobile');
 
   function openSearch() {
     searchDrawer.classList.add('open');
@@ -144,56 +242,43 @@ async function init(){
     searchDrawer.setAttribute('aria-hidden', 'true');
     searchToggle.classList.remove('active');
     searchToggle.setAttribute('aria-expanded', 'false');
-    // Sincronizar al cerrar
     searchInput.value = searchInputMobile.value;
   }
 
-  if (searchToggle) {
-    searchToggle.addEventListener('click', () => {
-      searchDrawer.classList.contains('open') ? closeSearch() : openSearch();
-    });
-  }
-  if (searchDrawerClose) {
-    searchDrawerClose.addEventListener('click', closeSearch);
-  }
-  // Sincronizar mobile → desktop input en tiempo real y renderizar
+  if (searchToggle)      searchToggle.addEventListener('click', () => searchDrawer.classList.contains('open') ? closeSearch() : openSearch());
+  if (searchDrawerClose) searchDrawerClose.addEventListener('click', closeSearch);
   if (searchInputMobile) {
-    searchInputMobile.addEventListener('input', () => {
-      searchInput.value = searchInputMobile.value;
-      render();
-    });
-    // Cerrar con Escape
-    searchInputMobile.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closeSearch();
-    });
+    searchInputMobile.addEventListener('input', () => { searchInput.value = searchInputMobile.value; render(); });
+    searchInputMobile.addEventListener('keydown', e => { if (e.key === 'Escape') closeSearch(); });
   }
-  // ─────────────────────────────────────────────────────────
 
-  // Events
+  // Eventos
   searchInput.addEventListener('input', () => render());
-  qsa('select,input[type=range],input[type=number]').forEach(el => {
-    el.addEventListener('change', () => render());
-  });
+  qsa('select,input[type=range],input[type=number]').forEach(el => el.addEventListener('change', () => render()));
   sortSel.addEventListener('change', () => render());
 
   // Reset
   qs('#resetFilters').addEventListener('click', () => {
-    qs('#filterCategory').value = '';
-    qs('#filterFamily').value = '';
-    qs('#filterGender').value = '';
-    qs('#filterIntensity').value = 0;
-    qs('#filterMaxPrice').value = 0;
+    qs('#filterCategory').value   = '';
+    qs('#filterFamily').value     = '';
+    qs('#filterGender').value     = '';
+    qs('#filterIntensity').value  = 0;
+    qs('#filterMaxPrice').value   = 0;
     qs('#maxPriceLabel').textContent = 'Sin tope';
     render();
   });
 
-  // Live labels
-  qs('#filterMaxPrice').addEventListener('input', (e)=>{
-    const v = Number(e.target.value||0);
+  // Live label precio
+  qs('#filterMaxPrice').addEventListener('input', (e) => {
+    const v = Number(e.target.value || 0);
     qs('#maxPriceLabel').textContent = v ? formatARS(v) : 'Sin tope';
   });
 
+  // Renderizar
   render();
+
+  // ── Sección "Más vendidos" ─────────────────────────────
+  renderBestsellers(all);
 }
 
 init().catch(err => {
