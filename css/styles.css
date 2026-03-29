@@ -436,3 +436,34 @@ body { padding-bottom: 52px; }
   line-height: 1.75;
 }
 .faqAnswer.open { display: block; }
+
+/* ── WhatsApp Floating Button ───────────────────────── */
+.whatsappFloat {
+  position: fixed;
+  bottom: 68px; /* sobre el footer fijo */
+  right: 22px;
+  width: 50px;
+  height: 50px;
+  background: #25d366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  box-shadow: 0 4px 18px rgba(0,0,0,.55), 0 1px 4px rgba(37,211,102,.25);
+  transition: transform .22s cubic-bezier(.4,0,.2,1), background .2s;
+  text-decoration: none;
+}
+.whatsappFloat:hover {
+  transform: scale(1.1);
+  background: #20ba5a;
+}
+.whatsappFloat svg {
+  width: 26px;
+  height: 26px;
+  fill: #fff;
+}
+@media (max-width: 700px) {
+  .whatsappFloat { bottom: 58px; right: 16px; width: 46px; height: 46px; }
+  .whatsappFloat svg { width: 24px; height: 24px; }
+}

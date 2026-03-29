@@ -26,10 +26,13 @@
     <div class="success">
       <div class="successBadge">✓</div>
       <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-weight:300;font-size:clamp(28px,4vw,40px);letter-spacing:.05em;margin-bottom:12px">Pedido confirmado</h1>
-      <p class="muted" style="font-size:14px;line-height:1.7;max-width:38ch;margin:0 auto">Gracias por elegir ANCESTRA PARFUM.<br>Te contactaremos por WhatsApp para coordinar el pago y el envío.</p>
+      <p class="muted" id="successMsg" style="font-size:14px;line-height:1.7;max-width:42ch;margin:0 auto">
+        Gracias por elegir ANCESTRA PARFUM.<br>
+        Te enviaremos la confirmación por email y coordinaremos el envío a la brevedad.
+      </p>
       <div class="successActions">
         <a class="btn btnPrimary" href="index.html">Volver al catálogo</a>
-        <a class="btn" href="https://www.instagram.com/ancestra.parfum" target="_blank">@ancestra.parfum</a>
+        <a class="btn" href="https://www.instagram.com/ancestra.parfum" target="_blank" rel="noopener">@ancestra.parfum</a>
       </div>
     </div>
   </main>
@@ -40,10 +43,25 @@
       <div class="footerCenter">Fragancias premium &middot; CABA &amp; GBA</div>
       <div class="footerLinks">
         <a href="mailto:ancestraparfum@gmail.com">ancestraparfum@gmail.com</a>
-        <a href="https://instagram.com/ancestra.parfum" target="_blank">@ancestra.parfum</a>
+        <a href="https://instagram.com/ancestra.parfum" target="_blank" rel="noopener">@ancestra.parfum</a>
       </div>
     </div>
   </footer>
   <script>document.querySelectorAll(".footerYear").forEach(function(e){e.textContent=new Date().getFullYear();});</script>
+  <script>
+    // Personalizar mensaje según método de pago
+    try {
+      const order = JSON.parse(localStorage.getItem('ancestra_last_order') || '{}');
+      const msg = document.getElementById('successMsg');
+      if (msg && order.paymentMethod) {
+        const msgs = {
+          mp:            'Gracias por tu compra.<br>Tu pago fue procesado por MercadoPago. Te enviaremos la confirmación por email.',
+          transferencia: 'Gracias por tu pedido.<br>Te enviamos los datos de transferencia por email. Una vez confirmado el pago, preparamos el envío.',
+          whatsapp:      'Gracias por tu pedido.<br>Te contactamos por WhatsApp al número que dejaste para coordinar el pago y el envío.',
+        };
+        if (msgs[order.paymentMethod]) msg.innerHTML = msgs[order.paymentMethod];
+      }
+    } catch(e) {}
+  </script>
 </body>
 </html>

@@ -6,6 +6,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>ANCESTRA PARFUM · Checkout</title>
+  <meta name="robots" content="noindex, nofollow"/>
   <link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body>
@@ -60,7 +61,7 @@
 
           <div id="paymentSelector"></div>
           <button class="btn btnWide btn-primary" type="submit" id="submitBtn">Pagar con MercadoPago</button>
-          
+
           <div id="errorMessage" style="display:none; margin-top:12px; padding:12px; background:#2a1a1a; border-radius:4px; font-size:14px;"></div>
         </form>
       </div>
@@ -70,8 +71,7 @@
         <div id="summaryContent"></div>
         <div class="sumLine total"><span>Total</span><span id="totalMini">$0</span></div>
         <div class="muted small" style="margin-top:10px">
-          Envíos a CABA y GBA<br>
-          Te contactaremos para coordinar el pago
+          Envíos a CABA y GBA · 1 a 3 días hábiles
         </div>
       </aside>
     </section>
@@ -84,8 +84,11 @@
       <div>&copy; <span class="footerYear"></span> ANCESTRA PARFUM</div>
       <div class="footerCenter">Fragancias premium &middot; CABA &amp; GBA</div>
       <div class="footerLinks">
-        <a href="/cdn-cgi/l/email-protection#40212e23253334322130213226352d00272d21292c6e232f2d"><span class="__cf_email__" data-cfemail="ccada2afa9bfb8beadbcadbeaab9a18caba1ada5a0e2afa3a1">[email&#160;protected]</span></a>
-        <a href="https://instagram.com/ancestra.parfum" target="_blank">@ancestra.parfum</a>
+        <a href="mailto:ancestraparfum@gmail.com">ancestraparfum@gmail.com</a>
+        <a href="https://instagram.com/ancestra.parfum" target="_blank" rel="noopener">@ancestra.parfum</a>
       </div>
     </div>
-  </footer
+  </footer>
+  <script>document.querySelectorAll(".footerYear").forEach(function(e){e.textContent=new Date().getFullYear();});</script>
+</body>
+</html>

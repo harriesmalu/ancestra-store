@@ -83,7 +83,7 @@ function renderTravelSizeSelector(product) {
 
         <div class="shippingBox">
           <div class="infoTitle">Envíos</div>
-          <div class="infoText">CABA y GBA: envío en 24/48 hs. Resto del país: 3–6 días hábiles.</div>
+          <div class="infoText">Envíos a CABA y GBA · 1 a 3 días hábiles vía Correo Argentino.</div>
         </div>
       </div>
     </div>
@@ -129,7 +129,7 @@ function renderNormalProduct(p) {
 
         <div class="shippingBox">
           <div class="infoTitle">Envíos</div>
-          <div class="infoText">CABA y GBA: envío en 24/48 hs. Resto del país: 3–6 días hábiles.</div>
+          <div class="infoText">Envíos a CABA y GBA · 1 a 3 días hábiles vía Correo Argentino.</div>
         </div>
       </div>
     </div>
@@ -150,6 +150,7 @@ async function init(){
   }
 
   setCartBadge(totals().items_count);
+  document.title = `${p.name} — ANCESTRA PARFUM`;
   qs('#breadcrumbs').innerHTML = `Inicio / ${p.category} / <span>${p.name}</span>`;
 
   // Detectar si es Travel Size
