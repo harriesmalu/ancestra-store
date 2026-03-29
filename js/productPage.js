@@ -83,7 +83,7 @@ function renderTravelSizeSelector(product) {
 
         <div class="shippingBox">
           <div class="infoTitle">Envíos</div>
-          <div class="infoText">Envíos a CABA y GBA · 1 a 3 días hábiles vía Correo Argentino.</div>
+          <div class="infoText">Envíos a CABA y GBA · 2 a 4 días hábiles vía Enviopack.</div>
         </div>
       </div>
     </div>
@@ -129,7 +129,7 @@ function renderNormalProduct(p) {
 
         <div class="shippingBox">
           <div class="infoTitle">Envíos</div>
-          <div class="infoText">Envíos a CABA y GBA · 1 a 3 días hábiles vía Correo Argentino.</div>
+          <div class="infoText">Envíos a CABA y GBA · 2 a 4 días hábiles vía Enviopack.</div>
         </div>
       </div>
     </div>
