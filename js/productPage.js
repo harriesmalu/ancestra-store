@@ -1,4 +1,4 @@
-import { loadProducts, formatARS, qs, getQueryParam, setCartBadge, isAvailable, stockBadge } from './ui.js';
+import { loadProducts, formatARS, qs, getQueryParam, setCartBadge, isAvailable, stockBadge, getSiblings, sizeClass } from './ui.js';
 import { addItem, totals } from './cartBrowser.js';
 
 function notesList(title, notes){
@@ -77,14 +77,37 @@ function renderTravelSizeSelector(product) {
 }
 
 // Renderizar producto normal
-function renderNormalProduct(p) {
+function sizeSelector(selected, siblings) {
+  if (siblings.length <= 1) return '';
+  return `
+    <div class="sizeSelector">
+      <div class="infoTitle">Tamaño</div>
+      <div class="sizeOptions">
+        ${siblings.map(s => {
+          const out = !isAvailable(s);
+          const cls = ['sizeOption', s.id === selected.id ? 'selected' : '', out ? 'sizeOut' : ''].join(' ');
+          return `
+            <button type="button" class="${cls}" data-size="${s.id}" ${out ? 'disabled' : ''}>
+              <span class="sizeMl">${s.volume_ml} ml</span>
+              <span class="sizePrice">${out ? 'Sin stock' : formatARS(s.price_ars)}</span>
+              ${s.stock === 'ultimos' ? '<span class="sizeLow">Últimas unidades</span>' : ''}
+            </button>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderNormalProduct(p, siblings = [p]) {
   const available = isAvailable(p);
+  const allOut = siblings.every(s => !isAvailable(s));
   return `
     <div class="productLayout">
       <div class="productMedia">
         <div class="productImage">
           ${stockBadge(p)}
-          <img src="${p.image}" alt="${p.brand} ${p.name}"/>
+          <img class="${sizeClass(p)}" src="${p.image}" alt="${p.brand} ${p.name}"/>
         </div>
       </div>
       <div class="productInfo">
@@ -98,6 +121,8 @@ function renderNormalProduct(p) {
         </div>
         <div class="price big">${formatARS(p.price_ars)}</div>
 
+        ${sizeSelector(p, siblings)}
+
         ${available ? `
         <div class="qtyRow">
           <label for="qty">Cantidad</label>
@@ -107,9 +132,11 @@ function renderNormalProduct(p) {
         <button id="addBtn" class="btn btnWide btn-primary">Agregar al carrito</button>
         ` : `
         <div class="outOfStockBox">
-          <div class="outOfStockTitle">Sin stock por el momento</div>
-          <div class="infoText">Esta fragancia está temporalmente agotada. Escribinos por WhatsApp y te avisamos cuando vuelva a estar disponible.</div>
-          <a class="btn btnWide" href="https://wa.me/5491165678354?text=${encodeURIComponent('Hola! Quiero que me avisen cuando vuelva a haber stock de ' + p.name)}" target="_blank" rel="noopener">Avisame cuando vuelva</a>
+          <div class="outOfStockTitle">${allOut ? 'Sin stock por el momento' : 'Este tamaño está agotado'}</div>
+          <div class="infoText">${allOut
+            ? 'Esta fragancia está temporalmente agotada. Escribinos por WhatsApp y te avisamos cuando vuelva a estar disponible.'
+            : 'Elegí otro tamaño disponible arriba, o escribinos por WhatsApp y te avisamos cuando vuelva.'}</div>
+          <a class="btn btnWide" href="https://wa.me/5491165678354?text=${encodeURIComponent('Hola! Quiero que me avisen cuando vuelva a haber stock de ' + p.name + ' ' + p.volume_ml + 'ml')}" target="_blank" rel="noopener">Avisame cuando vuelva</a>
         </div>
         `}
 
@@ -237,23 +264,45 @@ async function init(){
     });
 
   } else {
-    // Renderizar producto normal
-    qs('#productRoot').innerHTML = renderNormalProduct(p);
+    // Producto normal, con selector de tamaño si tiene variantes
+    const siblings = getSiblings(p, products);
+    // Si el tamaño pedido está agotado pero otro no, arrancar en el disponible
+    let selected = isAvailable(p) ? p : (siblings.find(isAvailable) || p);
 
-    if (!isAvailable(p)) return; // sin stock: no hay botón de compra
+    function renderSelected() {
+      qs('#productRoot').innerHTML = renderNormalProduct(selected, siblings);
+      document.title = `${selected.name} — ANCESTRA PARFUM`;
 
-    qs('#addBtn').addEventListener('click', () => {
-      const qty = Math.max(1, Number(qs('#qty').value||1));
-      addItem(p, qty);
-      const t = totals();
-      setCartBadge(t.items_count);
-      qs('#addBtn').textContent = 'Agregado ✓';
-      qs('#addBtn').classList.add('btnOk');
-      setTimeout(() => { 
-        qs('#addBtn').textContent = 'Agregar al carrito'; 
-        qs('#addBtn').classList.remove('btnOk'); 
-      }, 900);
-    });
+      // Cambiar de tamaño re-renderiza la ficha
+      qs('#productRoot').querySelectorAll('[data-size]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const next = siblings.find(s => s.id === btn.getAttribute('data-size'));
+          if (!next || next.id === selected.id) return;
+          selected = next;
+          const url = new URL(window.location.href);
+          url.searchParams.set('id', selected.id);
+          history.replaceState({}, '', url);
+          renderSelected();
+        });
+      });
+
+      const addBtn = qs('#addBtn');
+      if (!addBtn) return; // tamaño sin stock: no hay botón de compra
+      addBtn.addEventListener('click', () => {
+        const qty = Math.max(1, Number(qs('#qty').value||1));
+        addItem(selected, qty);
+        const t = totals();
+        setCartBadge(t.items_count);
+        addBtn.textContent = 'Agregado ✓';
+        addBtn.classList.add('btnOk');
+        setTimeout(() => {
+          addBtn.textContent = 'Agregar al carrito';
+          addBtn.classList.remove('btnOk');
+        }, 900);
+      });
+    }
+
+    renderSelected();
   }
 }
 

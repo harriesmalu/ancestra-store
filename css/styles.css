@@ -799,3 +799,63 @@ body { padding-bottom: 52px; }
   font-size: 12px;
   letter-spacing: .02em;
 }
+
+/* ── Variantes de tamaño ────────────────────────────── */
+.priceFrom {
+  font-size: .68em;
+  color: var(--muted);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-right: 2px;
+}
+
+/* El frasco escala según el tamaño elegido */
+.imgSize30  { transform: scale(.76); }
+.imgSize100 { transform: scale(1.14); }
+.productImage img { transition: transform .35s var(--ease); }
+
+.sizeSelector { margin: 20px 0 4px; }
+.sizeOptions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+@media (max-width: 420px) { .sizeOptions { grid-template-columns: 1fr; } }
+.sizeOption {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 12px 8px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-family: var(--font-b);
+  border-radius: var(--radius);
+  transition: border-color .2s, background .2s;
+}
+.sizeOption:hover { border-color: var(--gold); }
+.sizeOption.selected {
+  border-color: var(--gold);
+  background: rgba(201,169,110,.08);
+}
+.sizeOption.selected::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--gold);
+}
+.sizeOption.sizeOut {
+  opacity: .45;
+  cursor: not-allowed;
+  border-color: var(--border);
+}
+.sizeOption.sizeOut:hover { border-color: var(--border); }
+.sizeMl { font-family: var(--font-d); font-size: 17px; letter-spacing: .04em; }
+.sizePrice { font-size: 11px; color: var(--muted2); letter-spacing: .04em; }
+.sizeOption.selected .sizePrice { color: var(--gold2); }
+.sizeLow { font-size: 8.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold2); }

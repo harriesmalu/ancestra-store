@@ -1,4 +1,4 @@
-import { loadProducts, formatARS, qs, qsa, setCartBadge, setQueryParam, getQueryParam, isAvailable, stockBadge } from './ui.js';
+import { loadProducts, formatARS, qs, qsa, setCartBadge, setQueryParam, getQueryParam, isAvailable, stockBadge, groupInfo } from './ui.js';
 import { addItem, totals } from './cartBrowser.js';
 
 // ── IDs de los más vendidos ────────────────────────────
@@ -51,38 +51,50 @@ function matchesSearch(p, term){
   return hay.includes(t);
 }
 
-function matchesFilters(p, filters){
+function matchesFilters(entry, filters){
+  const p = entry.p;
   if(filters.category && p.category !== filters.category) return false;
   if(filters.family && p.family !== filters.family) return false;
   if(filters.gender && p.gender !== filters.gender) return false;
   if(filters.minIntensity && p.intensity < filters.minIntensity) return false;
-  if(filters.maxPrice && p.price_ars > filters.maxPrice) return false;
+  if(filters.maxPrice && entry.g.minPrice > filters.maxPrice) return false;
   return true;
 }
 
-function sortProducts(list, sort){
+function sortEntries(list, sort){
   const arr = [...list];
-  if(sort === 'price_asc') arr.sort((a,b)=>a.price_ars-b.price_ars);
-  else if(sort === 'price_desc') arr.sort((a,b)=>b.price_ars-a.price_ars);
-  else if(sort === 'intensity_desc') arr.sort((a,b)=>b.intensity-a.intensity);
-  else arr.sort((a,b)=>a.name.localeCompare(b.name));
-  // Los productos sin stock siempre al final, manteniendo el orden elegido
-  arr.sort((a,b)=>(isAvailable(a)?0:1)-(isAvailable(b)?0:1));
+  if(sort === 'price_asc') arr.sort((a,b)=>a.g.minPrice-b.g.minPrice);
+  else if(sort === 'price_desc') arr.sort((a,b)=>b.g.minPrice-a.g.minPrice);
+  else if(sort === 'intensity_desc') arr.sort((a,b)=>b.p.intensity-a.p.intensity);
+  else arr.sort((a,b)=>a.p.name.localeCompare(b.p.name));
+  // Los grupos sin stock siempre al final, manteniendo el orden elegido
+  arr.sort((a,b)=>(a.g.stock!=='sin_stock'?0:1)-(b.g.stock!=='sin_stock'?0:1));
   return arr;
 }
 
 // ── Tarjeta del catálogo principal (con color de familia) ──
-function productCard(p){
+function productCard(entry){
+  const { p, g } = entry;
   const isTravel = p.category === 'Travel Size';
   const fc = getFamilyColor(p.family);
-  const available = isAvailable(p);
-  const buttonText = isTravel ? 'Ver opciones' : 'Agregar al carrito';
+  const available = g.stock !== 'sin_stock';
+  // Badge a nivel grupo
+  const badge = g.stock === 'sin_stock' ? '<span class="stockBadge stockOut">Sin stock</span>'
+              : g.stock === 'ultimos'   ? '<span class="stockBadge stockLow">Últimas unidades</span>'
+              : '';
+  // Botón: agrega el tamaño default (este producto) si está disponible;
+  // si solo quedan otros tamaños, lleva a la ficha a elegir.
+  const action = !available
+    ? `<button class="btn" disabled>Sin stock</button>`
+    : (isTravel || !isAvailable(p))
+      ? `<a href="product.html?id=${encodeURIComponent(p.id)}" class="btn btnOutline">Ver opciones</a>`
+      : `<button class="btn" data-add="${p.id}">Agregar al carrito</button>`;
 
   return `
     <article class="card ${available ? '' : 'cardOut'}" data-family="${p.family}" style="--fc:${fc}">
       <a class="cardLink" href="product.html?id=${encodeURIComponent(p.id)}">
         <div class="thumb">
-          ${stockBadge(p)}
+          ${badge}
           <div class="thumbInner">
             <img src="${p.image}" alt="${p.brand} ${p.name}" loading="lazy"/>
           </div>
@@ -90,23 +102,16 @@ function productCard(p){
         <div class="cardBody">
           <div class="brand">${p.brand}</div>
           <h3 class="title">${p.name}</h3>
-          <div class="sub">${p.subtitle} · ${p.volume_ml} ml</div>
+          <div class="sub">${p.subtitle} · ${g.multi ? g.sizesLabel : p.volume_ml + ' ml'}</div>
           <div class="metaRow">
             <span class="pill pillFc">${p.family}</span>
             <span class="pill">${p.gender}</span>
             <span class="pill">Intensidad ${p.intensity}/5</span>
           </div>
-          <div class="price">${formatARS(p.price_ars)}</div>
+          <div class="price">${g.multi ? `<span class="priceFrom">Desde</span> ${formatARS(g.minPrice)}` : formatARS(p.price_ars)}</div>
         </div>
       </a>
-      <div class="cardActions">
-        ${!available
-          ? `<button class="btn" disabled>Sin stock</button>`
-          : isTravel
-            ? `<a href="product.html?id=${encodeURIComponent(p.id)}" class="btn btnOutline">${buttonText}</a>`
-            : `<button class="btn" data-add="${p.id}">${buttonText}</button>`
-        }
-      </div>
+      <div class="cardActions">${action}</div>
     </article>
   `;
 }
@@ -116,38 +121,45 @@ function renderBestsellers(all) {
   const container = qs('#bestsellersGrid');
   if (!container) return;
 
-  // Curados primero (solo con stock); se completa hasta 6 con otros disponibles
+  // Curados primero (grupos con stock); se completa hasta 6 con otros disponibles
+  const entryOf = p => ({ p, g: groupInfo(p, all) });
   const curated = BESTSELLER_IDS
     .map(id => all.find(p => p.id === id))
-    .filter(p => p && isAvailable(p));
-  const fillers = all.filter(p =>
-    isAvailable(p) && p.category === 'Perfumes' && !curated.includes(p)
-  );
+    .filter(Boolean)
+    .map(entryOf)
+    .filter(e => e.g.stock !== 'sin_stock');
+  const curatedIds = new Set(curated.map(e => e.p.id));
+  const fillers = all
+    .filter(p => p.category === 'Perfumes' && (!p.variant_group || p.volume_ml === 50) && !curatedIds.has(p.id))
+    .map(entryOf)
+    .filter(e => e.g.stock !== 'sin_stock');
   const picks = [...curated, ...fillers].slice(0, 6);
 
-  container.innerHTML = picks.map(p => {
+  container.innerHTML = picks.map(({ p, g }) => {
     const fc = getFamilyColor(p.family);
+    const badge = g.stock === 'ultimos' ? '<span class="stockBadge stockLow">Últimas unidades</span>' : '';
+    const action = isAvailable(p)
+      ? `<button class="btn" data-add="${p.id}">Agregar al carrito</button>`
+      : `<a href="product.html?id=${encodeURIComponent(p.id)}" class="btn btnOutline">Ver opciones</a>`;
     return `
       <article class="bsCard" data-family="${p.family}" style="--fc:${fc}">
         <a href="product.html?id=${encodeURIComponent(p.id)}" class="bsCardLink">
           <div class="bsThumb">
-            ${stockBadge(p)}
+            ${badge}
             <img src="${p.image}" alt="${p.brand} ${p.name}" loading="lazy"/>
           </div>
           <div class="bsBody">
             <div class="brand">${p.brand}</div>
             <div class="bsTitle">${p.name}</div>
-            <div class="sub">${p.subtitle} · ${p.volume_ml}ml</div>
+            <div class="sub">${p.subtitle} · ${g.multi ? g.sizesLabel : p.volume_ml + 'ml'}</div>
             <div class="bsMeta">
               <span class="pill pillFc">${p.family}</span>
               <span class="pill">${p.gender}</span>
             </div>
-            <div class="price">${formatARS(p.price_ars)}</div>
+            <div class="price">${g.multi ? `<span class="priceFrom">Desde</span> ${formatARS(g.minPrice)}` : formatARS(p.price_ars)}</div>
           </div>
         </a>
-        <div class="bsActions">
-          <button class="btn" data-add="${p.id}">Agregar al carrito</button>
-        </div>
+        <div class="bsActions">${action}</div>
       </article>
     `;
   }).join('');
@@ -184,16 +196,21 @@ async function init(){
     };
   }
 
+  // Una entrada por grupo de variantes (representante: 50ml) o por producto suelto
+  const catalogEntries = all
+    .filter(p => !p.variant_group || p.volume_ml === 50)
+    .map(p => ({ p, g: groupInfo(p, all) }));
+
   function render(){
     const term    = (searchInput.value || '').trim();
     setQueryParam('q', term);
 
     const filters  = getFilters();
-    const filtered = all
-      .filter(p => matchesSearch(p, term))
-      .filter(p => matchesFilters(p, filters));
+    const filtered = catalogEntries
+      .filter(e => matchesSearch(e.p, term))
+      .filter(e => matchesFilters(e, filters));
 
-    const sorted = sortProducts(filtered, sortSel.value);
+    const sorted = sortEntries(filtered, sortSel.value);
     results.innerHTML = sorted.map(productCard).join('') ||
       `<div class="empty">No encontramos resultados. Probá con otra búsqueda.</div>`;
 

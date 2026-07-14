@@ -36,7 +36,8 @@ const ALIASES = {
 };
 
 // Productos que el proveedor ya no lista: quedan sin stock hasta nuevo aviso
-const DISCONTINUED = new Set(['fahrenheit-50', 'bright-crystal-50']);
+const DISCONTINUED_PREFIXES = ['fahrenheit-', 'bright-crystal-'];
+const isDiscontinued = id => DISCONTINUED_PREFIXES.some(p => id.startsWith(p));
 
 const LABELS = {
   disponible: 'Disponible',
@@ -118,7 +119,7 @@ async function main() {
   for (const lp of local) {
     let slug;
     let detail = '';
-    if (DISCONTINUED.has(lp.id)) {
+    if (isDiscontinued(lp.id)) {
       slug = 'sin_stock';
       detail = 'descatalogado por el proveedor';
     } else {
