@@ -1,4 +1,4 @@
-import { qs, setCartBadge } from './ui.js';
+import { qs, setCartBadge, loadProducts } from './ui.js';
 import { listItems, totals, clearCart } from './cartBrowser.js';
 
 // Versión MP v2 — incluye datos completos de dirección en la preferencia
@@ -29,7 +29,7 @@ function calcShipping(subtotal) {
 }
 
 // ── UI helpers ────────────────────────────────────────
-function showMsg(msg, isError = false) {
+function showMsg(msg, isError = false, persist = false) {
   const el = qs('#errorMessage');
   if (!el) return;
   el.textContent = msg;
@@ -41,7 +41,7 @@ function showMsg(msg, isError = false) {
   el.style.padding    = '12px 14px';
   el.style.marginTop  = '14px';
   el.style.fontSize   = '13px';
-  if (isError) setTimeout(() => { el.style.display = 'none'; }, 6000);
+  if (isError && !persist) setTimeout(() => { el.style.display = 'none'; }, 6000);
 }
 
 function hideMsg() {
@@ -282,6 +282,19 @@ function init() {
   injectPaymentCSS();
   renderSummary();
   renderPaymentSelector();
+
+  // ── Validar stock del carrito contra el catálogo ──
+  loadProducts().then(products => {
+    const outNames = listItems()
+      .map(it => products.find(p => p.id === it.id))
+      .filter(p => p && p.stock === 'sin_stock')
+      .map(p => p.name);
+    if (outNames.length) {
+      showMsg(`Sin stock: ${outNames.join(', ')}. Volvé al carrito y eliminá esos productos para continuar.`, true, true);
+      const submitBtn = qs('#submitBtn');
+      if (submitBtn) submitBtn.disabled = true;
+    }
+  }).catch(() => { /* si falla la carga del catálogo no bloqueamos el checkout */ });
 
   // ── Shipping Calculator ───────────────────────────
   const t = totals();

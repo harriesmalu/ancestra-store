@@ -1,4 +1,4 @@
-import { loadProducts, formatARS, qs, qsa, setCartBadge, setQueryParam, getQueryParam } from './ui.js';
+import { loadProducts, formatARS, qs, qsa, setCartBadge, setQueryParam, getQueryParam, isAvailable, stockBadge } from './ui.js';
 import { addItem, totals } from './cartBrowser.js';
 
 // ── IDs de los más vendidos ────────────────────────────
@@ -66,6 +66,8 @@ function sortProducts(list, sort){
   else if(sort === 'price_desc') arr.sort((a,b)=>b.price_ars-a.price_ars);
   else if(sort === 'intensity_desc') arr.sort((a,b)=>b.intensity-a.intensity);
   else arr.sort((a,b)=>a.name.localeCompare(b.name));
+  // Los productos sin stock siempre al final, manteniendo el orden elegido
+  arr.sort((a,b)=>(isAvailable(a)?0:1)-(isAvailable(b)?0:1));
   return arr;
 }
 
@@ -73,12 +75,14 @@ function sortProducts(list, sort){
 function productCard(p){
   const isTravel = p.category === 'Travel Size';
   const fc = getFamilyColor(p.family);
+  const available = isAvailable(p);
   const buttonText = isTravel ? 'Ver opciones' : 'Agregar al carrito';
 
   return `
-    <article class="card" data-family="${p.family}" style="--fc:${fc}">
+    <article class="card ${available ? '' : 'cardOut'}" data-family="${p.family}" style="--fc:${fc}">
       <a class="cardLink" href="product.html?id=${encodeURIComponent(p.id)}">
         <div class="thumb">
+          ${stockBadge(p)}
           <div class="thumbInner">
             <img src="${p.image}" alt="${p.brand} ${p.name}" loading="lazy"/>
           </div>
@@ -96,9 +100,11 @@ function productCard(p){
         </div>
       </a>
       <div class="cardActions">
-        ${isTravel
-          ? `<a href="product.html?id=${encodeURIComponent(p.id)}" class="btn btnOutline">${buttonText}</a>`
-          : `<button class="btn" data-add="${p.id}">${buttonText}</button>`
+        ${!available
+          ? `<button class="btn" disabled>Sin stock</button>`
+          : isTravel
+            ? `<a href="product.html?id=${encodeURIComponent(p.id)}" class="btn btnOutline">${buttonText}</a>`
+            : `<button class="btn" data-add="${p.id}">${buttonText}</button>`
         }
       </div>
     </article>
@@ -110,9 +116,14 @@ function renderBestsellers(all) {
   const container = qs('#bestsellersGrid');
   if (!container) return;
 
-  const picks = BESTSELLER_IDS
+  // Curados primero (solo con stock); se completa hasta 6 con otros disponibles
+  const curated = BESTSELLER_IDS
     .map(id => all.find(p => p.id === id))
-    .filter(Boolean);
+    .filter(p => p && isAvailable(p));
+  const fillers = all.filter(p =>
+    isAvailable(p) && p.category === 'Perfumes' && !curated.includes(p)
+  );
+  const picks = [...curated, ...fillers].slice(0, 6);
 
   container.innerHTML = picks.map(p => {
     const fc = getFamilyColor(p.family);
@@ -120,6 +131,7 @@ function renderBestsellers(all) {
       <article class="bsCard" data-family="${p.family}" style="--fc:${fc}">
         <a href="product.html?id=${encodeURIComponent(p.id)}" class="bsCardLink">
           <div class="bsThumb">
+            ${stockBadge(p)}
             <img src="${p.image}" alt="${p.brand} ${p.name}" loading="lazy"/>
           </div>
           <div class="bsBody">

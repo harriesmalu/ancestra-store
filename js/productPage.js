@@ -1,4 +1,4 @@
-import { loadProducts, formatARS, qs, getQueryParam, setCartBadge } from './ui.js';
+import { loadProducts, formatARS, qs, getQueryParam, setCartBadge, isAvailable, stockBadge } from './ui.js';
 import { addItem, totals } from './cartBrowser.js';
 
 function notesList(title, notes){
@@ -28,38 +28,24 @@ function renderTravelSizeSelector(product) {
         <div class="sub">${product.subtitle} · ${product.gender}</div>
         <div class="price big">${formatARS(product.price_ars)}</div>
 
-        <div class="infoBox" style="background: #2a1a1a; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
-          <div class="infoTitle">📦 Armá tu pack</div>
-          <div class="infoText" style="margin-bottom: 16px;">Elegí exactamente <strong>3 fragancias</strong> de 15ml cada una</div>
-          
-          <div style="display: flex; flex-direction: column; gap: 12px;">
-            <div>
-              <label for="perfume1" style="display: block; margin-bottom: 4px; font-size: 14px;">1° Perfume *</label>
-              <select id="perfume1" class="travelSelect" required style="width: 100%; padding: 10px; background: #1a1a1a; color: #fff; border: 1px solid #3a3a3a; border-radius: 4px; font-size: 14px;">
-                <option value="">Seleccioná una fragancia</option>
-                ${options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
-              </select>
-            </div>
+        <div class="travelBuilder">
+          <div class="infoTitle">Armá tu pack</div>
+          <div class="infoText travelIntro">Elegí exactamente <strong>3 fragancias</strong> de 15 ml cada una.</div>
 
-            <div>
-              <label for="perfume2" style="display: block; margin-bottom: 4px; font-size: 14px;">2° Perfume *</label>
-              <select id="perfume2" class="travelSelect" required style="width: 100%; padding: 10px; background: #1a1a1a; color: #fff; border: 1px solid #3a3a3a; border-radius: 4px; font-size: 14px;">
-                <option value="">Seleccioná una fragancia</option>
-                ${options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
-              </select>
-            </div>
-
-            <div>
-              <label for="perfume3" style="display: block; margin-bottom: 4px; font-size: 14px;">3° Perfume *</label>
-              <select id="perfume3" class="travelSelect" required style="width: 100%; padding: 10px; background: #1a1a1a; color: #fff; border: 1px solid #3a3a3a; border-radius: 4px; font-size: 14px;">
-                <option value="">Seleccioná una fragancia</option>
-                ${options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
-              </select>
-            </div>
+          <div class="travelSelects">
+            ${[1, 2, 3].map(n => `
+              <label class="field">
+                <span>${n}° fragancia *</span>
+                <select id="perfume${n}" class="travelSelect" required>
+                  <option value="">Seleccioná una fragancia</option>
+                  ${options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+                </select>
+              </label>
+            `).join('')}
           </div>
 
-          <div id="travelError" style="display: none; color: #ff4444; margin-top: 12px; font-size: 14px; padding: 8px; background: rgba(255,68,68,0.1); border-radius: 4px;"></div>
-          <div id="travelSuccess" style="display: none; color: #44ff44; margin-top: 12px; font-size: 14px; padding: 8px; background: rgba(68,255,68,0.1); border-radius: 4px;"></div>
+          <div id="travelError" class="travelMsg travelMsgError"></div>
+          <div id="travelSuccess" class="travelMsg travelMsgOk"></div>
         </div>
 
         <div class="qtyRow">
@@ -76,8 +62,8 @@ function renderTravelSizeSelector(product) {
 
         <div class="infoBox">
           <div class="infoTitle">Fragancias disponibles (${options.length})</div>
-          <div class="infoText" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin-top: 8px;">
-            ${options.map(opt => `<span style="padding: 6px 12px; background: #2a2a2a; border-radius: 4px; font-size: 13px;">• ${opt}</span>`).join('')}
+          <div class="travelOptionsGrid">
+            ${options.map(opt => `<span class="travelOption">${opt}</span>`).join('')}
           </div>
         </div>
 
@@ -92,10 +78,12 @@ function renderTravelSizeSelector(product) {
 
 // Renderizar producto normal
 function renderNormalProduct(p) {
+  const available = isAvailable(p);
   return `
     <div class="productLayout">
       <div class="productMedia">
         <div class="productImage">
+          ${stockBadge(p)}
           <img src="${p.image}" alt="${p.brand} ${p.name}"/>
         </div>
       </div>
@@ -106,15 +94,24 @@ function renderNormalProduct(p) {
         <div class="metaRow">
           <span class="pill">${p.family}</span>
           <span class="pill">Intensidad ${p.intensity}/5</span>
+          ${p.stock === 'ultimos' ? '<span class="pill pillLow">Últimas unidades</span>' : ''}
         </div>
         <div class="price big">${formatARS(p.price_ars)}</div>
 
+        ${available ? `
         <div class="qtyRow">
           <label for="qty">Cantidad</label>
           <input id="qty" type="number" min="1" value="1"/>
         </div>
 
-        <button id="addBtn" class="btn btnWide">Agregar al carrito</button>
+        <button id="addBtn" class="btn btnWide btn-primary">Agregar al carrito</button>
+        ` : `
+        <div class="outOfStockBox">
+          <div class="outOfStockTitle">Sin stock por el momento</div>
+          <div class="infoText">Esta fragancia está temporalmente agotada. Escribinos por WhatsApp y te avisamos cuando vuelva a estar disponible.</div>
+          <a class="btn btnWide" href="https://wa.me/5491165678354?text=${encodeURIComponent('Hola! Quiero que me avisen cuando vuelva a haber stock de ' + p.name)}" target="_blank" rel="noopener">Avisame cuando vuelva</a>
+        </div>
+        `}
 
         <div class="infoBox">
           <div class="infoTitle">Descripción</div>
@@ -167,7 +164,7 @@ async function init(){
       '@type': 'Offer',
       'priceCurrency': 'ARS',
       'price': p.price_ars,
-      'availability': 'https://schema.org/InStock',
+      'availability': isAvailable(p) ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       'url': `https://ancestraparfum.com.ar/product.html?id=${p.id}`,
       'seller': { '@type': 'Organization', 'name': 'ANCESTRA PARFUM' }
     }
@@ -242,6 +239,8 @@ async function init(){
   } else {
     // Renderizar producto normal
     qs('#productRoot').innerHTML = renderNormalProduct(p);
+
+    if (!isAvailable(p)) return; // sin stock: no hay botón de compra
 
     qs('#addBtn').addEventListener('click', () => {
       const qty = Math.max(1, Number(qs('#qty').value||1));

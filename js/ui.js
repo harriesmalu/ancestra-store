@@ -21,6 +21,20 @@ export async function loadProducts() {
   return _productsCache;
 }
 
+// ── Stock helpers ─────────────────────────────────────────────────────────────
+// stock: "disponible" | "ultimos" | "sin_stock" (sincronizado por update-stock.mjs).
+// Productos sin campo stock (catálogo viejo) se consideran disponibles.
+export function isAvailable(p) {
+  return !p || p.stock !== 'sin_stock';
+}
+
+export function stockBadge(p) {
+  if (!p || !p.stock) return '';
+  if (p.stock === 'sin_stock') return '<span class="stockBadge stockOut">Sin stock</span>';
+  if (p.stock === 'ultimos')   return '<span class="stockBadge stockLow">Últimas unidades</span>';
+  return '';
+}
+
 // ── DOM helpers ───────────────────────────────────────────────────────────────
 export function qs(sel, root = document)  { return root.querySelector(sel); }
 export function qsa(sel, root = document) { return Array.from(root.querySelectorAll(sel)); }

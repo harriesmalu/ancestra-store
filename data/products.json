@@ -14,7 +14,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Nuez moscada, canela, cardamomo, pomelo, lavanda, regaliz, sándalo, ámbar",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "sauvage-50",
@@ -31,7 +34,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Bergamota, pimienta, lavanda, vetiver, pachulí, cedro",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "bleu-chanel-50",
@@ -48,7 +54,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Toronja, limón, menta, jengibre, jazmín, cedro, sándalo",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "acqua-profumo-50",
@@ -65,7 +74,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Notas marinas, bergamota, romero, salvia, incienso, pachulí",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "acqua-gio-50",
@@ -82,7 +94,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Peonía, piña, limón, jazmín, lirio, almizcle, cedro",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "one-million-50",
@@ -99,7 +114,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Mandarina, pomelo, menta, canela, rosa, ámbar, cuero",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "invictus-50",
@@ -116,7 +134,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Notas marinas, toronja, mandarina, laurel, ámbar gris",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "invictus-victory-50",
@@ -133,7 +154,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Pimienta rosa, limón, incienso, lavanda, vainilla, haba tonka",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "eros-flame-50",
@@ -150,7 +174,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Mandarina, pimienta, romero, geranio, vainilla, sándalo",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "le-male-elixir-50",
@@ -167,7 +194,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Ciruela, canela, cardamomo, lavanda, haba tonka, pachulí",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "ultra-male-50",
@@ -184,7 +214,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Pera, lavanda, menta, canela, vainilla negra, ámbar, cedro",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "stronger-you-50",
@@ -201,7 +234,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Cardamomo, pimienta rosa, piña, canela, vainilla, cedro",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "spicebomb-50",
@@ -218,7 +254,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Pimienta rosa, bergamota, canela, azafrán, tabaco, cuero",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "y-intense-50",
@@ -235,7 +274,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Jengibre, enebro, salvia, lavanda, vetiver, cedro",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "phantom-50",
@@ -252,7 +294,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Lavanda, limón, manzana, pachulí, vainilla, vetiver",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "bad-boy-50",
@@ -269,7 +314,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Pimienta negra, bergamota, salvia, cedro, cacao, haba tonka",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "club-nuit-50",
@@ -286,7 +334,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Limón, piña, grosella negra, jazmín, ámbar gris, vainilla",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "aventus-50",
@@ -303,7 +354,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Piña, grosella negra, abedul, pachulí, ámbar gris, vainilla",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "polo-blue-50",
@@ -320,7 +374,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Pepino, melón, mandarina, albahaca, salvia, almizcle",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "dior-homme-50",
@@ -337,7 +394,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Lavanda, bergamota, iris, cacao, cuero, vetiver",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "ultimos",
+    "stock_label": "Últimas unidades",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "fahrenheit-50",
@@ -354,7 +414,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Lavanda, bergamota, violeta, nuez moscada, cuero, vetiver",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "212-vip-black-50",
@@ -371,7 +434,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Absenta, anís, lavanda, vainilla negra, almizcle",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "black-xs-50",
@@ -388,7 +454,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Arándano, pimienta rosa, cacao, rosa, vainilla, pachulí",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "amen-50",
@@ -405,7 +474,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Lavanda, menta, caramelo, café, vainilla, haba tonka",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "man-black-50",
@@ -422,7 +494,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Especias, ron, tabaco, cuero, iris, haba tonka",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "le-beau-50",
@@ -439,7 +514,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Bergamota, coco, haba tonka",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "eros-50",
@@ -456,7 +534,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Limón, granada, azahar, jazmín, almizcle, sándalo",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "armani-code-50",
@@ -473,7 +554,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Naranja, jazmín, azahar, jengibre, miel, vainilla, sándalo",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "ultimos",
+    "stock_label": "Últimas unidades",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "the-one-50",
@@ -490,7 +574,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Durazno, lichi, mandarina, azucena, jazmín, vainilla, ámbar",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "leau-issey-50",
@@ -507,7 +594,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Flor de loto, melón, rosa, lirio, almizcle, cedro, sándalo",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "black-opium-red-50",
@@ -524,7 +614,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Cereza, mandarina, jazmín, azahar, vainilla, café",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "black-opium-50",
@@ -541,7 +634,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Pera, azahar, café, jazmín, vainilla, pachulí, cedro",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "good-blush-50",
@@ -558,7 +654,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Bergamota, mandarina, ylang-ylang, rosa, vainilla, pachulí",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "good-girl-50",
@@ -575,7 +674,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Almendra, café, jazmín, azahar, vainilla, cacao, sándalo",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "flowerbomb-50",
@@ -592,7 +694,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Té, bergamota, orquídea, jazmín, rosa, pachulí, vainilla",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "libre-50",
@@ -609,7 +714,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Lavanda, mandarina, azahar, jazmín, vainilla, almizcle",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "si-50",
@@ -626,7 +734,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Casis, rosa de mayo, fresia, vainilla, pachulí",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "my-way-50",
@@ -643,7 +754,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Azahar, bergamota, nardos, jazmín, vainilla, almizcle, cedro",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "idole-50",
@@ -660,7 +774,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Pera, bergamota, rosa, jazmín, almizcle, vainilla, cedro",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "chance-50",
@@ -677,7 +794,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Pimienta rosa, jazmín, iris, pachulí, almizcle, vainilla",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "coco-mad-50",
@@ -694,7 +814,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Naranja, bergamota, rosa, jazmín, pachulí, vainilla, vetiver",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "jadore-50",
@@ -711,7 +834,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Pera, melón, magnolia, jazmín, nardos, almizcle, vainilla",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "alien-50",
@@ -728,7 +854,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Jazmín, notas amaderadas, ámbar",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "hypnotic-50",
@@ -745,7 +874,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Coco, ciruela, jazmín, nardos, rosa, vainilla, almendra",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "bright-crystal-50",
@@ -762,7 +894,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Yuzu, granada, peonía, loto, magnolia, almizcle, ámbar",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "scandal-parfum-50",
@@ -779,7 +914,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Jazmín, caramelo, sal, vainilla",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "212-vip-rose-50",
@@ -796,7 +934,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Champagne rosé, pimienta rosa, flor de duraznero, rosa",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "212-sexy-50",
@@ -813,7 +954,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Pimienta rosa, bergamota, gardenia, rosa, vainilla, caramelo",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "olympea-50",
@@ -830,7 +974,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Jazmín de agua, mandarina, flor de jengibre, vainilla, sal",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "linterdit-50",
@@ -847,7 +994,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Pera, bergamota, nardos, azahar, jazmín, pachulí, vainilla",
-    "image": "assets/perfume-50ml.png"
+    "image": "assets/perfume-50ml.png",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "bs-love-spell",
@@ -864,7 +1014,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Durazno, flor de cerezo, sábila, manzanilla - Floral frutal",
-    "image": "assets/body-splash.png"
+    "image": "assets/body-splash.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "bs-coconut",
@@ -881,7 +1034,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Vainilla, coco, manzanilla, lirio, sábila - Floral frutal",
-    "image": "assets/body-splash.png"
+    "image": "assets/body-splash.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "bs-pure",
@@ -898,7 +1054,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Ciruela, fresia, manzanilla - Floral frutal",
-    "image": "assets/body-splash.png"
+    "image": "assets/body-splash.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "bs-rush",
@@ -915,7 +1074,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Flores blancas, ámbar - Oriental floral",
-    "image": "assets/body-splash.png"
+    "image": "assets/body-splash.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "bs-bare",
@@ -932,7 +1094,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Vainilla, almizcle, ámbar - Oriental",
-    "image": "assets/body-splash.png"
+    "image": "assets/body-splash.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "bs-velvet",
@@ -949,7 +1114,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Flores, praliné - Floral",
-    "image": "assets/body-splash.png"
+    "image": "assets/body-splash.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "bs-midnight",
@@ -966,7 +1134,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Flores blancas, amaderada - Floral",
-    "image": "assets/body-splash.png"
+    "image": "assets/body-splash.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "bs-amber",
@@ -983,7 +1154,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Cereza ácida, natilla, vainilla, sándalo - Oriental",
-    "image": "assets/body-splash.png"
+    "image": "assets/body-splash.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "bs-aqua",
@@ -1000,7 +1174,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Notas marinas, fresia, sábila, margarita, manzanilla - Floral",
-    "image": "assets/body-splash.png"
+    "image": "assets/body-splash.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "bs-pear",
@@ -1017,7 +1194,10 @@
     "notes_heart": [],
     "notes_base": [],
     "description": "Pera, casis, sábila, manzanilla, violeta, melón - Floral",
-    "image": "assets/body-splash.png"
+    "image": "assets/body-splash.png",
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   },
   {
     "id": "pack-travel-size",
@@ -1037,65 +1217,41 @@
     "image": "assets/travel-size.png",
     "travel_options": [
       "212",
-      "212 SEXY",
-      "212 VIP BLACK",
       "212 VIP ROSÉ",
       "A-MEN",
       "ACQUA DI GIO",
-      "ACQUA DI GIO PROFUMO",
-      "ARMANI CODE",
-      "BACCARAT ROUGE",
       "BAD BOY",
       "BADE AL OUD HONOR & GLORY",
       "BLACK OPIUM",
       "BLACK OPIUM OVER RED",
-      "BLACK XS",
-      "BLEU",
       "CH",
-      "CK ONE",
       "CLUB DE NUIT INTENSE",
       "CREED",
-      "ERBA PURA",
       "EROS",
-      "EROS FLAME",
       "FAME",
-      "GOOD GIRL",
-      "GOOD GIRL BLUSH ELIXIR",
       "INVICTUS",
       "INVICTUS VICTORY",
-      "INVICTUS VICTORY ELIXIR",
       "ISHQ AL SHUYUKH SILVER",
-      "KENZO FLOWER",
-      "KENZO HOMME",
       "L'EAU D'ISSEY",
       "L'INTERDIT",
       "LA NUIT TRÉSOR VANILLE",
-      "LA VIDA ES BELLA",
-      "LA VIDA ES BELLA ELIXIR",
-      "LADY MILLION",
       "LE BEAU",
       "LE MALE ELIXIR ABSOLU",
-      "LIBRE",
-      "LIGHT BLUE",
-      "MAN IN BLACK",
-      "MISS DIOR",
       "MY WAY",
       "MY WAY LE PARFUM",
       "NOIR DE NOIR",
       "OLYMPEA",
-      "OMBRÉ LEATHER",
       "ONE MILLION",
       "PHANTOM",
       "POLO BLUE",
       "SANTAL 33",
-      "SAUVAGE",
-      "SAUVAGE ELIXIR",
       "SCANDAL",
       "SCANDAL INTENSE",
       "SCANDAL LE PARFUM",
-      "SPICEBOMB",
-      "STRONGER WITH YOU",
       "Y"
-    ]
+    ],
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-13"
   }
 ]

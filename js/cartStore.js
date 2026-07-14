@@ -1,4 +1,4 @@
-/* Cart store with pure functions.
+/* Cart store with pure functions. Works in browser (ESM) and Node (tests).
  * Cart shape: { items: { [productId]: { id, qty, price_ars, name, volume_ml, image } } }
  */
 
@@ -48,6 +48,7 @@ function clearCart(storage) {
 function addItem(product, qty = 1, storage) {
   if (!product || !product.id) throw new Error('product with id is required');
   if (!Number.isFinite(qty) || qty <= 0) throw new Error('qty must be > 0');
+  if (product.stock === 'sin_stock') throw new Error('producto sin stock');
 
   const cart = readCart(storage);
   const existing = cart.items[product.id];
@@ -96,7 +97,7 @@ function totals(storage) {
   return { subtotal_ars: subtotal, items_count: count };
 }
 
-module.exports = {
+export {
   CART_KEY,
   createMemoryStorage,
   readCart,

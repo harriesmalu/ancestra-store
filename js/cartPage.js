@@ -7,13 +7,15 @@ function calcShipping(subtotal) {
 }
 
 function lineItemRow(item) {
+  const out = item.stock === 'sin_stock';
   return `
-    <div class="cartRow" data-row="${item.id}">
+    <div class="cartRow ${out ? 'cartRowOut' : ''}" data-row="${item.id}">
       <div class="cartThumb">
         <img src="${item.image}" alt="${item.brand} ${item.name}"/>
       </div>
       <div class="cartMain">
         <div class="cartTitle">${item.brand} ${item.name} <span class="muted">· ${item.volume_ml} ml</span></div>
+        ${out ? '<div class="cartStockWarn">Este producto se quedó sin stock — eliminalo para continuar</div>' : ''}
         <div class="cartPrice">${formatARS(item.price_ars)}</div>
         <div class="cartControls">
           <button class="qtyBtn" data-dec="${item.id}">−</button>
@@ -49,8 +51,10 @@ async function init() {
   }
 
   const enriched = items.map(it => {
-    const p = products.find(x => x.id === it.id);
-    return p ? { ...it, price_ars: p.price_ars, image: p.image, volume_ml: p.volume_ml, brand: p.brand, name: p.name } : it;
+    const p = products.find(x => x.id === it.id) ||
+              // Packs travel size se guardan con id compuesto: buscar el producto base
+              (it.id.startsWith('pack-travel-size') ? products.find(x => x.id === 'pack-travel-size') : null);
+    return p ? { ...it, price_ars: p.price_ars, image: p.image, volume_ml: p.volume_ml, brand: p.brand, stock: p.stock } : it;
   });
 
   qs('#cartRoot').innerHTML = enriched.map(lineItemRow).join('');
@@ -61,14 +65,19 @@ async function init() {
     const total = tt.subtotal_ars + ship.cost;
     setCartBadge(tt.items_count);
 
+    const hasOut = enriched.some(it => it.stock === 'sin_stock' && qs(`[data-row="${it.id}"]`));
+
     qs('#summary').innerHTML = `
       <div class="summaryCard">
         <div class="summaryTitle">Resumen</div>
         <div class="sumLine"><span>Subtotal</span><span>${formatARS(tt.subtotal_ars)}</span></div>
         <div class="sumLine"><span>${ship.label}</span><span>${ship.cost === 0 ? 'Gratis' : formatARS(ship.cost)}</span></div>
         <div class="sumLine total"><span>Total</span><span>${formatARS(total)}</span></div>
+        ${hasOut ? '<div class="cartStockWarn" style="margin-top:12px">Hay productos sin stock en tu carrito. Eliminalos para continuar.</div>' : ''}
         <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">
-          <a class="btn btn-primary btnWide" href="checkout.html">Iniciar compra</a>
+          ${hasOut
+            ? '<button class="btn btnWide" disabled>Iniciar compra</button>'
+            : '<a class="btn btn-primary btnWide" href="checkout.html">Iniciar compra</a>'}
           <button id="clearBtn" class="linkBtn" style="text-align:center">Vaciar carrito</button>
         </div>
       </div>
