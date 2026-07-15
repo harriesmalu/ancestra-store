@@ -131,10 +131,34 @@
           <a class="btn btnOutline" href="#bestsellersSec">Los más elegidos</a>
         </div>
       </div>
-      <div class="heroMedia">
+      <div class="heroMedia" id="heroMedia">
         <img src="assets/ancestra-bottle.png" alt="Extracto de perfume ANCESTRA" fetchpriority="high"/>
       </div>
     </div>
+
+    <script>
+      // Hero cinematográfico: si existe assets/hero-cinematic.mp4 (video) o
+      // assets/hero-cinematic.jpg (imagen con zoom lento), reemplaza el frasco.
+      // Si no existen, queda el frasco estático de siempre.
+      (function () {
+        var media = document.getElementById('heroMedia');
+        if (!media) return;
+        function frame(inner) {
+          media.innerHTML = '<div class="heroCine">' + inner +
+            '<span class="heroCineVignette"></span><span class="heroCineGrain"></span></div>';
+        }
+        fetch('assets/hero-cinematic.mp4', { method: 'HEAD' }).then(function (r) {
+          if (r.ok) {
+            frame('<video autoplay muted loop playsinline preload="metadata" aria-label="Mujer aplicándose extracto ANCESTRA">' +
+                  '<source src="assets/hero-cinematic.mp4" type="video/mp4"/></video>');
+            return null;
+          }
+          return fetch('assets/hero-cinematic.jpg', { method: 'HEAD' });
+        }).then(function (r) {
+          if (r && r.ok) frame('<img src="assets/hero-cinematic.jpg" alt="Mujer aplicándose extracto ANCESTRA" class="heroCineKenBurns"/>');
+        }).catch(function () { /* sin asset: queda el frasco */ });
+      })();
+    </script>
 
     <!-- Más vendidos -->
     <section class="bestsellersSec" id="bestsellersSec">

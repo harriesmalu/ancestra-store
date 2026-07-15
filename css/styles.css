@@ -175,6 +175,46 @@ button, input, select, textarea { font-family: var(--font-b); }
   .heroMedia { display: none; }
 }
 
+/* ── Hero cinematográfico (video/imagen de modelo) ──── */
+/* Se activa solo si existe assets/hero-cinematic.mp4 o .jpg */
+.heroMedia:has(.heroCine) { width: clamp(260px, 30vw, 400px); }
+.heroCine {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3/4;
+  overflow: hidden;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  box-shadow: 0 32px 64px rgba(0,0,0,.7);
+}
+.heroCine video, .heroCine img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  animation: none;
+}
+.heroCineKenBurns { animation: kenBurns 18s ease-in-out infinite alternate !important; }
+@keyframes kenBurns {
+  from { transform: scale(1) translateY(0); }
+  to   { transform: scale(1.08) translateY(-2%); }
+}
+/* Viñeta con un baño dorado muy sutil, como gradación de color de cine */
+.heroCineVignette {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.55) 100%),
+    linear-gradient(180deg, rgba(201,169,110,.05), transparent 30%, transparent 75%, rgba(8,8,8,.5));
+}
+/* Grano de película */
+.heroCineGrain {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  opacity: .07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@media (prefers-reduced-motion: reduce) { .heroCineKenBurns { animation: none !important; } }
+
 /* LAYOUT */
 .layout { display: grid; grid-template-columns: 230px 1fr; gap: 36px; align-items: start; }
 @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .filters { position: static !important; order: unset; } }
