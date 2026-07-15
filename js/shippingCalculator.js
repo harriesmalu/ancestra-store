@@ -5,7 +5,7 @@
 
 const ShippingCalculator = (() => {
 
-  const FREE_THRESHOLD = 90000;
+  const FREE_THRESHOLD = 120000;
   let selectedShipping = null;
   let debounceTimer = null;
 

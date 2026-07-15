@@ -12,7 +12,7 @@ import { quoteEnviopack } from './_enviopack-helpers.js';
 import { getZoneRates }   from './_zone-rates.js';
 
 // Umbral de envío gratis (ARS) — debe coincidir con shippingCalculator.js
-const FREE_SHIPPING_THRESHOLD = 90000;
+const FREE_SHIPPING_THRESHOLD = 120000;
 
 // ── Cotizar con Correo Argentino ──────────────────────────────────────────────
 async function tryCorreo(cp) {

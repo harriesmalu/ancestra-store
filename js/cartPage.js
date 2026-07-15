@@ -2,7 +2,7 @@ import { loadProducts, formatARS, qs, qsa, setCartBadge } from './ui.js';
 import { listItems, setQty, removeItem, totals, clearCart } from './cartBrowser.js';
 
 function calcShipping(subtotal) {
-  if (subtotal >= 90000) return { label: 'Envío gratis', cost: 0 };
+  if (subtotal >= 120000) return { label: 'Envío gratis', cost: 0 };
   return { label: 'A calcular en el checkout', cost: 0 };
 }
 

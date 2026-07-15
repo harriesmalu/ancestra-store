@@ -21,7 +21,7 @@ let selectedShippingCarrier      = null;  // transportista elegido (ej: 'andesma
 let selectedShippingSource       = null;  // 'correo' | 'enviopack' | 'zone' | 'local'
 
 function calcShipping(subtotal) {
-  if (subtotal >= 90000) return { label: 'Envío gratis', cost: 0 };
+  if (subtotal >= 120000) return { label: 'Envío gratis', cost: 0 };
   if (selectedShippingCost !== null) {
     return { label: selectedShippingLabel, cost: selectedShippingCost };
   }
@@ -335,7 +335,7 @@ function init() {
     const submitBtn = qs('#submitBtn');
 
     // Validar que eligió método de envío (si el widget está activo y no es envío gratis)
-    if (window.ShippingCalculator && totals().subtotal_ars < 90000) {
+    if (window.ShippingCalculator && totals().subtotal_ars < 120000) {
       const ship = ShippingCalculator.getSelected();
       if (!ship) {
         showMsg('Por favor calculá y seleccioná un método de envío.', true);
