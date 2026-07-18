@@ -1,8 +1,13 @@
 import { loadProducts, formatARS, qs, qsa, setCartBadge } from './ui.js';
 import { listItems, setQty, removeItem, totals, clearCart } from './cartBrowser.js';
 
+// Estimación elegida en el widget "Calculá tu envío" (informativa;
+// el checkout vuelve a cotizar y es la fuente de verdad).
+let shippingEstimate = null;
+
 function calcShipping(subtotal) {
   if (subtotal >= 120000) return { label: 'Envío gratis', cost: 0 };
+  if (shippingEstimate) return { label: shippingEstimate.label, cost: shippingEstimate.price || 0 };
   return { label: 'A calcular en el checkout', cost: 0 };
 }
 
@@ -37,6 +42,8 @@ function renderEmpty() {
     </div>
   `;
   qs('#summary').innerHTML = '';
+  const ship = qs('#shipping-container');
+  if (ship) ship.innerHTML = '';
 }
 
 async function init() {
@@ -91,6 +98,15 @@ async function init() {
   }
 
   rerenderSummary();
+
+  // ── Widget "Calculá tu envío" (estimación previa al checkout) ──
+  if (window.ShippingCalculator) {
+    ShippingCalculator.init(t.subtotal_ars, '#shipping-container');
+    document.addEventListener('shippingSelected', (e) => {
+      shippingEstimate = e.detail ? { label: e.detail.label, price: e.detail.price } : null;
+      rerenderSummary();
+    });
+  }
 
   // Qty handlers
   qsa('[data-inc]').forEach(btn => {

@@ -256,6 +256,14 @@ async function init(){
     qs('#countLabel').textContent = `${sorted.length} producto${sorted.length === 1 ? '' : 's'}`;
   }
 
+  // Al buscar, llevar al usuario a los resultados (están debajo del hero)
+  let lastScrolledTerm = '';
+  function scrollToResults(term){
+    if (!term || term === lastScrolledTerm) return;
+    lastScrolledTerm = term;
+    qs('#catalogSection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   // Hidratar búsqueda desde URL
   const q = getQueryParam('q');
   if(q) searchInput.value = q;
@@ -301,12 +309,32 @@ async function init(){
   if (searchToggle)      searchToggle.addEventListener('click', () => searchDrawer.classList.contains('open') ? closeSearch() : openSearch());
   if (searchDrawerClose) searchDrawerClose.addEventListener('click', closeSearch);
   if (searchInputMobile) {
-    searchInputMobile.addEventListener('input', () => { searchInput.value = searchInputMobile.value; render(); });
-    searchInputMobile.addEventListener('keydown', e => { if (e.key === 'Escape') closeSearch(); });
+    searchInputMobile.addEventListener('input', () => {
+      searchInput.value = searchInputMobile.value;
+      render();
+      scrollToResults(searchInputMobile.value.trim());
+    });
+    searchInputMobile.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeSearch();
+      if (e.key === 'Enter') {
+        searchInputMobile.blur(); // cerrar teclado del celular
+        lastScrolledTerm = '';
+        scrollToResults(searchInputMobile.value.trim() || ' ');
+      }
+    });
   }
 
   // Eventos
-  searchInput.addEventListener('input', () => render());
+  searchInput.addEventListener('input', () => {
+    render();
+    scrollToResults(searchInput.value.trim());
+  });
+  searchInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      lastScrolledTerm = '';
+      scrollToResults(searchInput.value.trim() || ' ');
+    }
+  });
   qsa('select,input[type=range],input[type=number]').forEach(el => el.addEventListener('change', () => render()));
   sortSel.addEventListener('change', () => render());
 
@@ -329,6 +357,12 @@ async function init(){
 
   // Renderizar
   render();
+
+  // Si la página cargó con ?q= en la URL, ir directo a los resultados
+  if (q && q.trim()) {
+    setTimeout(() => qs('#catalogSection')?.scrollIntoView({ behavior: 'auto', block: 'start' }), 100);
+    lastScrolledTerm = q.trim();
+  }
 
   // ── Sección "Más vendidos" ─────────────────────────────
   renderBestsellers(all);
