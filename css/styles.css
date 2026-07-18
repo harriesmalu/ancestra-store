@@ -177,15 +177,15 @@ button, input, select, textarea { font-family: var(--font-b); }
 
 /* ── Hero cinematográfico (video/imagen de modelo) ──── */
 /* Se activa solo si existe assets/hero-cinematic.mp4 o .jpg */
-.heroMedia:has(.heroCine) { width: clamp(260px, 30vw, 400px); }
+.heroMedia:has(.heroCine) { width: clamp(290px, 33vw, 440px); }
+/* Bordes difuminados: el video se funde con el fondo negro del hero */
 .heroCine {
   position: relative;
   width: 100%;
   aspect-ratio: 3/4;
   overflow: hidden;
-  border: 1px solid var(--border2);
-  border-radius: var(--radius);
-  box-shadow: 0 32px 64px rgba(0,0,0,.7);
+  -webkit-mask-image: radial-gradient(ellipse 52% 50% at 50% 48%, #000 42%, transparent 96%);
+  mask-image: radial-gradient(ellipse 52% 50% at 50% 48%, #000 42%, transparent 96%);
 }
 .heroCine video, .heroCine img {
   width: 100%; height: 100%;
