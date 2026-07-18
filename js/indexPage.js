@@ -44,11 +44,35 @@ function getFamilyColor(family) {
 }
 
 // ── Filtros ────────────────────────────────────────────
+// Búsqueda tolerante: sin acentos, por palabras sueltas, y admite
+// 1 letra de diferencia por palabra (ej: "millón" encuentra MILLION).
+const normText = s => (s || '').toLowerCase()
+  .normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+function within1Edit(a, b){
+  if (a === b) return true;
+  const la = a.length, lb = b.length;
+  if (Math.abs(la - lb) > 1) return false;
+  let i = 0, j = 0, edits = 0;
+  while (i < la && j < lb) {
+    if (a[i] === b[j]) { i++; j++; continue; }
+    if (++edits > 1) return false;
+    if (la > lb) i++;            // borrado
+    else if (lb > la) j++;       // inserción
+    else { i++; j++; }           // sustitución
+  }
+  return edits + (la - i) + (lb - j) <= 1;
+}
+
 function matchesSearch(p, term){
   if(!term) return true;
-  const t = term.toLowerCase();
-  const hay = `${p.brand} ${p.name} ${p.subtitle} ${p.family} ${p.category} ${p.gender}`.toLowerCase();
-  return hay.includes(t);
+  const hay = normText(`${p.brand} ${p.name} ${p.subtitle} ${p.family} ${p.category} ${p.gender}`);
+  const hayWords = hay.split(/\s+/);
+  const tokens = normText(term).split(/\s+/).filter(Boolean);
+  return tokens.every(t =>
+    hay.includes(t) ||
+    (t.length >= 4 && hayWords.some(w => within1Edit(t, w)))
+  );
 }
 
 function matchesFilters(entry, filters){

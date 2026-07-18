@@ -52,16 +52,23 @@ async function getToken() {
 }
 
 // ── Normalizar respuesta de Envíopack al formato estándar del frontend ────────
+// Formato real de la API (developers.enviopack.com.ar/cotiza-un-envio):
+//   precio: "valor" · entrega: "horas_entrega" (horas) · transportista: "correo" {id, nombre}
+function rawPrice(r) {
+  return parseFloat(r?.valor ?? r?.costo ?? r?.precio_final ?? r?.precio ?? r?.total ?? NaN);
+}
+
 function normalizeOption(raw, type) {
-  const price = Math.round(parseFloat(raw.precio_final ?? raw.precio_list ?? raw.total ?? 0));
-  const days  = String(raw.dias ?? '').match(/\d+/g) || [];
+  const price = Math.round(rawPrice(raw));
+  const hours = parseInt(raw.horas_entrega, 10);
+  const minDays = Number.isFinite(hours) ? Math.max(1, Math.ceil(hours / 24)) : null;
+  const maxDays = minDays !== null ? minDays + 1 : null;
 
-  const minDays = days[0] ? parseInt(days[0]) : null;
-  const maxDays = days[1] ? parseInt(days[1]) : minDays;
+  const deliveryLabel = minDays === null ? '' : `${minDays} a ${maxDays} días hábiles`;
 
-  const deliveryLabel = !minDays ? '' :
-    minDays === maxDays ? `${minDays} días hábiles`
-                        : `${minDays} a ${maxDays} días hábiles`;
+  const carrierObj  = raw.correo ?? raw.sucursal?.correo ?? null;
+  const carrierId   = typeof carrierObj === 'object' ? carrierObj?.id     : carrierObj;
+  const carrierName = typeof carrierObj === 'object' ? carrierObj?.nombre : carrierObj;
 
   const formatter = new Intl.NumberFormat('es-AR', {
     style: 'currency', currency: 'ARS',
@@ -70,48 +77,53 @@ function normalizeOption(raw, type) {
 
   return {
     type,
-    label:          type === 'domicilio' ? 'Envío a domicilio' : 'Retiro en sucursal',
+    label: (type === 'domicilio' ? 'Envío a domicilio' : 'Retiro en sucursal') +
+           (carrierName ? ` · ${carrierName}` : ''),
     price,
     priceFormatted: formatter.format(price),
     deliveryMin:    minDays,
     deliveryMax:    maxDays,
     deliveryLabel,
-    productName:    raw.nombre ?? raw.correo ?? 'Envíopack',
-    carrier:        raw.correo ?? null,
+    productName:    carrierName ?? 'Envíopack',
+    carrier:        carrierId ?? null,
     source:         'enviopack',
   };
 }
 
-// ── Cotizar domicilio ─────────────────────────────────────────────────────────
-async function quoteHome(cp, provinceCode, token) {
+// ── Cotizar por CP con /cotizar/costo (todas las modalidades/correos) ─────────
+async function quoteCosto(cp, provinceCode, token, modalidad) {
   const params = new URLSearchParams({
-    access_token: token,
-    provincia:    provinceCode,
+    access_token:  token,
+    provincia:     provinceCode,
     codigo_postal: cp,
-    peso:         String(PACKAGE.weight),
-    paquetes:     PACKAGE.dimensions,
+    peso:          String(PACKAGE.weight),
+    paquetes:      PACKAGE.dimensions,
+    modalidad,                 // 'D' domicilio | 'S' sucursal
+    orden_columna: 'valor',
+    orden_sentido: 'asc',
   });
 
-  const res = await fetch(`${BASE_URL}/cotizar/precio/a-domicilio?${params}`);
-  if (!res.ok) return null;
+  const res = await fetch(`${BASE_URL}/cotizar/costo?${params}`);
+  const text = await res.text();
+  if (!res.ok) {
+    console.warn(`Envíopack /cotizar/costo ${modalidad} → ${res.status}: ${text.slice(0, 300)}`);
+    return null;
+  }
 
-  const data = await res.json();
-  if (!data.estado && !data.detalle) return null;
-
-  const rows = Array.isArray(data.detalle) ? data.detalle : [data];
-  // Elegir el más barato entre los transportistas disponibles
-  const sorted = rows
-    .filter(r => r && (r.precio_final ?? r.precio_list ?? r.total))
-    .sort((a, b) =>
-      parseFloat(a.precio_final ?? a.precio_list ?? a.total ?? 0) -
-      parseFloat(b.precio_final ?? b.precio_list ?? b.total ?? 0)
-    );
-
-  return sorted.length ? normalizeOption(sorted[0], 'domicilio') : null;
+  let data;
+  try { data = JSON.parse(text); } catch { return null; }
+  const rows = Array.isArray(data) ? data : (Array.isArray(data?.detalle) ? data.detalle : [data]);
+  const valid = rows.filter(r => Number.isFinite(rawPrice(r)) && rawPrice(r) > 0)
+                    .sort((a, b) => rawPrice(a) - rawPrice(b));
+  if (!valid.length) {
+    console.warn(`Envíopack ${modalidad}: sin filas con precio. Respuesta: ${text.slice(0, 300)}`);
+    return null;
+  }
+  return normalizeOption(valid[0], modalidad === 'D' ? 'domicilio' : 'sucursal');
 }
 
-// ── Cotizar sucursal ──────────────────────────────────────────────────────────
-async function quoteBranch(cp, provinceCode, token) {
+// ── Fallback: /cotizar/precio/a-domicilio (objeto único con "valor") ──────────
+async function quoteHomePrecio(cp, provinceCode, token) {
   const params = new URLSearchParams({
     access_token:  token,
     provincia:     provinceCode,
@@ -119,22 +131,12 @@ async function quoteBranch(cp, provinceCode, token) {
     peso:          String(PACKAGE.weight),
     paquetes:      PACKAGE.dimensions,
   });
-
-  const res = await fetch(`${BASE_URL}/cotizar/precio/a-sucursal?${params}`);
+  const res = await fetch(`${BASE_URL}/cotizar/precio/a-domicilio?${params}`);
   if (!res.ok) return null;
-
   const data = await res.json();
-  if (!data.estado && !data.detalle) return null;
-
-  const rows = Array.isArray(data.detalle) ? data.detalle : [data];
-  const sorted = rows
-    .filter(r => r && (r.precio_final ?? r.precio_list ?? r.total))
-    .sort((a, b) =>
-      parseFloat(a.precio_final ?? a.precio_list ?? a.total ?? 0) -
-      parseFloat(b.precio_final ?? b.precio_list ?? b.total ?? 0)
-    );
-
-  return sorted.length ? normalizeOption(sorted[0], 'sucursal') : null;
+  const row = Array.isArray(data) ? data[0] : data;
+  if (!row || !Number.isFinite(rawPrice(row))) return null;
+  return normalizeOption(row, 'domicilio');
 }
 
 // ── Normalizar nombre de transportista ────────────────────────────────────────
@@ -214,11 +216,16 @@ export async function quoteEnviopack(cp) {
   const token        = await getToken();
   const provinceCode = getProvinceCodeFromCP(cp);
 
-  // Las dos cotizaciones en paralelo para mayor velocidad
-  const [homeOpt, branchOpt] = await Promise.all([
-    quoteHome(cp, provinceCode, token).catch(() => null),
-    quoteBranch(cp, provinceCode, token).catch(() => null),
+  // Las dos modalidades en paralelo para mayor velocidad
+  let [homeOpt, branchOpt] = await Promise.all([
+    quoteCosto(cp, provinceCode, token, 'D').catch(e => { console.warn('EP D:', e.message); return null; }),
+    quoteCosto(cp, provinceCode, token, 'S').catch(e => { console.warn('EP S:', e.message); return null; }),
   ]);
+
+  // Plan B para domicilio si /cotizar/costo no devolvió nada
+  if (!homeOpt) {
+    homeOpt = await quoteHomePrecio(cp, provinceCode, token).catch(() => null);
+  }
 
   const options = [homeOpt, branchOpt].filter(Boolean);
   if (!options.length) throw new Error('Envíopack no devolvió cotizaciones para ese CP');
