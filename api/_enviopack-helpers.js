@@ -44,10 +44,19 @@ async function getToken() {
   }
 
   const data  = await res.json();
-  _token      = data.access_token;
+  _token      = data.access_token ?? data.token ?? data.accessToken ?? null;
   _tokenUntil = Date.now() + 3.5 * 60 * 60 * 1000; // 3.5 h
 
-  if (!_token) throw new Error('Envíopack no devolvió access_token');
+  if (!_token) {
+    // Solo claves y campos de error — nunca valores, para no filtrar secretos
+    const hint = [
+      `keys=[${Object.keys(data || {}).join(',')}]`,
+      data?.error   ? `error=${JSON.stringify(data.error)}`     : '',
+      data?.message ? `message=${JSON.stringify(data.message)}` : '',
+      data?.mensaje ? `mensaje=${JSON.stringify(data.mensaje)}` : '',
+    ].filter(Boolean).join(' ');
+    throw new Error(`Envíopack no devolvió access_token (${hint})`);
+  }
   return _token;
 }
 
