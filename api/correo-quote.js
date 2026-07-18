@@ -67,7 +67,8 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'GET')    return res.status(405).json({ error: 'Método no permitido' });
 
-  const { cp, total } = req.query;
+  const { cp, total, debug } = req.query;
+  const debugLog = [];
 
   if (!cp || cp.trim().length < 4) {
     return res.status(400).json({ error: 'CP inválido (mínimo 4 dígitos)' });
@@ -89,7 +90,10 @@ export default async function handler(req, res) {
       console.log(`✅ Cotización vía Correo Argentino para CP ${cpClean}`);
     } catch (err) {
       console.warn(`⚠️  Correo Argentino falló (${err.message}) — intentando Envíopack`);
+      debugLog.push(`correo: ${err.message}`);
     }
+  } else {
+    debugLog.push('correo: sin credenciales (CORREO_CUSTOMER_ID/CORREO_API_USER)');
   }
 
   // ── 2. Envíopack ──────────────────────────────────────────────────────────
@@ -99,7 +103,10 @@ export default async function handler(req, res) {
       console.log(`✅ Cotización vía Envíopack para CP ${cpClean}`);
     } catch (err) {
       console.warn(`⚠️  Envíopack falló (${err.message}) — usando tarifas por zona`);
+      debugLog.push(`enviopack: ${err.message}`);
     }
+  } else if (!result) {
+    debugLog.push(`enviopack: ENVIOPACK_API_KEY ${process.env.ENVIOPACK_API_KEY ? 'presente' : 'AUSENTE'}, ENVIOPACK_SECRET_KEY ${process.env.ENVIOPACK_SECRET_KEY ? 'presente' : 'AUSENTE'}`);
   }
 
   // ── 3. Tarifas por zona (siempre disponible) ──────────────────────────────
@@ -113,5 +120,6 @@ export default async function handler(req, res) {
     options: result.options,
     source:  result.source,         // 'correo' | 'enviopack' | 'zone'
     validTo: result.validTo ?? null,
+    ...(debug === '1' ? { debug: debugLog } : {}),
   });
 }
