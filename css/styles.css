@@ -723,6 +723,68 @@ body { padding-bottom: 52px; }
   margin-top: 3px;
 }
 
+/* ── Formulario "Dejá tu opinión" ────────────────────── */
+.reviewFormWrap {
+  margin-top: 40px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  padding: 28px;
+}
+.reviewFormHeader { margin-bottom: 22px; }
+.reviewFormTitle {
+  font-family: var(--font-d);
+  font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 300;
+  letter-spacing: .05em;
+  margin: 0;
+}
+.reviewFormTitle em { font-style: italic; color: var(--gold); }
+.reviewFormRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.reviewFormRow + .reviewFormRow { margin-top: 4px; grid-template-columns: 220px 1fr; }
+@media (max-width: 760px) {
+  .reviewFormRow, .reviewFormRow + .reviewFormRow { grid-template-columns: 1fr; }
+}
+.reviewForm .field input,
+.reviewForm .field select,
+.reviewForm .field textarea {
+  width: 100%; padding: 10px 12px;
+  border: 1px solid var(--border); background: var(--bg);
+  color: var(--text); outline: none;
+  font-size: 13px; font-weight: 300;
+  border-radius: var(--radius);
+  font-family: var(--font-b);
+  transition: border-color .2s;
+  -webkit-appearance: none; appearance: none;
+  resize: vertical;
+}
+.reviewForm .field input:focus,
+.reviewForm .field select:focus,
+.reviewForm .field textarea:focus { border-color: var(--gold); }
+.starPicker { display: flex; gap: 4px; padding-top: 4px; }
+.starPicker button {
+  background: none; border: none; cursor: pointer;
+  font-size: 30px; line-height: 1;
+  color: var(--border2);
+  transition: color .15s, transform .15s;
+  padding: 2px;
+}
+.starPicker button:hover { transform: scale(1.15); }
+.starPicker button.on,
+.starPicker button:hover,
+.starPicker button:has(~ button:hover) { color: var(--gold); }
+.hpField { position: absolute; left: -9999px; opacity: 0; height: 0; width: 0; }
+.reviewFormFooter { display: flex; align-items: center; gap: 16px; margin-top: 18px; flex-wrap: wrap; }
+.reviewFormFooter .btn { width: auto; padding: 12px 30px; }
+.reviewMsg { font-size: 13px; line-height: 1.5; }
+.reviewMsg.ok  { color: var(--ok); }
+.reviewMsg.err { color: var(--danger); }
+.testimonialNoText { font-style: normal; color: var(--muted); }
+.testimonialNoText::before, .testimonialNoText::after { content: none; }
+
 /* ── WhatsApp Floating Button ───────────────────────── */
 .whatsappFloat {
   position: fixed;

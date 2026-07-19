@@ -366,6 +366,90 @@ async function init(){
 
   // ── Sección "Más vendidos" ─────────────────────────────
   renderBestsellers(all);
+
+  // ── Opiniones ──────────────────────────────────────────
+  initReviews(all);
+}
+
+// ── Opiniones: render + formulario ───────────────────────
+const starRow = n => '★'.repeat(n) + '☆'.repeat(5 - n);
+
+async function initReviews(all){
+  // Render de opiniones publicadas
+  const grid = qs('#reviewsGrid');
+  if (grid) {
+    try {
+      const res = await fetch('data/reviews.json', { cache: 'no-store' });
+      const reviews = await res.json();
+      grid.innerHTML = reviews.map(r => `
+        <div class="testimonialCard">
+          <div class="testimonialStars" aria-label="${r.stars} de 5 estrellas">${starRow(r.stars)}</div>
+          ${r.text ? `<p class="testimonialText">${r.text}</p>` : '<p class="testimonialText testimonialNoText">Puntuó su compra</p>'}
+          <div class="testimonialMeta">
+            <div class="testimonialAuthor">${r.name}</div>
+            <div class="testimonialProduct">${r.perfume} · ${r.location}</div>
+          </div>
+        </div>
+      `).join('');
+    } catch (e) {
+      console.error('reviews:', e);
+    }
+  }
+
+  // Formulario
+  const form = qs('#reviewForm');
+  if (!form) return;
+
+  // Poblar el selector con las fragancias del catálogo (una por grupo)
+  const sel = qs('#reviewPerfume');
+  const names = [...new Set(all.filter(p => !p.variant_group || p.volume_ml === 50).map(p => p.name))].sort();
+  sel.innerHTML = '<option value="">Elegí tu fragancia</option>' +
+    names.map(n => `<option value="${n}">${n}</option>`).join('');
+
+  // Selector de estrellas
+  let stars = 0;
+  const starBtns = qsa('#starPicker button');
+  function paintStars(){
+    starBtns.forEach(b => b.classList.toggle('on', Number(b.dataset.star) <= stars));
+  }
+  starBtns.forEach(b => b.addEventListener('click', () => { stars = Number(b.dataset.star); paintStars(); }));
+
+  const msg = qs('#reviewMsg');
+  const showMsg = (text, ok) => { msg.textContent = text; msg.className = 'reviewMsg ' + (ok ? 'ok' : 'err'); };
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    if (!fd.get('name') || String(fd.get('name')).trim().length < 3) return showMsg('Ingresá tu nombre y apellido.', false);
+    if (!fd.get('perfume')) return showMsg('Elegí el perfume que probaste.', false);
+    if (!fd.get('location') || String(fd.get('location')).trim().length < 2) return showMsg('Contanos desde dónde nos escribís.', false);
+    if (!stars) return showMsg('Elegí tu puntuación en estrellas.', false);
+
+    const btn = qs('#reviewSubmit');
+    btn.disabled = true; btn.textContent = 'Enviando...';
+    try {
+      const res = await fetch('/api/submit-review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:     fd.get('name'),
+          perfume:  fd.get('perfume'),
+          location: fd.get('location'),
+          stars,
+          text:     fd.get('text') || '',
+          website:  fd.get('website') || '',
+        }),
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      form.reset(); stars = 0; paintStars();
+      showMsg('¡Gracias por tu opinión! La publicamos apenas la revisemos.', true);
+    } catch (err) {
+      console.error('review submit:', err);
+      showMsg('No pudimos enviar tu opinión. Probá de nuevo en un rato.', false);
+    } finally {
+      btn.disabled = false; btn.textContent = 'Enviar opinión';
+    }
+  });
 }
 
 init().catch(err => {

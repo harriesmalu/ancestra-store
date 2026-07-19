@@ -33,7 +33,7 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/perfume-50ml.png"/>
 
-  <link rel="stylesheet" href="css/styles.css?v=202607181650"/>
+  <link rel="stylesheet" href="css/styles.css?v=202607190002"/>
 
   <!-- Schema.org JSON-LD — Store -->
   <script type="application/ld+json">
@@ -382,7 +382,7 @@
     });
   </script>
 
-  <script type="module" src="js/indexPage.js?v=202607181650"></script>
+  <script type="module" src="js/indexPage.js?v=202607190002"></script>
 
   <!-- FAQ Section -->
   <section class="faqSection container" id="faq">
@@ -463,50 +463,61 @@
     </div>
   </section>
 
-  <!-- Testimonios -->
+  <!-- Testimonios / Opiniones -->
   <section class="testimonialsSec container" id="testimonios">
     <div class="testimonialsHeader">
       <span class="secLabel">Lo que dicen</span>
       <h2 class="secTitle">Clientes que <em>volvieron</em></h2>
     </div>
-    <div class="testimonialsGrid">
+    <div class="testimonialsGrid" id="reviewsGrid">
+      <!-- Renderizado por JS desde data/reviews.json -->
+    </div>
 
-      <div class="testimonialCard">
-        <div class="testimonialStars">★★★★★</div>
-        <p class="testimonialText">Compré el Black Opium y no puedo creer la calidad por el precio. Dura todo el día con una sola aplicación. Ya hice el segundo pedido.</p>
-        <div class="testimonialMeta">
-          <div class="testimonialAuthor">Valentina M.</div>
-          <div class="testimonialProduct">BLACK OPIUM · CABA</div>
-        </div>
+    <!-- Dejá tu opinión -->
+    <div class="reviewFormWrap">
+      <div class="reviewFormHeader">
+        <span class="secLabel">¿Ya probaste nuestros extractos?</span>
+        <h3 class="reviewFormTitle">Dejá tu <em>opinión</em></h3>
       </div>
-
-      <div class="testimonialCard">
-        <div class="testimonialStars">★★★★★</div>
-        <p class="testimonialText">Pedí el Sauvage Elixir para un regalo y quedó impresionado. La presentación es excelente y llegó al día siguiente de pagar.</p>
-        <div class="testimonialMeta">
-          <div class="testimonialAuthor">Tomás R.</div>
-          <div class="testimonialProduct">SAUVAGE ELIXIR · GBA Norte</div>
+      <form id="reviewForm" class="reviewForm" novalidate>
+        <div class="reviewFormRow">
+          <label class="field">
+            <span>Nombre y apellido *</span>
+            <input name="name" required maxlength="60" placeholder="Ej: María González"/>
+          </label>
+          <label class="field">
+            <span>Perfume *</span>
+            <select name="perfume" id="reviewPerfume" required>
+              <option value="">Elegí tu fragancia</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Ubicación *</span>
+            <input name="location" required maxlength="60" placeholder="Ej: Palermo, CABA"/>
+          </label>
         </div>
-      </div>
-
-      <div class="testimonialCard">
-        <div class="testimonialStars">★★★★★</div>
-        <p class="testimonialText">Soy fiel al Good Girl hace meses. La duración es increíble, mejor que algunos originales que usé. No vuelvo a pagar el doble por la misma fragancia.</p>
-        <div class="testimonialMeta">
-          <div class="testimonialAuthor">Lucía B.</div>
-          <div class="testimonialProduct">GOOD GIRL · Palermo</div>
+        <div class="reviewFormRow">
+          <div class="field">
+            <span>Tu puntuación *</span>
+            <div class="starPicker" id="starPicker" role="radiogroup" aria-label="Puntuación de 1 a 5 estrellas">
+              <button type="button" data-star="1" aria-label="1 estrella">★</button>
+              <button type="button" data-star="2" aria-label="2 estrellas">★</button>
+              <button type="button" data-star="3" aria-label="3 estrellas">★</button>
+              <button type="button" data-star="4" aria-label="4 estrellas">★</button>
+              <button type="button" data-star="5" aria-label="5 estrellas">★</button>
+            </div>
+          </div>
+          <label class="field reviewTextField">
+            <span>Contanos tu experiencia (opcional)</span>
+            <textarea name="text" maxlength="500" rows="3" placeholder="¿Qué te pareció la fragancia, la duración, el envío?"></textarea>
+          </label>
         </div>
-      </div>
-
-      <div class="testimonialCard">
-        <div class="testimonialStars">★★★★★</div>
-        <p class="testimonialText">Probé 4 fragancias distintas y todas son muy fieles al original. La relación precio-calidad no tiene competencia. Recomendado al 100%.</p>
-        <div class="testimonialMeta">
-          <div class="testimonialAuthor">Nicolás G.</div>
-          <div class="testimonialProduct">AVENTUS + BLEU CHANEL · San Isidro</div>
+        <input type="text" name="website" class="hpField" tabindex="-1" autocomplete="off" aria-hidden="true"/>
+        <div class="reviewFormFooter">
+          <button type="submit" class="btn btn-primary" id="reviewSubmit">Enviar opinión</button>
+          <div id="reviewMsg" class="reviewMsg" role="status"></div>
         </div>
-      </div>
-
+      </form>
     </div>
   </section>
 

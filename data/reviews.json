@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Valentina M.",
+    "perfume": "BLACK OPIUM",
+    "location": "CABA",
+    "stars": 5,
+    "text": "Compré el Black Opium y no puedo creer la calidad por el precio. Dura todo el día con una sola aplicación. Ya hice el segundo pedido."
+  },
+  {
+    "name": "Tomás R.",
+    "perfume": "SAUVAGE ELIXIR",
+    "location": "GBA Norte",
+    "stars": 5,
+    "text": "Pedí el Sauvage Elixir para un regalo y quedó impresionado. La presentación es excelente y llegó al día siguiente de pagar."
+  },
+  {
+    "name": "Lucía B.",
+    "perfume": "GOOD GIRL",
+    "location": "Palermo",
+    "stars": 5,
+    "text": "Soy fiel al Good Girl hace meses. La duración es increíble, mejor que algunos originales que usé. No vuelvo a pagar el doble por la misma fragancia."
+  },
+  {
+    "name": "Nicolás G.",
+    "perfume": "AVENTUS",
+    "location": "San Isidro",
+    "stars": 5,
+    "text": "Probé 4 fragancias distintas y todas son muy fieles al original. La relación precio-calidad no tiene competencia. Recomendado al 100%."
+  }
+]
