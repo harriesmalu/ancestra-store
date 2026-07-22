@@ -18,7 +18,7 @@
     "variant_group": "sauvage-elixir",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "sauvage-elixir-50",
@@ -38,7 +38,7 @@
     "image": "assets/products/sauvage-elixir-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "sauvage-elixir"
   },
   {
@@ -60,7 +60,7 @@
     "variant_group": "sauvage-elixir",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "sauvage-30",
@@ -81,7 +81,7 @@
     "variant_group": "sauvage",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "sauvage-50",
@@ -101,7 +101,7 @@
     "image": "assets/products/sauvage-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "sauvage"
   },
   {
@@ -123,7 +123,7 @@
     "variant_group": "sauvage",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "bleu-chanel-30",
@@ -144,7 +144,7 @@
     "variant_group": "bleu-chanel",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "bleu-chanel-50",
@@ -164,7 +164,7 @@
     "image": "assets/products/bleu-chanel-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "bleu-chanel"
   },
   {
@@ -186,7 +186,7 @@
     "variant_group": "bleu-chanel",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "acqua-profumo-30",
@@ -207,7 +207,7 @@
     "variant_group": "acqua-profumo",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "acqua-profumo-50",
@@ -227,7 +227,7 @@
     "image": "assets/products/acqua-profumo-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "acqua-profumo"
   },
   {
@@ -249,7 +249,7 @@
     "variant_group": "acqua-profumo",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "acqua-gio-30",
@@ -270,7 +270,7 @@
     "variant_group": "acqua-gio",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "acqua-gio-50",
@@ -290,7 +290,7 @@
     "image": "assets/products/acqua-gio-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "acqua-gio"
   },
   {
@@ -312,7 +312,7 @@
     "variant_group": "acqua-gio",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "one-million-30",
@@ -333,7 +333,7 @@
     "variant_group": "one-million",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "one-million-50",
@@ -353,7 +353,7 @@
     "image": "assets/products/one-million-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "one-million"
   },
   {
@@ -375,7 +375,7 @@
     "variant_group": "one-million",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "invictus-30",
@@ -396,7 +396,7 @@
     "variant_group": "invictus",
     "stock": "ultimos",
     "stock_label": "Últimas unidades",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "invictus-50",
@@ -416,7 +416,7 @@
     "image": "assets/products/invictus-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "invictus"
   },
   {
@@ -438,7 +438,7 @@
     "variant_group": "invictus",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "invictus-victory-30",
@@ -459,7 +459,7 @@
     "variant_group": "invictus-victory",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "invictus-victory-50",
@@ -479,7 +479,7 @@
     "image": "assets/products/invictus-victory-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "invictus-victory"
   },
   {
@@ -499,9 +499,9 @@
     "description": "Pimienta rosa, limón, incienso, lavanda, vainilla, haba tonka",
     "image": "assets/products/invictus-victory-100.jpg",
     "variant_group": "invictus-victory",
-    "stock": "disponible",
-    "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock": "ultimos",
+    "stock_label": "Últimas unidades",
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "eros-flame-30",
@@ -522,7 +522,7 @@
     "variant_group": "eros-flame",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "eros-flame-50",
@@ -542,7 +542,7 @@
     "image": "assets/products/eros-flame-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "eros-flame"
   },
   {
@@ -564,7 +564,7 @@
     "variant_group": "eros-flame",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "le-male-elixir-30",
@@ -585,7 +585,7 @@
     "variant_group": "le-male-elixir",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "le-male-elixir-50",
@@ -605,7 +605,7 @@
     "image": "assets/products/le-male-elixir-50.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "le-male-elixir"
   },
   {
@@ -627,7 +627,7 @@
     "variant_group": "le-male-elixir",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "ultra-male-30",
@@ -648,7 +648,7 @@
     "variant_group": "ultra-male",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "ultra-male-50",
@@ -668,7 +668,7 @@
     "image": "assets/products/ultra-male-50.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "ultra-male"
   },
   {
@@ -690,7 +690,7 @@
     "variant_group": "ultra-male",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "stronger-you-30",
@@ -711,7 +711,7 @@
     "variant_group": "stronger-you",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "stronger-you-50",
@@ -731,7 +731,7 @@
     "image": "assets/products/stronger-you-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "stronger-you"
   },
   {
@@ -753,7 +753,7 @@
     "variant_group": "stronger-you",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "spicebomb-30",
@@ -774,7 +774,7 @@
     "variant_group": "spicebomb",
     "stock": "ultimos",
     "stock_label": "Últimas unidades",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "spicebomb-50",
@@ -794,7 +794,7 @@
     "image": "assets/products/spicebomb-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "spicebomb"
   },
   {
@@ -816,7 +816,7 @@
     "variant_group": "spicebomb",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "y-intense-30",
@@ -837,7 +837,7 @@
     "variant_group": "y-intense",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "y-intense-50",
@@ -857,7 +857,7 @@
     "image": "assets/products/y-intense-50.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "y-intense"
   },
   {
@@ -879,7 +879,7 @@
     "variant_group": "y-intense",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "phantom-30",
@@ -900,7 +900,7 @@
     "variant_group": "phantom",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "phantom-50",
@@ -920,7 +920,7 @@
     "image": "assets/products/phantom-50.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "phantom"
   },
   {
@@ -940,9 +940,9 @@
     "description": "Lavanda, limón, manzana, pachulí, vainilla, vetiver",
     "image": "assets/products/phantom-100.jpg",
     "variant_group": "phantom",
-    "stock": "ultimos",
-    "stock_label": "Últimas unidades",
-    "stock_updated": "2026-07-19"
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "bad-boy-30",
@@ -963,7 +963,7 @@
     "variant_group": "bad-boy",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "bad-boy-50",
@@ -983,7 +983,7 @@
     "image": "assets/products/bad-boy-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "bad-boy"
   },
   {
@@ -1003,9 +1003,9 @@
     "description": "Pimienta negra, bergamota, salvia, cedro, cacao, haba tonka",
     "image": "assets/products/bad-boy-100.jpg",
     "variant_group": "bad-boy",
-    "stock": "sin_stock",
-    "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19"
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "club-nuit-30",
@@ -1026,7 +1026,7 @@
     "variant_group": "club-nuit",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "club-nuit-50",
@@ -1046,7 +1046,7 @@
     "image": "assets/products/club-nuit-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "club-nuit"
   },
   {
@@ -1068,7 +1068,7 @@
     "variant_group": "club-nuit",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "aventus-30",
@@ -1089,7 +1089,7 @@
     "variant_group": "aventus",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "aventus-50",
@@ -1109,7 +1109,7 @@
     "image": "assets/products/aventus-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "aventus"
   },
   {
@@ -1131,7 +1131,7 @@
     "variant_group": "aventus",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "polo-blue-30",
@@ -1152,7 +1152,7 @@
     "variant_group": "polo-blue",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "polo-blue-50",
@@ -1172,7 +1172,7 @@
     "image": "assets/products/polo-blue-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "polo-blue"
   },
   {
@@ -1194,7 +1194,7 @@
     "variant_group": "polo-blue",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "dior-homme-30",
@@ -1215,7 +1215,7 @@
     "variant_group": "dior-homme",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "dior-homme-50",
@@ -1235,7 +1235,7 @@
     "image": "assets/products/dior-homme-50.jpg",
     "stock": "ultimos",
     "stock_label": "Últimas unidades",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "dior-homme"
   },
   {
@@ -1257,7 +1257,7 @@
     "variant_group": "dior-homme",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "fahrenheit-50",
@@ -1277,7 +1277,7 @@
     "image": "assets/products/fahrenheit-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "fahrenheit"
   },
   {
@@ -1299,7 +1299,7 @@
     "variant_group": "212-vip-black",
     "stock": "ultimos",
     "stock_label": "Últimas unidades",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "212-vip-black-50",
@@ -1319,7 +1319,7 @@
     "image": "assets/products/212-vip-black-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "212-vip-black"
   },
   {
@@ -1341,7 +1341,7 @@
     "variant_group": "212-vip-black",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "black-xs-30",
@@ -1362,7 +1362,7 @@
     "variant_group": "black-xs",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "black-xs-50",
@@ -1382,7 +1382,7 @@
     "image": "assets/products/black-xs-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "black-xs"
   },
   {
@@ -1404,7 +1404,7 @@
     "variant_group": "black-xs",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "amen-30",
@@ -1425,7 +1425,7 @@
     "variant_group": "amen",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "amen-50",
@@ -1445,7 +1445,7 @@
     "image": "assets/products/amen-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "amen"
   },
   {
@@ -1467,7 +1467,7 @@
     "variant_group": "amen",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "man-black-30",
@@ -1488,7 +1488,7 @@
     "variant_group": "man-black",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "man-black-50",
@@ -1508,7 +1508,7 @@
     "image": "assets/products/man-black-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "man-black"
   },
   {
@@ -1530,7 +1530,7 @@
     "variant_group": "man-black",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "le-beau-30",
@@ -1551,7 +1551,7 @@
     "variant_group": "le-beau",
     "stock": "ultimos",
     "stock_label": "Últimas unidades",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "le-beau-50",
@@ -1571,7 +1571,7 @@
     "image": "assets/products/le-beau-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "le-beau"
   },
   {
@@ -1593,7 +1593,7 @@
     "variant_group": "le-beau",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "eros-30",
@@ -1614,7 +1614,7 @@
     "variant_group": "eros",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "eros-50",
@@ -1634,7 +1634,7 @@
     "image": "assets/products/eros-50.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "eros"
   },
   {
@@ -1656,7 +1656,7 @@
     "variant_group": "eros",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "armani-code-30",
@@ -1677,7 +1677,7 @@
     "variant_group": "armani-code",
     "stock": "ultimos",
     "stock_label": "Últimas unidades",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "armani-code-50",
@@ -1695,9 +1695,9 @@
     "notes_base": [],
     "description": "Naranja, jazmín, azahar, jengibre, miel, vainilla, sándalo",
     "image": "assets/products/armani-code-50.jpg",
-    "stock": "ultimos",
-    "stock_label": "Últimas unidades",
-    "stock_updated": "2026-07-19",
+    "stock": "sin_stock",
+    "stock_label": "Sin stock",
+    "stock_updated": "2026-07-22",
     "variant_group": "armani-code"
   },
   {
@@ -1719,7 +1719,7 @@
     "variant_group": "armani-code",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "the-one-30",
@@ -1740,7 +1740,7 @@
     "variant_group": "the-one",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "the-one-50",
@@ -1760,7 +1760,7 @@
     "image": "assets/products/the-one-50.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "the-one"
   },
   {
@@ -1782,7 +1782,7 @@
     "variant_group": "the-one",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "leau-issey-30",
@@ -1803,7 +1803,7 @@
     "variant_group": "leau-issey",
     "stock": "ultimos",
     "stock_label": "Últimas unidades",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "leau-issey-50",
@@ -1823,7 +1823,7 @@
     "image": "assets/products/leau-issey-50.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "leau-issey"
   },
   {
@@ -1845,7 +1845,7 @@
     "variant_group": "leau-issey",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "black-opium-red-30",
@@ -1866,7 +1866,7 @@
     "variant_group": "black-opium-red",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "black-opium-red-50",
@@ -1886,7 +1886,7 @@
     "image": "assets/products/black-opium-red-50.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "black-opium-red"
   },
   {
@@ -1908,7 +1908,7 @@
     "variant_group": "black-opium-red",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "black-opium-30",
@@ -1929,7 +1929,7 @@
     "variant_group": "black-opium",
     "stock": "ultimos",
     "stock_label": "Últimas unidades",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "black-opium-50",
@@ -1949,7 +1949,7 @@
     "image": "assets/products/black-opium-50.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "black-opium"
   },
   {
@@ -1971,7 +1971,7 @@
     "variant_group": "black-opium",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "good-blush-30",
@@ -1992,7 +1992,7 @@
     "variant_group": "good-blush",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "good-blush-50",
@@ -2012,7 +2012,7 @@
     "image": "assets/products/good-blush-50.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "good-blush"
   },
   {
@@ -2034,7 +2034,7 @@
     "variant_group": "good-blush",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "good-girl-30",
@@ -2055,7 +2055,7 @@
     "variant_group": "good-girl",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "good-girl-50",
@@ -2075,7 +2075,7 @@
     "image": "assets/products/good-girl-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "good-girl"
   },
   {
@@ -2095,9 +2095,9 @@
     "description": "Almendra, café, jazmín, azahar, vainilla, cacao, sándalo",
     "image": "assets/products/good-girl-100.jpg",
     "variant_group": "good-girl",
-    "stock": "sin_stock",
-    "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19"
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "flowerbomb-30",
@@ -2118,7 +2118,7 @@
     "variant_group": "flowerbomb",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "flowerbomb-50",
@@ -2138,7 +2138,7 @@
     "image": "assets/products/flowerbomb-50.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "flowerbomb"
   },
   {
@@ -2160,7 +2160,7 @@
     "variant_group": "flowerbomb",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "libre-30",
@@ -2181,7 +2181,7 @@
     "variant_group": "libre",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "libre-50",
@@ -2201,7 +2201,7 @@
     "image": "assets/products/libre-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "libre"
   },
   {
@@ -2223,7 +2223,7 @@
     "variant_group": "libre",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "si-30",
@@ -2244,7 +2244,7 @@
     "variant_group": "si",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "si-50",
@@ -2264,7 +2264,7 @@
     "image": "assets/products/si-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "si"
   },
   {
@@ -2286,7 +2286,7 @@
     "variant_group": "si",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "my-way-30",
@@ -2307,7 +2307,7 @@
     "variant_group": "my-way",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "my-way-50",
@@ -2327,7 +2327,7 @@
     "image": "assets/products/my-way-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "my-way"
   },
   {
@@ -2347,9 +2347,9 @@
     "description": "Azahar, bergamota, nardos, jazmín, vainilla, almizcle, cedro",
     "image": "assets/products/my-way-100.jpg",
     "variant_group": "my-way",
-    "stock": "sin_stock",
-    "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19"
+    "stock": "disponible",
+    "stock_label": "Disponible",
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "idole-30",
@@ -2370,7 +2370,7 @@
     "variant_group": "idole",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "idole-50",
@@ -2390,7 +2390,7 @@
     "image": "assets/products/idole-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "idole"
   },
   {
@@ -2412,7 +2412,7 @@
     "variant_group": "idole",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "chance-30",
@@ -2433,7 +2433,7 @@
     "variant_group": "chance",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "chance-50",
@@ -2453,7 +2453,7 @@
     "image": "assets/products/chance-50.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "chance"
   },
   {
@@ -2475,7 +2475,7 @@
     "variant_group": "chance",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "coco-mad-30",
@@ -2496,7 +2496,7 @@
     "variant_group": "coco-mad",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "coco-mad-50",
@@ -2516,7 +2516,7 @@
     "image": "assets/products/coco-mad-50.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "coco-mad"
   },
   {
@@ -2538,7 +2538,7 @@
     "variant_group": "coco-mad",
     "stock": "ultimos",
     "stock_label": "Últimas unidades",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "jadore-30",
@@ -2559,7 +2559,7 @@
     "variant_group": "jadore",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "jadore-50",
@@ -2579,7 +2579,7 @@
     "image": "assets/products/jadore-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "jadore"
   },
   {
@@ -2601,7 +2601,7 @@
     "variant_group": "jadore",
     "stock": "ultimos",
     "stock_label": "Últimas unidades",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "alien-30",
@@ -2622,7 +2622,7 @@
     "variant_group": "alien",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "alien-50",
@@ -2642,7 +2642,7 @@
     "image": "assets/products/alien-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "alien"
   },
   {
@@ -2664,7 +2664,7 @@
     "variant_group": "alien",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "hypnotic-30",
@@ -2685,7 +2685,7 @@
     "variant_group": "hypnotic",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "hypnotic-50",
@@ -2705,7 +2705,7 @@
     "image": "assets/products/hypnotic-50.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "hypnotic"
   },
   {
@@ -2727,7 +2727,7 @@
     "variant_group": "hypnotic",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "bright-crystal-50",
@@ -2747,7 +2747,7 @@
     "image": "assets/products/bright-crystal-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "bright-crystal"
   },
   {
@@ -2769,7 +2769,7 @@
     "variant_group": "scandal-parfum",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "scandal-parfum-50",
@@ -2789,7 +2789,7 @@
     "image": "assets/products/scandal-parfum-50.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "scandal-parfum"
   },
   {
@@ -2811,7 +2811,7 @@
     "variant_group": "scandal-parfum",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "212-vip-rose-30",
@@ -2832,7 +2832,7 @@
     "variant_group": "212-vip-rose",
     "stock": "ultimos",
     "stock_label": "Últimas unidades",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "212-vip-rose-50",
@@ -2852,7 +2852,7 @@
     "image": "assets/products/212-vip-rose-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "212-vip-rose"
   },
   {
@@ -2874,7 +2874,7 @@
     "variant_group": "212-vip-rose",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "212-sexy-30",
@@ -2895,7 +2895,7 @@
     "variant_group": "212-sexy",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "212-sexy-50",
@@ -2915,7 +2915,7 @@
     "image": "assets/products/212-sexy-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "212-sexy"
   },
   {
@@ -2937,7 +2937,7 @@
     "variant_group": "212-sexy",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "olympea-30",
@@ -2958,7 +2958,7 @@
     "variant_group": "olympea",
     "stock": "ultimos",
     "stock_label": "Últimas unidades",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "olympea-50",
@@ -2978,7 +2978,7 @@
     "image": "assets/products/olympea-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "olympea"
   },
   {
@@ -3000,7 +3000,7 @@
     "variant_group": "olympea",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "linterdit-30",
@@ -3021,7 +3021,7 @@
     "variant_group": "linterdit",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "linterdit-50",
@@ -3041,7 +3041,7 @@
     "image": "assets/products/linterdit-50.jpg",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19",
+    "stock_updated": "2026-07-22",
     "variant_group": "linterdit"
   },
   {
@@ -3063,7 +3063,7 @@
     "variant_group": "linterdit",
     "stock": "sin_stock",
     "stock_label": "Sin stock",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "bs-love-spell",
@@ -3083,7 +3083,7 @@
     "image": "assets/products/bs-love-spell.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "bs-coconut",
@@ -3103,7 +3103,7 @@
     "image": "assets/products/bs-coconut.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "bs-pure",
@@ -3123,7 +3123,7 @@
     "image": "assets/products/bs-pure.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "bs-rush",
@@ -3143,7 +3143,7 @@
     "image": "assets/products/bs-rush.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "bs-bare",
@@ -3163,7 +3163,7 @@
     "image": "assets/products/bs-bare.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "bs-velvet",
@@ -3183,7 +3183,7 @@
     "image": "assets/products/bs-velvet.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "bs-midnight",
@@ -3203,7 +3203,7 @@
     "image": "assets/products/bs-midnight.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "bs-amber",
@@ -3223,7 +3223,7 @@
     "image": "assets/products/bs-amber.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "bs-aqua",
@@ -3243,7 +3243,7 @@
     "image": "assets/products/bs-aqua.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "bs-pear",
@@ -3263,7 +3263,7 @@
     "image": "assets/products/bs-pear.jpg",
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   },
   {
     "id": "pack-travel-size",
@@ -3318,6 +3318,6 @@
     ],
     "stock": "disponible",
     "stock_label": "Disponible",
-    "stock_updated": "2026-07-19"
+    "stock_updated": "2026-07-22"
   }
 ]
